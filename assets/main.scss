@@ -4,6 +4,14 @@
 
 @import "minima";
 
+body {
+  background-image: url("/assets/main/IMG_1628.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
 a[href$="/DROP-DEAD.html"] {
   color: #ff69b4;
 }

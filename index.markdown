@@ -4,3 +4,13 @@
 
 layout: home
 ---
+
+<style>
+body {
+  background-image: url("/assets/main/IMG_1628.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+</style>
