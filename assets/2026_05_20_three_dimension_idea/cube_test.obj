@@ -1,0 +1,29 @@
+# Vertex List (8 corners of the cube)
+v -1.0 -1.0  1.0
+v  1.0 -1.0  1.0
+v  1.0  1.0  1.0
+v -1.0  1.0  1.0
+v -1.0 -1.0 -1.0
+v  1.0 -1.0 -1.0
+v  1.0  1.0 -1.0
+v -1.0  1.0 -1.0
+
+# Face List (12 triangles)
+# Front Face (split 1 2 3 4)
+f 1 2 3
+f 1 3 4
+# Back Face (split 8 7 6 5)
+f 8 7 6
+f 8 6 5
+# Top Face (split 4 3 7 8)
+f 4 3 7
+f 4 7 8
+# Left Face (split 5 1 4 8)
+f 5 1 4
+f 5 4 8
+# Bottom Face (split 5 6 2 1)
+f 5 6 2
+f 5 2 1
+# Right Face (split 2 6 7 3)
+f 2 6 7
+f 2 7 3
