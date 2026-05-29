@@ -2,7 +2,8 @@
 layout: post
 title: "Generating three-dimensional objects"
 date: 2026-05-20
-categories: machine-learning generative-ai video-games
+categories: machine-learning computer-graphics game-development
+tags: [3d-modeling, 3d-reconstruction, photogrammetry, computer-graphics, game-development, obj-format]
 ---
 
 I would like to push my experience and knowledge of generative AI. I have been pondering what an engaging project might be, and the idea I kept coming back to started with a spark of inspiration I received when visiting Plovdiv, Bulgaria. I was awestruck by how seamlessly the ancient ruins of past empires connected to the recent cultural heritage and history, all as a backdrop to a modern and vibrant city. This sort of time traveling while just going to get groceries or coffee is fascinating. I wish I was there now!

@@ -2,7 +2,8 @@
 layout: post
 title: "Cost function for three dimensional model"
 date: 2026-05-26
-categories: machine-learning generative-ai video-games
+categories: machine-learning computer-vision game-development
+tags: [3d-reconstruction, differentiable-rendering, loss-functions, camera-pose-estimation, computer-vision, machine-learning]
 ---
 The first problem I need to solve is how to score my generative model for three dimensional objects. The model will output the vertices and the faces, but once I have those, how do I know if it has learned to generate the object I'm interested in?
 
