@@ -12,7 +12,7 @@ Here are three kernels:
 Radial Basis Function
 
 $$
-k(x, x') = \exp \left( - \frac{\|x - x'\|}{2 \sigma^{2}} \right)
+k(x, x') = \exp \left( - \frac{\|x - x'\|^{2}}{2 \sigma^{2}} \right)
 $$
 
 Inhomogeneous Linear Kernel
@@ -40,4 +40,4 @@ Lets take a look at sampling 5 functions from each prior and visualize what they
 
 ![Comparison of all three kernels at scale=1]({{ "/assets/2026_05_29_gaussian_processes/kernel_comparison_scale1.png" | relative_url }})
 
-The length scale effect on the functions is to change the derivative as far as i can tell. The Inhomogenous Linear Kernel is the most obvious as you can literally see the slope of the line change as the length scale changes.  For the other kernels you can see if much more pronounced in the longer lengths as the functions smooth out and look like sin waves with almost no noise while the shorter sclaes are very noisy.
+The length scale changes how quickly the kernel decays. When the length scale is short, there is no correlation between points and the fit becomes jagged.  As the length scale is extended, correlation between points is stronger so the functions become smoother to fit to the points. You can see the tradeoffs between the two. You may be too short and overfit or too long and miss local correlations by over smoothing.
