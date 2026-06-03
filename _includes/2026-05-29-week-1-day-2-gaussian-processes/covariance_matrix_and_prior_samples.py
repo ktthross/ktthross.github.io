@@ -1,30 +1,19 @@
-import numpy as np
-from typing import Callable
-import matplotlib.pyplot as plt
+import sys
 import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../_includes/shared"))
+
+import numpy as np
+import matplotlib.pyplot as plt
+from kernels import (
+    radial_basis_function_kernel,
+    inhomogeneous_linear_kernel,
+    exponential_sin_squared_kernel,
+    generate_covariance_matrix,
+)
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "../../assets/2026_05_29_gaussian_processes")
 
 NUMBER_OF_POINTS = 50
-
-# Kernel definitions
-def radial_basis_function_kernel(x_0: np.ndarray, x_1: np.ndarray, length_scale: float = 1.0, variance: float = 1.0) -> np.ndarray:
-    return variance * np.exp(- np.sum((x_0 - x_1)**2) / (2 * length_scale**2))
-
-def inhomogeneous_linear_kernel(x_0: np.ndarray, x_1: np.ndarray, bias_variance: float = 1.0, slope_variance: float = 1.0):
-    return bias_variance + slope_variance * np.dot(x_0, x_1)
-
-def exponential_sin_squared_kernel(x_0: np.ndarray, x_1: np.ndarray, length_scale: float = 1.0, variance: float = 1.0, period: float = 1.0):
-    return variance * np.exp(- 2 * np.sin(np.pi * np.linalg.norm(x_0 - x_1) / period)**2 / length_scale**2)
-
-# Helper
-def generate_covariance_matrix(func: Callable, **kwargs):
-    cov = np.zeros((NUMBER_OF_POINTS, NUMBER_OF_POINTS))
-    points = np.linspace(-3, 3, NUMBER_OF_POINTS)
-    for idx in range(NUMBER_OF_POINTS):
-        for idy in range(NUMBER_OF_POINTS):
-            cov[idx, idy] = func(points[idx], points[idy], **kwargs)
-    return cov
 
 length_scales = [0.1, 0.5, 1.0, 5.0, 10.0]
 x = np.linspace(-3, 3, NUMBER_OF_POINTS)
