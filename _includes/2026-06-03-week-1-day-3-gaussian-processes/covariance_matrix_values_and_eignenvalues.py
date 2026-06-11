@@ -7,7 +7,7 @@ from kernels import radial_basis_function_kernel, generate_covariance_matrix_fro
 
 x_three = np.array([-1.0, 0.0, 1.0])
 
-K = generate_covariance_matrix_from_points(x_three, radial_basis_function_kernel, length_scale=1.0, variance=1.0)
+K = generate_covariance_matrix_from_points(x_three, x_three, radial_basis_function_kernel, length_scale=1.0, variance=1.0)
 
 print("Symmetric:", np.allclose(K, K.T))
 print("Eigenvalues:", np.linalg.eigvalsh(K))

@@ -16,13 +16,13 @@ def exponential_sin_squared_kernel(x_0: np.ndarray, x_1: np.ndarray, length_scal
 
 def generate_covariance_matrix(func: Callable, n_points: int = 50, x_range: tuple = (-3, 3), **kwargs) -> np.ndarray:
     points = np.linspace(x_range[0], x_range[1], n_points)
-    return generate_covariance_matrix_from_points(points, func, **kwargs)
+    return generate_covariance_matrix_from_points(points, points, func, **kwargs)
 
 
-def generate_covariance_matrix_from_points(points: np.ndarray, func: Callable, **kwargs) -> np.ndarray:
-    n = len(points)
-    cov = np.zeros((n, n))
-    for i in range(n):
-        for j in range(n):
-            cov[i, j] = func(points[i], points[j], **kwargs)
+def generate_covariance_matrix_from_points(points_x: np.ndarray, points_y: np.ndarray, func: Callable, **kwargs) -> np.ndarray:
+    i_range, j_range = points_x.shape[0], points_y.shape[0]
+    cov = np.zeros((i_range, j_range))
+    for i in range(i_range):
+        for j in range(j_range):
+            cov[i, j] = func(points_x[i], points_y[j], **kwargs)
     return cov
