@@ -66,4 +66,4 @@ With a hand on my heart, I swore
 
 I want to note the asymmetry in this lyric. Olivia is asking or begging perhaps for her lover to "Tell your friends that you're mine." She is looking for this validation but seems to not be getting it even though she is going insane with desire.
 
-Overall, I want to note that Olivia's lover doesn't ever show up in this song despite it being all about this person. I think this absense and Olivia chasing the idea of them is way more telling than the song could ever say.
+Overall, I want to note that Olivia's lover doesn't ever show up in this song despite it being all about this person. I think this absence and Olivia chasing the idea of them is way more telling than the song could ever say. It sounds like her friends are right! Olvia is in a cage.
