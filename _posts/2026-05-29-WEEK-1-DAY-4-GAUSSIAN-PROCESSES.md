@@ -53,7 +53,7 @@ Lets look at a simple example
 
 
 {% highlight python %}
-{% include 2026-06-11-week-1-day4-gaussian-processes/posterior.py %}
+{% include 2026-06-11-week-1-day-4-gaussian-processes/posterior.py %}
 {% endhighlight %}
 
 As I move my `x_star` from 0.5 to 0.0, I expect that the variance and mean will approach zero. This is because the model will be interpolating close and closer to a real value so the contribution from the closest point will dominate the contribution in fitting that point, and the mean will approach -0.2 because I am approaching the value at 0.0 which will make a larger contribution to the mean.
