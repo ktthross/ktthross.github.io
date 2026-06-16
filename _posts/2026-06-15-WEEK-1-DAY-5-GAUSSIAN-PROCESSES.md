@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Week 1, Day 5 Gaussian Processes"
-date: 2026-06-15
+date: 2026-06-16
 categories: machine-learning statistics
-tags: []
+tags: [gaussian-processes, posterior-inference, covariance-matrix, predictive-uncertainty, kernels, python, machine-learning]
 math: true
 ---
 
@@ -28,7 +28,7 @@ If we want to predict at 1000 more test points we don't need to recompute $K_{XX
 If we are fitting noisy observations we do not want to directly pass our function points through the covariance matrix.  If the functions are noisy we are not using the true function values.  Forcing the posterior through the noise would be fitting to measurement error. We would want to model the uncertainty in the measurements as well.
 
 {% highlight python %}
-{% include 2026-06-11-week-1-day-5-gaussian-processes/posterior.py %}
+{% include 2026-06-11-week-1-day-4-gaussian-processes/posterior.py %}
 {% endhighlight %}
 
 ![Posterior mean and uncertainty](/assets/2026_06_15_gaussian_processes/posterior.png)
