@@ -33,4 +33,6 @@ If we are fitting noisy observations we do not want to directly pass our functio
 
 ![Posterior mean and uncertainty](/assets/2026_06_15_gaussian_processes/posterior.png)
 
-![Posterior zoom (x: 0 to 0.1)](/assets/2026_06_15_gaussian_processes/posterior_zoom.png)
+The plot show that the uncertainty around our real data points is small and once we go outside the range of our training data the uncertainty gets huge.  We also see that once we are outside the training data, the posterior mean basically stops following the sin curve.
+
+As we get further away from the training data, we see that the mean returns to 0 which is consistent with the training points in that domain. We also see the uncertainty return to the baseline. As the contribution to the reduction in uncertainty from the training data gets smaller, further away from the training data, we see the maximum uncertainty in our model.
