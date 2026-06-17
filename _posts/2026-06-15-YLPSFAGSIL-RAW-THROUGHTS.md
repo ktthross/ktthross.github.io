@@ -18,7 +18,8 @@ There are a few thematic elements which I haven't fully traced yet but will just
 
 Songs that immediately stood out to me: `Stupid Song`, `Maggots for Brains`, `U + Me = <3`, `What's Wrong with Me` and `Cigarette Smoke`.
 
-## Song Analyses
+## Song Initial Thoughts
 
-- [`Stupid Song`]({% post_url 2026-06-15-STUPID-SONG %})
 - [`Drop Dead`]({% post_url 2026-05-13-DROP-DEAD %})
+- [`Stupid Song`]({% post_url 2026-06-15-STUPID-SONG %})
+- [`Honeybee 🐝`]({% post_url 2026-06-17-HONEYBEE %})

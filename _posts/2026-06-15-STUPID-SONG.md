@@ -10,14 +10,12 @@ Thoughts on `Stupid Song` from Olivia Rodrigo's *You Look Pretty Sad For A Girl 
 
 ## Verse 1
 
-```
-New York City's never looked so blue
-My friends are smoking blunts in the bathroom
-They say that honest love is a cage that makes you feel free
-And all the girls at this party are so cool
-That's never been a thing that I could do
-But I can't help but imagine what you say when you speak with me
-```
+> New York City's never looked so blue
+> My friends are smoking blunts in the bathroom
+> They say that honest love is a cage that makes you feel free
+> And all the girls at this party are so cool
+> That's never been a thing that I could do
+> But I can't help but imagine what you say when you speak with me
 
 "Honest love is a cage that makes you feel free" — I read this as a critique of "honest love." It's actually a deception. You feel free but really you are caged. Her friends are telling her that she is caged even though she feels free.
 
@@ -29,16 +27,14 @@ She is at a party and feeling sad. Her friends getting high are telling her that
 
 ## Chorus
 
-```
-You're a spark in the dark and my clothes all caught aflame
-You should feel how I feel when somebody says your name
-I'm a car speeding down the boulevard without a brake
-And I want you more than any stupid song could ever say
-I'm a heart made of wax and I'm melting in the sun
-I'm a thread on your shirt that is coming undone
-I feel right, I feel wrong, I feel totally insane
-And I want you more than any stupid song could ever say
-```
+> You're a spark in the dark and my clothes all caught aflame
+> You should feel how I feel when somebody says your name
+> I'm a car speeding down the boulevard without a brake
+> And I want you more than any stupid song could ever say
+> I'm a heart made of wax and I'm melting in the sun
+> I'm a thread on your shirt that is coming undone
+> I feel right, I feel wrong, I feel totally insane
+> And I want you more than any stupid song could ever say
 
 The first line has nice double meanings. It implies a fiery and passionate sexual connection. Additionally it has a sense of being exposed, naked, in front of someone else — they see you for who you really are. This dovetails nicely with the other line: "I'm a thread on your shirt that is coming undone."
 
@@ -50,19 +46,17 @@ There is a clever 4th wall lyric. The song is called "Stupid Song" and she says 
 
 ## Bridge
 
-```
-Every night like the one before
-Dream of you from like 1 to 4
-Positively and truly sure
-Nobody's wanted somebody more
-It's a thing that I can't ignore
-Tell your friends that you're mine, I'm yours
-With a hand on my heart, I swore
-Nobody's wanted somebody more
-It's a thing that I can't ignore
-Tell your friends that you're mine, I'm yours
-With a hand on my heart, I swore
-```
+> Every night like the one before
+> Dream of you from like 1 to 4
+> Positively and truly sure
+> Nobody's wanted somebody more
+> It's a thing that I can't ignore
+> Tell your friends that you're mine, I'm yours
+> With a hand on my heart, I swore
+> Nobody's wanted somebody more
+> It's a thing that I can't ignore
+> Tell your friends that you're mine, I'm yours
+> With a hand on my heart, I swore
 
 I want to note the asymmetry in this lyric. Olivia is asking or begging perhaps for her lover to "Tell your friends that you're mine." She is looking for this validation but seems to not be getting it even though she is going insane with desire.
 
