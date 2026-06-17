@@ -7,7 +7,7 @@ tags: []
 math: true
 ---
 
-If we have our Gaussian distribution for points $X$ and observed values $f$ we will want to predict on test points $X^{\*}$ to get $f^{\*}$. The joint distribution is given by
+If we have our Gaussian distribution for points $X$ and observed values $f$ we will want to predict on test points $x$ to get $f^{\*}$. The joint distribution is given by
 
 $$
 \begin{pmatrix}
@@ -15,8 +15,8 @@ f \\ f^{*}
 \end{pmatrix} ~ N \begin{pmatrix}
 0, &
 \begin{bmatrix}
-K(X, X) & K(X, X_{*}) \\
-K(X_{*}, X) & K(X_{*}, X_{*})
+K(X, X) & K(X, x) \\
+K(x, X) & K(x, x)
 \end{bmatrix}
 \end{pmatrix}
 $$
@@ -24,14 +24,14 @@ $$
 and the mean and covariance are defined by
 
 $$
-\mu^{*} = \mu(X_{*}) + K_{*}^{T}K^{-1}(f - \mu(X))
+\mu_{x} = \mu(x) + K_{xX}K_{XX}^{-1}(f - \mu(X))
 $$
 
 $$
-\Sigma_{*} = K_{**} - K_{*}^{T}K^{-1}K_{*}
+\Sigma_{x} = K_{xx} - K_{xX}K_{XX}^{-1}K_{Xx}
 $$
 
-In the posterior mean the covariance component $K(X_{*}, X)$ is the variance between the function outputs we have seen and those we wish to predict. It maps the data that we have to the data we want to predict on. If the training data and test data are similar, there will be a large value and if the data are dissimilar it will be small. This will influence how much our prediction is informed by our previous data.
+In the posterior mean the covariance component $K(x, X)$ is the variance between the function outputs we have seen and those we wish to predict. It maps the data that we have to the data we want to predict on. If the training data and test data are similar, there will be a large value and if the data are dissimilar it will be small. This will influence how much our prediction is informed by our previous data.
 
 The inverse term $K(X, X)^{-1}f$ is solving for a vector
 
