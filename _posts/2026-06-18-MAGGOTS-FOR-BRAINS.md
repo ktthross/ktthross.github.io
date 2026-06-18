@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Maggots for Brains 🐛🧠"
-date: 2026-06-18
+date: 2026-06-18 08:00:00
 categories: music pop-culture criticism
 tags: [olivia-rodrigo, funkadelic, lyrics, song-analysis, depression, longing]
 ---
