@@ -25,3 +25,5 @@ Songs that immediately stood out to me: `Stupid Song`, `Maggots for Brains`, `U 
 - [`Honeybee 🐝`]({% post_url 2026-06-17-HONEYBEE %})
 - [`Maggots for Brains 🐛🧠`]({% post_url 2026-06-18-MAGGOTS-FOR-BRAINS %})
 - [`U + Me = <3`]({% post_url 2026-06-18-U-+-ME-=-<3 %})
+- [`my way`]({% post_url 2026-06-25-MY-WAY %})
+- [`purple`]({% post_url 2026-06-25-PURPLE %})
