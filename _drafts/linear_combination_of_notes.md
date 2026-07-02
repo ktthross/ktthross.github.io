@@ -103,3 +103,51 @@ where 440 is A4 and middle C has midi note 60. The range for a standard piano is
 | 23  | 3  | B0 | 30.87 |
 | 22  | 2  | A#0/Bb0 | 29.14 |
 | 21  | 1  | A0 | 27.50 |
+
+
+Our frequency modes are not in general orthogonal and we want to fit over an interval, we can use an unconstrained least
+squares fit.
+
+$$
+E = \int_{a}^{b}\left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx
+$$
+
+To solve this we take the derivative w.r.t. each component and set it to 0
+
+$$
+\frac{d E}{d c_{j}} = 0 \\
+\frac{d}{d c_{j}} \int_{a}^{b}\left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx = 0 \\
+\int_{a}^{b} \frac{d}{d c_{j}} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx = 0 \\
+\int_{a}^{b} - 2 * \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx = 0 \\
+\int_{a}^{b} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx = 0 \\
+\int_{a}^{b} \left ( f(x) \phi_{j} - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \phi_{j} \right ) dx = 0 \\
+\int_{a}^{b} f(x) \phi_{j} dx = \int_{a}^{b} \sum_{i=1}^{n} c_{i}\phi_{i}(x) \phi_{j} dx \\
+\int_{a}^{b} f(x) \phi_{j} dx = \sum_{i=1}^{n} c_{i} \int_{a}^{b} \phi_{i}(x) \phi_{j} dx \\
+$$
+
+We can write this a system of linear equations.  We the vector $\vec{b}$ with elements
+
+$$
+b_{i} = \int_{a}^{b} f(x) \phi_{j} dx
+$$
+
+We have a matrix with elements
+
+$$
+G_{ij} = \int_{a}^{b} \phi_{i}(x) \phi_{j} dx
+$$
+
+which means our term on the right just a vector-matrix multiplication
+
+$$
+\sum_{i=1}^{n} c_{i} G_{ij} = \vec{c} G
+$$
+
+Since the matrix is symmetric, we can simply take the transpose of our terms and get a nice linear equation
+
+$$
+G \vec{c} = \vec{b}
+$$
+
+Now all we need is a way to evaluate the matrix elements $G_{ij}$ and the elements $b_{i}$
+
