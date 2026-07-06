@@ -187,9 +187,9 @@ $$
 \int_{a}^{b} \sin( \mu_{i} x) \sin( \mu_{j} x) dx = \frac{\sin ((\mu_{j} - \mu_{i}) b )}{2(\mu_{j} - \mu_{i})}  - \frac{\sin ((\mu_{i} + \mu_{j}) b )}{2(\mu_{i} + \mu_{j})} - \frac{\sin ((\mu_{j} - \mu_{i}) a )}{2(\mu_{j} - \mu_{i})}  + \frac{\sin ((\mu_{i} + \mu_{j}) a )}{2(\mu_{i} + \mu_{j})}
 $$
 
-A couple things we need to look out for:
+For the bounds, we know that it will always start at 0 so $a = o$.  Now lets figure out what b should be set to. My first thought is to set b to the period of the note that we are trying to fit.  My thinking is that the frequency is what defines the note and so going beyond the period of oscillation does not provide any new information.  However, since we are fitting to other frequencies, the additional period may show that contributions from other frequencies which do not cleanly fit into that period may make meaningful contributions when fit across multiple oscillations.  To test this, we will use 1 period as the reference point for b, then try various multiples of that value to see how it changes.
 
-1. If the frequencies are too close together it can make inverting our matrix unstable
-2. We need to consider the bounds at which to evaluate our integral. Will need to understand the relationship between the tone and how long the note plays for. Maybe we find the shared period among all the frequencies and fit to that. Will need to think
-3. We can plug our formula for frequency into this and get a form based on midi number.
-4. Can we invert fast enough, or find a good enough approximation to do this in real time?
+
+{% highlight python %}
+{% include linear_combination_of_notes/fit_note.py %}
+{% endhighlight %}
