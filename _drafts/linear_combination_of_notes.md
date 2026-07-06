@@ -151,3 +151,45 @@ $$
 
 Now all we need is a way to evaluate the matrix elements $G_{ij}$ and the elements $b_{i}$
 
+$$
+G_{ij} = \int_{a}^{b} \phi_{i}(x) \phi_{j} dx = \int_{a}^{b} \sin(2 \pi f_{i} x) \sin(2 \pi f_{j} x) dx
+$$
+
+Lets rewrite our functions by replacing the constants and frequencies with a new indexed constant.
+
+$$
+\mu_{i} = 2 \pi f_{i}
+$$
+
+Our integral now has a nice closed form:
+
+For the diagonal terms:
+
+$$
+\int \sin(\mu_{i}x)^{2} dx = \frac{x}{2} - \frac{1}{4 \mu_{i}}\sin(2 \mu_{i} x) + C
+$$
+
+and for the off diagonal terms:
+
+$$
+\int \sin( \mu_{i} x) \sin( \mu_{j} x) dx = \frac{\sin ((\mu_{j} - \mu_{i}) x )}{2(\mu_{j} - \mu_{i})}  - \frac{\sin ((\mu_{i} + \mu_{j}) x )}{2(\mu_{i} + \mu_{j})} + C
+$$
+
+We need these indefinite integrals evaluated at the bounds of our integral. For a given $a$ and $b$, the expressions
+are
+
+$$
+\int_{a}^{b} \sin(\mu_{i}x)^{2} dx = \frac{b}{2} - \frac{1}{4 \mu_{i}}\sin(2 \mu_{i} b) - \frac{a}{2} + \frac{1}{4 \mu_{i}}\sin(2 \mu_{i} a)
+$$
+
+
+$$
+\int_{a}^{b} \sin( \mu_{i} x) \sin( \mu_{j} x) dx = \frac{\sin ((\mu_{j} - \mu_{i}) b )}{2(\mu_{j} - \mu_{i})}  - \frac{\sin ((\mu_{i} + \mu_{j}) b )}{2(\mu_{i} + \mu_{j})} - \frac{\sin ((\mu_{j} - \mu_{i}) a )}{2(\mu_{j} - \mu_{i})}  + \frac{\sin ((\mu_{i} + \mu_{j}) a )}{2(\mu_{i} + \mu_{j})}
+$$
+
+A couple things we need to look out for:
+
+1. If the frequencies are too close together it can make inverting our matrix unstable
+2. We need to consider the bounds at which to evaluate our integral. Will need to understand the relationship between the tone and how long the note plays for. Maybe we find the shared period among all the frequencies and fit to that. Will need to think
+3. We can plug our formula for frequency into this and get a form based on midi number.
+4. Can we invert fast enough, or find a good enough approximation to do this in real time?
