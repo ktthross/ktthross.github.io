@@ -117,6 +117,9 @@
   .nfe .row .coef { text-align:right; color:var(--nfe-ink-soft); font-variant-numeric:tabular-nums; }
   .nfe .row .coef .sgn { color:var(--nfe-ink-faint); }
   .nfe .contrib .empty { color:var(--nfe-ink-faint); font-family:var(--nfe-mono); font-size:12px; }
+  .nfe .nfe-toggle { margin-top:12px; font-family:var(--nfe-mono); font-size:11.5px; letter-spacing:.03em; color:var(--nfe-brass); background:none; border:1px solid var(--nfe-panel-edge); border-radius:5px; padding:6px 13px; cursor:pointer; transition:background .12s,border-color .12s; }
+  .nfe .nfe-toggle:hover { background:color-mix(in srgb,var(--nfe-brass) 12%,transparent); border-color:var(--nfe-brass); }
+  .nfe .nfe-toggle:focus-visible { outline:2px solid var(--nfe-teal); outline-offset:2px; }
   .nfe .foot { margin-top:20px; padding-top:14px; border-top:1px solid var(--nfe-panel-edge); font-size:11px; color:var(--nfe-ink-faint); line-height:1.6; }
   @media (prefers-reduced-motion: reduce){ .nfe * { transition:none !important; } }
 </style>
@@ -168,6 +171,7 @@
   <div class="contrib">
     <h4 id="nfe-contribTitle">Selected contributors</h4>
     <div class="rows" id="nfe-rows"></div>
+    <button class="nfe-toggle" id="nfe-toggle" aria-expanded="false" style="display:none;">Show all</button>
   </div>
 
   <div class="tip" id="nfe-tip"></div>
@@ -181,6 +185,8 @@
 
   let heldKey = 40, win = "1.0", mode = "abs";
   let cut = { abs:20, topn:20, energy:60 };
+  let expanded = false;
+  const COLLAPSED_ROWS = 8;
 
   const NOTES = DATA.notes, byKey = {}; NOTES.forEach(n => byKey[n.key]=n);
   const isBlack = n => n.includes("#");
@@ -210,7 +216,7 @@
   });
 
   function wireKey(el,n){
-    el.addEventListener("click", () => { if(n.key===heldKey) return; heldKey=n.key; rebuildMapping(); render(); });
+    el.addEventListener("click", () => { if(n.key===heldKey) return; heldKey=n.key; expanded=false; rebuildMapping(); render(); });
     el.addEventListener("mousemove", e => {
       let body;
       if(n.key===heldKey){ body = `<span class="tn">${n.name}</span> &middot; ${n.freq.toFixed(1)} Hz<br>held out &mdash; the fitted target`; }
@@ -262,13 +268,21 @@
     const selList = sel.order.filter(i => sel.selectedIdx.has(i));
     $("#nfe-contribTitle").textContent = `Selected contributors (${selList.length})`;
     if(selList.length===0){ const d=document.createElement("div"); d.className="empty"; d.textContent="No notes clear the cutoff — loosen the threshold."; rows.appendChild(d); }
-    selList.slice(0,24).forEach(i => {
+    const shown = expanded ? selList.length : Math.min(COLLAPSED_ROWS, selList.length);
+    selList.slice(0, shown).forEach(i => {
       const v=c[i], mag=Math.abs(v), w=sel.maxMag>0?mag/sel.maxMag*100:0, nm=short(byKey[activeKeys[i]].name);
       const row=document.createElement("div"); row.className="row";
       row.innerHTML = `<span class="name">${nm}</span><span class="barwrap"><span class="barfill ${v>=0?"pos":"neg"}" style="width:${w}%"></span></span><span class="coef"><span class="sgn">${v>=0?"+":"−"}</span>${mag.toFixed(4)}</span>`;
       rows.appendChild(row);
     });
-    if(selList.length>24){ const d=document.createElement("div"); d.className="empty"; d.textContent=`+ ${selList.length-24} more below the top 24`; rows.appendChild(d); }
+    const btn = $("#nfe-toggle");
+    if(selList.length > COLLAPSED_ROWS){
+      btn.style.display = "";
+      btn.textContent = expanded ? "Show fewer" : `Show all ${selList.length}`;
+      btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+    } else {
+      btn.style.display = "none";
+    }
     updateCutLabels(sel);
   }
 
@@ -276,7 +290,7 @@
     const seg = $("#nfe-winSeg");
     DATA.multipliers.forEach(ms => {
       const b=document.createElement("button"); b.textContent="×"+ms; b.setAttribute("aria-pressed", ms===win?"true":"false");
-      b.addEventListener("click", () => { win=ms; [...seg.children].forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); $("#nfe-winVal").textContent="×"+ms; render(); });
+      b.addEventListener("click", () => { win=ms; expanded=false; [...seg.children].forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); $("#nfe-winVal").textContent="×"+ms; render(); });
       seg.appendChild(b);
     });
     $("#nfe-winVal").textContent="×"+win;
@@ -288,8 +302,9 @@
   }
   function syncRange(){ $("#nfe-cutRange").value = cut[mode]; }
 
-  $("#nfe-modeSeg").addEventListener("click", e => { const b=e.target.closest("button"); if(!b) return; mode=b.dataset.mode; [...$("#nfe-modeSeg").children].forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); syncRange(); render(); });
+  $("#nfe-modeSeg").addEventListener("click", e => { const b=e.target.closest("button"); if(!b) return; mode=b.dataset.mode; expanded=false; [...$("#nfe-modeSeg").children].forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); syncRange(); render(); });
   $("#nfe-cutRange").addEventListener("input", e => { cut[mode]=+e.target.value; render(); });
+  $("#nfe-toggle").addEventListener("click", () => { expanded = !expanded; render(); });
   $("#nfe-themeBtn").addEventListener("click", () => {
     const cur = root.getAttribute("data-nfe-theme");
     const sysDark = matchMedia("(prefers-color-scheme: dark)").matches;
