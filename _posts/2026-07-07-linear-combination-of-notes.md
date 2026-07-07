@@ -23,6 +23,14 @@ $$
 
 where 440 is A4 and middle C has midi note 60. The range for a standard piano is MIDI note 21 (A0) to MIDI note 108 (C8).
 
+<style>
+.note-table { margin: 1em 0; border: 1px solid rgba(128,128,128,.3); border-radius: 6px; padding: 0 14px; }
+.note-table > summary { cursor: pointer; padding: 12px 4px; font-weight: 600; list-style-position: inside; }
+.note-table > summary:hover { color: #b07d24; }
+.note-table[open] > summary { border-bottom: 1px solid rgba(128,128,128,.2); margin-bottom: 10px; }
+.note-table table { margin-bottom: 12px; }
+</style>
+
 | MIDI Number | Piano Key | Note Name | Frequency |
 | --- | --- | --- | --- |
 | 108 | 88 | C8 | 4186.01 |
@@ -33,6 +41,12 @@ where 440 is A4 and middle C has midi note 60. The range for a standard piano is
 | 103 | 83 | G7 | 3135.96 |
 | 102 | 82 | F#7/Gb7 | 2959.96 |
 | 101 | 81 | F7 | 2793.83 |
+
+<details class="note-table" markdown="1">
+<summary>Show remaining 80 keys (E7 &rarr; A0)</summary>
+
+| MIDI Number | Piano Key | Note Name | Frequency |
+| --- | --- | --- | --- |
 | 100 | 80 | E7 | 2637.02 |
 | 99  | 79  | D#7/Eb7 | 2489.02 |
 | 98  | 78  | D7 | 2349.32 |
@@ -114,6 +128,7 @@ where 440 is A4 and middle C has midi note 60. The range for a standard piano is
 | 22  | 2  | A#0/Bb0 | 29.14 |
 | 21  | 1  | A0 | 27.50 |
 
+</details>
 
 Our frequency modes are not in general orthogonal and we want to fit over an interval, we can use an unconstrained least
 squares fit.
