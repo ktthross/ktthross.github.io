@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "what's wrong with me"
-date: 2026-06-25 12:05:00
+date: 2026-07-08 12:05:00
 categories: music pop-culture criticism
 tags: [olivia-rodrigo, lyric-analysis, GUTS]
 ---
