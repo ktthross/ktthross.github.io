@@ -27,7 +27,7 @@ $$
 k(x, x') = \exp \left(- \frac{2 \sin^{2} \left( \frac{\pi \|x - x'\|_{2} }{p} \right)}{l^{2}}  \right)
 $$
 
-Since the kernel is encoding the covariance between our function signals, the choice of kernel is a prior on the signal.  For RBF, we are saying the functions will correlation according to a gaussian distribution, for inhomogeneious linear kernel we are asserting that the functions will match linearly with some shift of the mean $\simga^{2}$ and with the exponential sin squared kernel we are saying that they will be periodic in their correlation.
+Since the kernel is encoding the covariance between our function signals, the choice of kernel is a prior on the signal.  For RBF, we are saying the functions will correlation according to a gaussian distribution, for inhomogeneous linear kernel we are asserting that the functions will match linearly with some shift of the mean $\simga^{2}$ and with the exponential sin squared kernel we are saying that they will be periodic in their correlation.
 
 Lets take a look at sampling 5 functions from each prior and visualize what they look like.
 
