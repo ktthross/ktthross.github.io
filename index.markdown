@@ -16,7 +16,7 @@ main.page-content {
 }
 
 main.page-content > .wrapper {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.92);
   border-left: 4px solid rgba(30, 30, 30, 0.7);
   margin-left: max(2rem, calc((100vw - 1000px) / 2));
   margin-right: auto;
@@ -25,8 +25,20 @@ main.page-content > .wrapper {
 }
 
 .home .post-list-heading,
+.home p {
+  color: #1a1a1a;
+}
+
 .home .post-link {
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
+  color: #0b3d91;
+}
+
+.home .post-link[href$="/DROP-DEAD.html"] {
+  color: #ff69b4;
+}
+
+.home .post-meta {
+  color: #333333;
 }
 
 @media screen and (max-width: 700px) {
