@@ -7,21 +7,26 @@ tags: [least-squares, fourier, music, midi, piano, linear-algebra, python, numpy
 math: true
 ---
 
-Function form of a musical note
+A mathematical process I was introduced to during my formal education is that of fitting a function as a linear combination of other functions. An extremely powerful tool used across many disciplines and something that has stuck with me.  In particular I started wondering if you could use the same technique to model musical notes: playing a note by not playing it.
+
+The idea is to choose a note, then find the best combination of other notes which can reproduce it, then play all those
+notes together.  
+
+The mathematical form of a note is given by a sine function with the frequency of the sine function determining the note.
 
 $$
-y(t) = A \sin(2 \pi f t)
+y(t) = A \sin(f t)
 $$
 
-where f is the frequency of the oscillation.
-
-The frequency of a note is related to the midi number through the equation
+where f is the frequency of the oscillation.  The frequency of a note is related to the MIDI number through the equation
 
 $$
 f = 440 * 2 ^ {\frac{n - 69}{12}}
 $$
 
-where 440 is A4 and middle C has midi note 60. The range for a standard piano is MIDI note 21 (A0) to MIDI note 108 (C8).
+where 440 is A4 and middle C has MIDI note 60. The range for a standard piano is MIDI note 21 (A0) to MIDI note 108 (C8).
+
+Let's take a look at the notes on a standard piano.
 
 <style>
 .note-table { margin: 1em 0; border: 1px solid rgba(128,128,128,.3); border-radius: 6px; padding: 0 14px; }
@@ -130,8 +135,10 @@ where 440 is A4 and middle C has midi note 60. The range for a standard piano is
 
 </details>
 
-Our frequency modes are not in general orthogonal and we want to fit over an interval, we can use an unconstrained least
-squares fit.
+For this I will use the notes of the piano as not only the notes I intend to fit but also the notes that will be used
+for the fit. For each note in the piano, I will use all other notes to try and create the best fit possible.  Let's start on the process and see where it gets us.
+
+For the fit our sine functions are not in general orthogonal and we want to fit over an interval, so we can use an unconstrained least squares fit.
 
 $$
 E = \int_{a}^{b}\left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx
@@ -140,20 +147,22 @@ $$
 To solve this we take the derivative w.r.t. each component and set it to 0
 
 $$
-\frac{d E}{d c_{j}} = 0 \\
-\frac{d}{d c_{j}} \int_{a}^{b}\left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx = 0 \\
-\int_{a}^{b} \frac{d}{d c_{j}} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx = 0 \\
-\int_{a}^{b} - 2 * \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx = 0 \\
-\int_{a}^{b} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx = 0 \\
-\int_{a}^{b} \left ( f(x) \phi_{j} - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \phi_{j} \right ) dx = 0 \\
-\int_{a}^{b} f(x) \phi_{j} dx = \int_{a}^{b} \sum_{i=1}^{n} c_{i}\phi_{i}(x) \phi_{j} dx \\
-\int_{a}^{b} f(x) \phi_{j} dx = \sum_{i=1}^{n} c_{i} \int_{a}^{b} \phi_{i}(x) \phi_{j} dx \\
+\begin{aligned}
+\frac{d E}{d c_{j}} &= 0 \\
+\frac{d}{d c_{j}} \int_{a}^{b}\left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx &= 0 \\
+\int_{a}^{b} \frac{d}{d c_{j}} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right )^{2} dx &= 0 \\
+\int_{a}^{b} - 2 * \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx &= 0 \\
+\int_{a}^{b} \left ( f(x) - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \right ) * \phi_{j} dx &= 0 \\
+\int_{a}^{b} \left ( f(x) \phi_{j} - \sum_{i=1}^{n}c_{i}\phi_{i}(x) \phi_{j} \right ) dx &= 0 \\
+\int_{a}^{b} f(x) \phi_{j} dx &= \int_{a}^{b} \sum_{i=1}^{n} c_{i}\phi_{i}(x) \phi_{j} dx \\
+\int_{a}^{b} f(x) \phi_{j} dx &= \sum_{i=1}^{n} c_{i} \int_{a}^{b} \phi_{i}(x) \phi_{j} dx
+\end{aligned}
 $$
 
-We can write this a system of linear equations.  We the vector $\vec{b}$ with elements
+We can write this as a system of linear equations.  We define the vector $\vec{b}$ with elements
 
 $$
-b_{i} = \int_{a}^{b} f(x) \phi_{j} dx
+b_{j} = \int_{a}^{b} f(x) \phi_{j} dx
 $$
 
 We have a matrix with elements
@@ -162,7 +171,7 @@ $$
 G_{ij} = \int_{a}^{b} \phi_{i}(x) \phi_{j} dx
 $$
 
-which means our term on the right just a vector-matrix multiplication
+which means our term on the right is just a vector-matrix multiplication
 
 $$
 \sum_{i=1}^{n} c_{i} G_{ij} = \vec{c} G
@@ -174,10 +183,10 @@ $$
 G \vec{c} = \vec{b}
 $$
 
-Now all we need is a way to evaluate the matrix elements $G_{ij}$ and the elements $b_{i}$
+Now all we need is a way to evaluate the matrix elements $G_{ij}$ and the elements $b_{j}$.
 
 $$
-G_{ij} = \int_{a}^{b} \phi_{i}(x) \phi_{j} dx = \int_{a}^{b} \sin(\mu_{i} x) \sin(2 \mu_{j} x) dx
+G_{ij} = \int_{a}^{b} \phi_{i}(x) \phi_{j} dx = \int_{a}^{b} \sin(\mu_{i} x) \sin(\mu_{j} x) dx
 $$
 
 Our integral now has a nice closed form:
@@ -206,7 +215,7 @@ $$
 \int_{a}^{b} \sin( \mu_{i} x) \sin( \mu_{j} x) dx = \frac{\sin ((\mu_{j} - \mu_{i}) b )}{2(\mu_{j} - \mu_{i})}  - \frac{\sin ((\mu_{i} + \mu_{j}) b )}{2(\mu_{i} + \mu_{j})} - \frac{\sin ((\mu_{j} - \mu_{i}) a )}{2(\mu_{j} - \mu_{i})}  + \frac{\sin ((\mu_{i} + \mu_{j}) a )}{2(\mu_{i} + \mu_{j})}
 $$
 
-For the bounds, we know that it will always start at 0 so $a = o$.  Now lets figure out what b should be set to. My first thought is to set b to the period of the note that we are trying to fit.  My thinking is that the frequency is what defines the note and so going beyond the period of oscillation does not provide any new information.  However, since we are fitting to other frequencies, the additional period may show that contributions from other frequencies which do not cleanly fit into that period may make meaningful contributions when fit across multiple oscillations.  To test this, we will use 1 period as the reference point for b, then try various multiples of that value to see how it changes.
+For the bounds, we know that it will always start at 0 so $a = 0$.  Now let's figure out what b should be set to. My first thought is to set b to the period of the note that we are trying to fit.  My thinking is that the frequency is what defines the note and so going beyond the period of oscillation does not provide any new information.  However, since we are fitting to other frequencies, the additional period may show that other frequencies which do not cleanly fit into that period can still make meaningful contributions when fit across multiple oscillations.  To test this, we will use 1 period as the reference point for b, then try various multiples of that value to see how it changes.
 
 Here is a small python script that demonstrates how to fit a note using the other 87.
 
@@ -216,6 +225,9 @@ Here is a small python script that demonstrates how to fit a note using the othe
 
 ## Try it
 
-The explorer below runs the fit live for every key on the piano. Click any key to hold it out — it becomes the target tone, reconstructed as a weighted sum of the other 87. Choose the integration window (as a multiple of the held note's period), then decide what counts as a *meaningful* contributor: an absolute coefficient threshold, the top $N$ weights, or the smallest set of notes capturing a share of the total coefficient energy. The keyboard heat-maps the surviving coefficients.
+The explorer below shows the fit for every key on the piano, precomputed with the script above. Click any key to hold it out — it becomes the target tone, reconstructed as a weighted sum of the other 87. Choose the integration window (as a multiple of the held note's period), then decide what counts as a *meaningful* contributor: an absolute coefficient threshold, the top $N$ weights, or the smallest set of notes capturing a share of the total coefficient energy. The keyboard heat-maps the surviving coefficients.
 
 {% include linear_combination_of_notes/note_fit_explorer.html %}
+
+
+For the next post we will try making some of these tones to see what they sound like!
