@@ -29,3 +29,6 @@ Songs that immediately stood out to me: `Stupid Song`, `Maggots for Brains`, `U 
 - [`purple`]({% post_url 2026-06-25-PURPLE %})
 - [`The Cure`]({% post_url 2026-06-26-THE-CURE %})
 - [`begged`]({% post_url 2026-07-06-BEGGED %})
+- [`what's wrong with me`]({% post_url 2026-07-08-WHATS-WRONG-WITH-ME %})
+- [`less`]({% post_url 2026-08-18-LESS %})
+- [`expectations`]({% post_url 2026-08-19-EXPECTATIONS %})
