@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Maggots for Brains 🐛🧠"
+title: "maggots for brains 🐛🧠"
 date: 2026-06-18 08:00:00
 categories: music pop-culture criticism
 tags: [olivia-rodrigo, funkadelic, lyrics, song-analysis, depression, longing]
@@ -15,7 +15,7 @@ Verse 1:
 > Somehow, it's the weekend, I'm still bored out of my skull
 > And I went to a party but only on principle
 
-This song is strongly narrative. It is also consistent with stupid song in that Olivia is alone and separated from the person she is in love with. It also contains that feeling of mainia but in the opposite direction, now she is depressed and bored. The image of her on the swing is appropriate. She is swinging from one extreme to the other.
+This song is strongly narrative. It is also consistent with *stupid song* in that Olivia is alone and separated from the person she is in love with. It also contains that feeling of mainia but in the opposite direction, now she is depressed and bored. The image of her on the swing is appropriate. She is swinging from one extreme to the other.
 
 A little word play, bored out of my skull, skull where your brain is where there are maggots.
 

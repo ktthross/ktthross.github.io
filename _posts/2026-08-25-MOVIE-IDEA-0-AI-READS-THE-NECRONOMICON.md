@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "movie idea 0 - AI reads the Necronomicon"
+title: "Movie idea 0 - AI reads the Necronomicon"
 date: 2026-08-25 12:00:00
 categories: movie-ideas horror
 tags: [movie-idea, ai, cosmic-horror, cthulhu, necronomicon]

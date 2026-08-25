@@ -6,7 +6,7 @@ categories: music pop-culture criticism
 tags: [olivia-rodrigo, lyric-analysis, GUTS]
 ---
 
-Part of the ongoing album notes in [`You Look Pretty Sad For A Girl So In Love — Raw Thoughts`]({% post_url 2026-06-15-YLPSFAGSIL-RAW-THROUGHTS %}).
+Part of the ongoing album notes in [`you seem pretty sad for a girl so in love — Raw Thoughts`]({% post_url 2026-06-15-YLPSFAGSIL-RAW-THROUGHTS %}).
 
 > I'm just staring at the ceiling
 > Can't describe this feeling I've got in my head
@@ -19,13 +19,13 @@ Part of the ongoing album notes in [`You Look Pretty Sad For A Girl So In Love �
 
 This starts with a couple nice call backs to earlier in the album
 
-"Can't describe this feeling I've got in my head" mirrors `stupid song` where she says "And I want you more than any stupid song could ever say". She finds herself on the other side of being unable to put words to a "feeling".
+"Can't describe this feeling I've got in my head" mirrors *stupid song* where she says "And I want you more than any stupid song could ever say". She finds herself on the other side of being unable to put words to a "feeling".
 
-Also a bit of a progression since previously in `the cure` she describes "[her] head is full of poison".
+Also a bit of a progression since previously in *the cure* she describes "[her] head is full of poison".
 
-There is a bit of parallel here with `maggots for brains` where she is continuing to contextualize her feelings as being in her head or brain.
+There is a bit of parallel here with *maggots for brains* where she is continuing to contextualize her feelings as being in her head or brain.
 
-Olivia has a lot of bed imagery. She starts `drop dead` in her bed, here she is lying in bed but disembodied.
+Olivia has a lot of bed imagery. She starts *drop dead* in her bed, here she is lying in bed but disembodied.
 
 > Went to the doctor and she said I was fine
 > But every movie that I see makes me cry
