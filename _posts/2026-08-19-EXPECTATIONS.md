@@ -6,7 +6,7 @@ categories: music pop-culture criticism
 tags: [olivia-rodrigo, ylpsfagsil, lyrics, song-analysis]
 ---
 
-Part of the ongoing album notes in [`You Look Pretty Sad For A Girl So In Love — Raw Thoughts`]({% post_url 2026-06-15-YLPSFAGSIL-RAW-THROUGHTS %}).
+Part of the ongoing album notes in [`you seem pretty sad for a girl so in love — Raw Thoughts`]({% post_url 2026-06-15-YLPSFAGSIL-RAW-THROUGHTS %}).
 
 This song comes across as a bit of a front and an attempt at self-deception. Olivia is trying to convince herself in this song.
 
