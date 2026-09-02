@@ -5,3 +5,7 @@ _site
 vendor
 
 Gemfile.lock
+
+__pycache__/
+*.py[cod]
+.mypy_cache/

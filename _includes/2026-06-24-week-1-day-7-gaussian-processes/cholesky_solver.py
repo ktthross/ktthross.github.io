@@ -1,12 +1,8 @@
-import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.linalg import cholesky, solve_triangular
-
-SHARED_INCLUDE_DIR = Path(__file__).resolve().parents[1] / "shared"
-sys.path.insert(0, str(SHARED_INCLUDE_DIR))
 
 from kernels import generate_covariance_matrix_from_points, radial_basis_function_kernel
 
