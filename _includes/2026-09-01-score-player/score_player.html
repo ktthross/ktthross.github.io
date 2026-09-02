@@ -1,0 +1,1305 @@
+<!-- Score player. Self-contained fragment: scoped styles, bundled scores, and the
+     precomputed fits from the 2026-07-21 music-player post.
+
+     Takes a text "score" (a small DSL: tracks, sticky durations, chords, rests),
+     compiles it to timed events, then renders each distinct pitch it needs into an
+     AudioBuffer -- either a plain sin(2*pi*f*t) or the least-squares reconstruction
+     of that pitch as a weighted sum of the other 87 keys. Playback schedules those
+     buffers. Web Audio only, no dependencies. -->
+<div class="scp" id="scp">
+<style>
+  .scp {
+    --scp-ground:#f4f0e6; --scp-panel:#ebe5d6; --scp-panel-edge:#d8cfba;
+    --scp-ink:#23201a; --scp-ink-soft:#6f695b; --scp-ink-faint:#948d7c;
+    --scp-brass:#b07d24; --scp-teal:#2f8f8f; --scp-teal-soft:rgba(47,143,143,.16);
+    --scp-wkey:#fbfaf6; --scp-wkey-edge:#cabfa6; --scp-wkey-lip:#e6dfcc;
+    --scp-bkey:#2a2621; --scp-bkey-hi:#4a443a;
+    --scp-h0:#efe7d4; --scp-h1:#e8c877; --scp-h2:#e29a3c; --scp-h3:#d86a2b; --scp-h4:#bd3b25;
+    --scp-t1:#b07d24; --scp-t2:#2f8f8f; --scp-t3:#8a5a9c; --scp-t4:#5f7f3a;
+    --scp-grid:rgba(0,0,0,.07); --scp-grid-bar:rgba(0,0,0,.16); --scp-roll-bg:rgba(0,0,0,.03);
+    --scp-err:#b23b25;
+    --scp-radius:7px;
+    --scp-mono: ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --scp-sans: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    display:block; margin:30px 0; padding:22px;
+    background:var(--scp-ground); color:var(--scp-ink);
+    border:1px solid var(--scp-panel-edge); border-radius:calc(var(--scp-radius) + 3px);
+    font-family:var(--scp-sans); line-height:1.5;
+  }
+  @media (prefers-color-scheme: dark) {
+    .scp:not([data-scp-theme="light"]) {
+      --scp-ground:#16151a; --scp-panel:#201e24; --scp-panel-edge:#322f38;
+      --scp-ink:#ece7dc; --scp-ink-soft:#a49d8f; --scp-ink-faint:#6f6a60;
+      --scp-brass:#d4a13e; --scp-teal:#45b3b3; --scp-teal-soft:rgba(69,179,179,.20);
+      --scp-wkey:#ded8ca; --scp-wkey-edge:#9a927f; --scp-wkey-lip:#b7af9c;
+      --scp-bkey:#100f12; --scp-bkey-hi:#33303a;
+      --scp-h0:#3a3630; --scp-h1:#8a6a2a; --scp-h2:#c07f2e; --scp-h3:#d3652a; --scp-h4:#e0492c;
+      --scp-t1:#d4a13e; --scp-t2:#45b3b3; --scp-t3:#a97cbd; --scp-t4:#8aad5c;
+      --scp-grid:rgba(255,255,255,.07); --scp-grid-bar:rgba(255,255,255,.17); --scp-roll-bg:rgba(255,255,255,.03);
+      --scp-err:#e0705c;
+    }
+  }
+  .scp[data-scp-theme="dark"] {
+    --scp-ground:#16151a; --scp-panel:#201e24; --scp-panel-edge:#322f38;
+    --scp-ink:#ece7dc; --scp-ink-soft:#a49d8f; --scp-ink-faint:#6f6a60;
+    --scp-brass:#d4a13e; --scp-teal:#45b3b3; --scp-teal-soft:rgba(69,179,179,.20);
+    --scp-wkey:#ded8ca; --scp-wkey-edge:#9a927f; --scp-wkey-lip:#b7af9c;
+    --scp-bkey:#100f12; --scp-bkey-hi:#33303a;
+    --scp-h0:#3a3630; --scp-h1:#8a6a2a; --scp-h2:#c07f2e; --scp-h3:#d3652a; --scp-h4:#e0492c;
+    --scp-t1:#d4a13e; --scp-t2:#45b3b3; --scp-t3:#a97cbd; --scp-t4:#8aad5c;
+    --scp-grid:rgba(255,255,255,.07); --scp-grid-bar:rgba(255,255,255,.17); --scp-roll-bg:rgba(255,255,255,.03);
+    --scp-err:#e0705c;
+  }
+  .scp, .scp * { box-sizing:border-box; }
+
+  .scp .head { margin-bottom:18px; display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+  .scp .eyebrow { font-family:var(--scp-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--scp-brass); margin:0 0 8px; }
+  .scp .htitle { font-size:20px; font-weight:650; margin:0; letter-spacing:-.01em; color:var(--scp-ink); }
+  .scp .htitle .em { color:var(--scp-teal); font-style:italic; }
+  .scp .sub { color:var(--scp-ink-soft); font-size:13.5px; margin:6px 0 0; max-width:64ch; }
+  .scp .scp-theme { font-family:var(--scp-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; background:var(--scp-panel); color:var(--scp-ink-soft); border:1px solid var(--scp-panel-edge); border-radius:5px; padding:6px 10px; cursor:pointer; flex:none; }
+  .scp .scp-theme:hover { color:var(--scp-ink); }
+
+  .scp .status { font-family:var(--scp-mono); font-size:11.5px; color:var(--scp-ink-faint); margin:0 0 14px; min-height:1.4em; }
+  .scp .status.err { color:var(--scp-err); }
+
+  .scp .panel { margin:0 0 20px; background:var(--scp-panel); border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius); padding:16px 18px 18px; }
+  .scp .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px 30px; }
+  .scp .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:20px 26px; }
+  @media (max-width:860px){ .scp .grid3, .scp .grid4 { grid-template-columns:1fr 1fr; } }
+  @media (max-width:540px){ .scp .grid3, .scp .grid4 { grid-template-columns:1fr; } }
+  .scp .ctrl { min-width:0; }
+  .scp .ctrl-label { font-family:var(--scp-mono); font-size:10.5px; letter-spacing:.15em; text-transform:uppercase; color:var(--scp-ink-faint); margin:0 0 9px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .scp .ctrl-label .val { color:var(--scp-brass); font-size:12px; letter-spacing:.03em; font-variant-numeric:tabular-nums; }
+  .scp .seg { display:flex; flex-wrap:wrap; gap:4px; }
+  .scp .seg button { font-family:var(--scp-mono); font-size:11.5px; color:var(--scp-ink-soft); background:rgba(0,0,0,.03); border:1px solid var(--scp-panel-edge); border-radius:5px; padding:6px 10px; cursor:pointer; transition:background .12s,color .12s,border-color .12s; font-variant-numeric:tabular-nums; line-height:1; }
+  .scp .seg button:hover { color:var(--scp-ink); border-color:var(--scp-ink-faint); }
+  .scp .seg button[aria-pressed="true"] { background:var(--scp-brass); color:#fff; border-color:var(--scp-brass); }
+  .scp .seg button:focus-visible { outline:2px solid var(--scp-teal); outline-offset:2px; }
+  .scp input[type="range"] { width:100%; accent-color:var(--scp-brass); margin:4px 0 0; cursor:pointer; }
+  .scp input[type="range"]:focus-visible { outline:2px solid var(--scp-teal); outline-offset:3px; }
+  .scp .range-ends { display:flex; justify-content:space-between; font-family:var(--scp-mono); font-size:10px; color:var(--scp-ink-faint); margin-top:3px; }
+  .scp .hint { font-size:11.5px; color:var(--scp-ink-faint); margin:7px 0 0; }
+
+  .scp .section-title { display:flex; align-items:baseline; gap:10px; margin:26px 0 4px; flex-wrap:wrap; }
+  .scp .section-title h3 { font-size:14px; font-weight:650; margin:0; color:var(--scp-ink); }
+  .scp .section-title .tag { font-family:var(--scp-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--scp-teal); background:var(--scp-teal-soft); border-radius:4px; padding:2px 7px; }
+  .scp .section-sub { font-size:12.5px; color:var(--scp-ink-soft); margin:0 0 12px; max-width:68ch; }
+
+  .scp textarea {
+    width:100%; min-height:220px; resize:vertical; display:block;
+    font-family:var(--scp-mono); font-size:12.5px; line-height:1.65; tab-size:2;
+    color:var(--scp-ink); background:var(--scp-ground);
+    border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius);
+    padding:12px 14px;
+  }
+  .scp textarea:focus-visible { outline:2px solid var(--scp-teal); outline-offset:1px; }
+
+  .scp .diag { margin-top:10px; font-family:var(--scp-mono); font-size:11.5px; line-height:1.7; }
+  .scp .diag .ok { color:var(--scp-ink-faint); }
+  .scp .diag .bad { color:var(--scp-err); }
+  .scp .diag .warn { color:var(--scp-brass); }
+  .scp .diag .ln { opacity:.65; }
+
+  .scp .transport { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin:0 0 16px; }
+  .scp .play { font-family:var(--scp-mono); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+    color:#fff; background:var(--scp-brass); border:1px solid var(--scp-brass); border-radius:5px;
+    padding:10px 20px; cursor:pointer; min-width:112px; transition:filter .12s; }
+  .scp .play:hover { filter:brightness(1.08); }
+  .scp .play:disabled { opacity:.5; cursor:default; }
+  .scp .ghost { font-family:var(--scp-mono); font-size:11.5px; letter-spacing:.04em; color:var(--scp-ink-soft); background:none;
+    border:1px solid var(--scp-panel-edge); border-radius:5px; padding:9px 14px; cursor:pointer; transition:color .12s,border-color .12s,background .12s; }
+  .scp .ghost:hover { color:var(--scp-ink); border-color:var(--scp-ink-faint); }
+  .scp .ghost[aria-pressed="true"] { background:var(--scp-teal); border-color:var(--scp-teal); color:#fff; }
+  .scp .clock { font-family:var(--scp-mono); font-size:12.5px; color:var(--scp-ink-soft); font-variant-numeric:tabular-nums; margin-left:auto; }
+  .scp .clock b { color:var(--scp-ink); font-weight:600; }
+
+  .scp .stage { background:var(--scp-panel); border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius); padding:14px; }
+  .scp .rollwrap { position:relative; }
+  .scp canvas { display:block; width:100%; height:190px; border-radius:4px; cursor:pointer; touch-action:none; }
+
+  .scp .kbstage { background:var(--scp-panel); border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius); padding:16px 14px 26px; overflow-x:auto; }
+  .scp .piano { position:relative; display:flex; height:150px; min-width:820px; user-select:none; }
+  .scp .wkey { position:relative; flex:1 1 0; background:var(--scp-wkey); border:1px solid var(--scp-wkey-edge); border-top:none; border-radius:0 0 4px 4px; margin-right:-1px; box-shadow:inset 0 -6px 0 -2px var(--scp-wkey-lip); }
+  .scp .bkey { position:absolute; top:0; width:1.05%; height:61%; background:linear-gradient(180deg,var(--scp-bkey-hi),var(--scp-bkey)); border:1px solid #000; border-radius:0 0 3px 3px; z-index:3; transform:translateX(-50%); box-shadow:0 3px 4px rgba(0,0,0,.4); }
+  .scp .wkey.on { background:var(--scp-heat); border-color:color-mix(in srgb,var(--scp-heat) 70%,#000); }
+  .scp .bkey.on { background:linear-gradient(180deg,color-mix(in srgb,var(--scp-heat) 82%,#fff),var(--scp-heat)); box-shadow:0 3px 6px rgba(0,0,0,.45),0 0 0 1px color-mix(in srgb,var(--scp-heat) 60%,#000); }
+  .scp .wkey.score { box-shadow:inset 0 0 0 2px var(--scp-teal),inset 0 -6px 0 -2px var(--scp-wkey-lip); }
+  .scp .bkey.score { box-shadow:0 3px 6px rgba(0,0,0,.4),0 0 0 2px var(--scp-teal); }
+  .scp .klabel { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family:var(--scp-mono); font-size:8px; color:var(--scp-ink-faint); pointer-events:none; }
+  .scp .wkey.on .klabel { color:color-mix(in srgb,#000 55%,var(--scp-heat)); }
+  .scp .wkey.score .klabel { color:var(--scp-teal); font-weight:600; }
+
+  .scp .readout { display:flex; flex-wrap:wrap; gap:10px 24px; align-items:baseline; margin:14px 2px 0; }
+  .scp .stat { display:flex; align-items:baseline; gap:7px; }
+  .scp .stat .n { font-family:var(--scp-mono); font-size:19px; font-weight:500; color:var(--scp-ink); font-variant-numeric:tabular-nums; }
+  .scp .stat .k { font-size:11.5px; color:var(--scp-ink-soft); }
+  .scp .stat .n.teal { color:var(--scp-teal); }
+
+  .scp .legend { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; margin:14px 2px 0; font-size:11.5px; color:var(--scp-ink-soft); }
+  .scp .legend .ramp { display:flex; align-items:center; gap:8px; }
+  .scp .ramp .bar { width:110px; height:10px; border-radius:3px; background:linear-gradient(90deg,var(--scp-h0),var(--scp-h1),var(--scp-h2),var(--scp-h3),var(--scp-h4)); border:1px solid var(--scp-panel-edge); }
+  .scp .ramp .cap { font-family:var(--scp-mono); font-size:10px; color:var(--scp-ink-faint); }
+  .scp .legend .swatch { display:inline-block; width:11px; height:11px; border-radius:50%; background:var(--scp-teal); vertical-align:-1px; margin-right:6px; box-shadow:0 0 0 3px var(--scp-teal-soft); }
+  .scp .trackkeys { display:flex; flex-wrap:wrap; gap:6px 16px; margin:12px 2px 0; font-family:var(--scp-mono); font-size:11px; color:var(--scp-ink-soft); }
+  .scp .trackkeys span.sw { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+
+  .scp details.ref { margin:18px 0 0; border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius); padding:0 14px; background:var(--scp-panel); }
+  .scp details.ref > summary { cursor:pointer; padding:12px 4px; font-family:var(--scp-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--scp-brass); }
+  .scp details.ref[open] > summary { border-bottom:1px solid var(--scp-panel-edge); }
+  .scp details.ref .refbody { padding:14px 4px 16px; font-size:12.5px; color:var(--scp-ink-soft); }
+  .scp .reftable { width:100%; border-collapse:collapse; font-size:12px; margin:0 0 4px; }
+  .scp .reftable td { padding:5px 10px 5px 0; vertical-align:top; border-bottom:1px solid var(--scp-panel-edge); }
+  .scp .reftable td:first-child { font-family:var(--scp-mono); color:var(--scp-ink); white-space:nowrap; width:1%; padding-right:18px; }
+  .scp .reftable tr:last-child td { border-bottom:none; }
+  .scp code { font-family:var(--scp-mono); font-size:.94em; background:rgba(0,0,0,.05); padding:1px 4px; border-radius:3px; }
+
+  .scp hr.divider { margin:28px 0 0; border:none; border-top:1px solid var(--scp-panel-edge); }
+  .scp .foot-note { font-size:11.5px; color:var(--scp-ink-faint); margin:14px 2px 0; line-height:1.65; max-width:74ch; }
+  @media (prefers-reduced-motion: reduce){ .scp * { transition:none !important; } }
+</style>
+
+<div class="head">
+  <div>
+    <p class="eyebrow">Interactive · Play a Score</p>
+    <p class="htitle">A song where <span class="em">no note is ever played</span></p>
+    <p class="sub">Write a score in the little notation below and hit play. Every pitch in it is synthesized twice over: once as the plain tone, and once as the least-squares reconstruction of that tone built from the other 87 keys. Same score, same notes on the page — two very different things coming out of the speakers.</p>
+  </div>
+  <button class="scp-theme" id="scp-themeBtn">Theme</button>
+</div>
+
+<p class="status" id="scp-status">Loading precomputed fits…</p>
+
+<div class="section-title"><h3>Score</h3><span class="tag" id="scp-scoreTag">Ode to Joy</span></div>
+<p class="section-sub">Pick a bundled score or edit it in place. Durations are sticky — write <code>C4:q</code> once and the following bare note names keep that duration until you change it.</p>
+
+<div class="seg" id="scp-songSeg" role="group" aria-label="Bundled scores" style="margin-bottom:12px;"></div>
+
+<textarea id="scp-scoreText" spellcheck="false" aria-label="Score source"></textarea>
+<div class="diag" id="scp-diag"></div>
+
+<details class="ref">
+  <summary>Notation reference</summary>
+  <div class="refbody">
+    <table class="reftable">
+      <tr><td>tempo 112</td><td>Beats per minute. One "beat" is a quarter note.</td></tr>
+      <tr><td>meter 4</td><td>Beats per bar — only affects the bar lines drawn in the piano roll.</td></tr>
+      <tr><td>track melody</td><td>Starts a track. Tracks all begin at time zero and play together. <code>track bass gain 0.7</code> sets its level.</td></tr>
+      <tr><td>C4&nbsp;&nbsp;A#3&nbsp;&nbsp;Bb3</td><td>A pitch. Sharps and flats both work; range is A0 to C8.</td></tr>
+      <tr><td>C4:q</td><td>Duration: <code>w</code> whole, <code>h</code> half, <code>q</code> quarter, <code>e</code> eighth, <code>s</code> sixteenth. Dots multiply as usual (<code>q.</code> = 1.5 beats, <code>q..</code> = 1.75). A bare number is beats: <code>C4:1.5</code>, and <code>C4:1/3</code> gives triplets.</td></tr>
+      <tr><td>C4</td><td>No duration means "same as the last one" — sticky within a track.</td></tr>
+      <tr><td>C4+E4+G4:h</td><td>A chord. All pitches start together and share the duration.</td></tr>
+      <tr><td>-:q</td><td>A rest. <code>r</code> and <code>_</code> work too.</td></tr>
+      <tr><td>C4:q@0.6</td><td>Per-note gain, 0 to 1. Multiplies the track gain.</td></tr>
+      <tr><td>repeat 2 … end</td><td>Repeats the enclosed lines. Nests.</td></tr>
+      <tr><td>|</td><td>Ignored. Put bar lines wherever they help you read.</td></tr>
+      <tr><td># or //</td><td>Comment to end of line. Has to start a token — <code>A#3 # a sharp, then a comment</code> — otherwise there would be no way to write a sharp.</td></tr>
+    </table>
+  </div>
+</details>
+
+<div class="section-title"><h3>Transport</h3></div>
+<div class="transport">
+  <button class="play" id="scp-playBtn" disabled>Play</button>
+  <button class="ghost" id="scp-stopBtn">Stop</button>
+  <button class="ghost" id="scp-loopBtn" aria-pressed="false">Loop</button>
+  <span class="clock" id="scp-clock">bar <b>—</b> · <b>0:00</b> / 0:00</span>
+</div>
+
+<div class="panel grid4">
+  <div class="ctrl">
+    <p class="ctrl-label">Voice</p>
+    <div class="seg" id="scp-voiceSeg" role="group" aria-label="Voice">
+      <button data-voice="recon" aria-pressed="true">Reconstructed</button>
+      <button data-voice="true" aria-pressed="false">True</button>
+    </div>
+    <p class="hint">The A/B. <em>True</em> is one sine per note; <em>Reconstructed</em> is the fitted sum of the other 87.</p>
+  </div>
+  <div class="ctrl">
+    <p class="ctrl-label">Tempo <span class="val" id="scp-tempoVal"></span></p>
+    <input type="range" id="scp-tempoRange" min="25" max="200" value="100">
+    <div class="range-ends"><span>×0.25</span><span>×2.0</span></div>
+    <p class="hint">Scales whatever the score's <code>tempo</code> says.</p>
+  </div>
+  <div class="ctrl">
+    <p class="ctrl-label">Transpose <span class="val" id="scp-transVal">0</span></p>
+    <input type="range" id="scp-transRange" min="-24" max="24" value="0">
+    <div class="range-ends"><span>−24</span><span>+24</span></div>
+    <p class="hint">Semitones. Registers differ a lot — the fit has less to work with at the bottom of the keyboard.</p>
+  </div>
+  <div class="ctrl">
+    <p class="ctrl-label">Master volume <span class="val" id="scp-volVal">60%</span></p>
+    <input type="range" id="scp-volRange" min="0" max="100" value="60">
+    <p class="ctrl-label" style="margin:14px 0 9px;">Note length <span class="val" id="scp-gateVal">92%</span></p>
+    <input type="range" id="scp-gateRange" min="10" max="100" value="92">
+    <p class="hint">How much of each note's slot actually sounds.</p>
+  </div>
+</div>
+
+<div class="section-title"><h3>Reconstruction</h3><span class="tag">shared with the fit explorer</span></div>
+<p class="section-sub">The knobs from the previous posts, applied to every note in the score: how wide an integration window the fit was solved over, and which of the 87 coefficients are worth sounding. <em>Human hands</em> is the new one — it asks for the best reconstruction two hands could physically reach, which turns the spectrum back into something playable.</p>
+
+<div class="panel grid3">
+  <div class="ctrl">
+    <p class="ctrl-label">Integration window <span class="val" id="scp-winVal"></span></p>
+    <div class="seg" id="scp-winSeg" role="group" aria-label="Window multiplier"></div>
+    <p class="hint">Upper limit as a multiple of each note's own period.</p>
+  </div>
+  <div class="ctrl">
+    <p class="ctrl-label">Cutoff method</p>
+    <div class="seg" id="scp-modeSeg" role="group" aria-label="Cutoff method">
+      <button data-mode="abs" aria-pressed="true">|coef| &ge; t</button>
+      <button data-mode="topn" aria-pressed="false">Top N</button>
+      <button data-mode="energy" aria-pressed="false">Energy %</button>
+      <button data-mode="hand" aria-pressed="false">Human hands</button>
+    </div>
+    <div style="margin-top:14px;">
+      <p class="ctrl-label" style="margin-bottom:6px;"><span id="scp-cutName">Threshold</span><span class="val" id="scp-cutVal"></span></p>
+      <input type="range" id="scp-cutRange" min="0" max="100" value="20">
+      <div class="range-ends"><span id="scp-cutLo"></span><span id="scp-cutHi"></span></div>
+    </div>
+    <div class="seg" id="scp-cutPresets" role="group" aria-label="Cutoff presets" style="margin-top:9px;"></div>
+    <p class="hint" id="scp-cutHint"></p>
+  </div>
+  <div class="ctrl">
+    <p class="ctrl-label">Rendered voices</p>
+    <div class="readout" style="margin-top:0;">
+      <div class="stat"><span class="n" id="scp-statPitches">0</span><span class="k">distinct pitches</span></div>
+    </div>
+    <div class="readout" style="margin-top:8px;">
+      <div class="stat"><span class="n teal" id="scp-statSines">0</span><span class="k">sines per pitch (avg)</span></div>
+    </div>
+    <div class="readout" style="margin-top:8px;">
+      <div class="stat"><span class="n" id="scp-statEnergy">—</span><span class="k">of the fit's energy kept</span></div>
+    </div>
+    <p class="hint">Each pitch is rendered offline once, then reused for every event that needs it. The energy figure is what survives the cutoff, averaged over the pitches in the score — it is the honest measure of how much of the fit you threw away.</p>
+  </div>
+</div>
+
+<div class="section-title"><h3>Piano roll</h3><span class="tag">click to seek</span></div>
+<div class="stage"><div class="rollwrap"><canvas id="scp-roll"></canvas></div></div>
+<div class="trackkeys" id="scp-trackKeys"></div>
+
+<div class="section-title"><h3>What's actually sounding</h3></div>
+<p class="section-sub">Teal outlines are the notes the score asked for. Everything heat-coloured is a key the reconstruction is leaning on to produce them — in <em>True</em> voice, the two collapse onto each other. Under <em>Human hands</em> the heat gathers into two tight clumps, and you can watch them move around the keyboard from note to note; they are rarely anywhere near the note being played.</p>
+
+<div class="kbstage"><div class="piano" id="scp-piano"></div></div>
+
+<div class="legend">
+  <div class="ramp"><span class="cap">weak</span><span class="bar"></span><span class="cap">strong |coef|</span></div>
+  <div><span class="swatch"></span>note written in the score</div>
+</div>
+
+<div class="readout">
+  <div class="stat"><span class="n teal" id="scp-nowNotes">—</span><span class="k">sounding from the score</span></div>
+  <div class="stat"><span class="n" id="scp-nowKeys">0</span><span class="k">keys actually oscillating</span></div>
+</div>
+
+<hr class="divider">
+<p class="foot-note">Each pitch is rendered once into an <code>AudioBuffer</code> by an <code>OfflineAudioContext</code>: one oscillator per surviving coefficient, its signed value written straight into that oscillator's gain, so a negative coefficient becomes the &pi; phase flip derived in the previous post. The finished buffer is normalized to a fixed RMS of <code>0.16</code>, which is also what the true tone is normalized to — so switching voices changes timbre, not loudness. Playback then just triggers the cached buffer per event with a short attack and release, which is why a chord of 87 sines costs the same at playback time as a single sine.</p>
+
+<script type="text/plain" class="scp-src" data-id="ode" data-name="Ode to Joy">{% include 2026-09-01-score-player/scores/ode_to_joy.score %}</script>
+<script type="text/plain" class="scp-src" data-id="prelude" data-name="Prelude in C">{% include 2026-09-01-score-player/scores/prelude_in_c.score %}</script>
+<script type="text/plain" class="scp-src" data-id="arabesque" data-name="Arabesque No. 1">{% include 2026-09-01-score-player/scores/arabesque_no1.score %}</script>
+<script type="text/plain" class="scp-src" data-id="rightplace" data-name="Everything In Its Right Place">{% include 2026-09-01-score-player/scores/everything_in_its_right_place.score %}</script>
+<script type="text/plain" class="scp-src" data-id="jealousy" data-name="jealousy, jealousy">{% include 2026-09-01-score-player/scores/jealousy_jealousy.score %}</script>
+<script type="text/plain" class="scp-src" data-id="interference" data-name="Destructive Interference">{% include 2026-09-01-score-player/scores/destructive_interference.score %}</script>
+<script type="text/plain" class="scp-src" data-id="ladder" data-name="Chromatic Ladder">{% include 2026-09-01-score-player/scores/chromatic_ladder.score %}</script>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const root = document.getElementById("scp");
+  const $ = s => root.querySelector(s);
+  const DATA_URL = "{{ '/assets/2026_07_21_music_player/note_fit_data.json' | relative_url }}";
+
+  const TARGET_RMS = 0.16;          // both voices are normalized to this
+  const ATTACK = 0.010, RELEASE = 0.09;
+  const LOOKAHEAD = 0.30, TICK_MS = 40;
+  const MAX_VOICE_SEC = 8;          // longest tone we will pre-render
+  const KEY_MIN = 1, KEY_MAX = 88;  // A0 .. C8
+
+  // ---------- score notation ----------
+  const PITCH_CLASS = { C:0, D:2, E:4, F:5, G:7, A:9, B:11 };
+  const BASE_DUR = { w:4, h:2, q:1, e:0.5, s:0.25 };
+  const RE_PITCH = /^([A-Ga-g])([#b]*)(-?\d{1,2})$/;
+  const RE_LETTER_DUR = /^([whqes])(\.*)$/;
+  const RE_FRACTION = /^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/;
+  const RE_NUMBER_DUR = /^(\d+(?:\.\d+)?)(\.*)$/;
+
+  // A0 is MIDI 21 and piano key 1, so key = midi - 20.
+  const midiToKey = m => m - 20;
+
+  function parsePitch(tok){
+    const m = RE_PITCH.exec(tok);
+    if(!m) return null;
+    let pc = PITCH_CLASS[m[1].toUpperCase()];
+    for(const ch of m[2]) pc += (ch === "#" ? 1 : -1);
+    return (parseInt(m[3], 10) + 1) * 12 + pc;
+  }
+
+  // Dots add half, then a quarter, ...: n dots multiply by (2 - 2^-n).
+  const dotFactor = n => 2 - Math.pow(2, -n);
+
+  function parseDuration(tok){
+    let m = RE_LETTER_DUR.exec(tok);
+    if(m) return BASE_DUR[m[1]] * dotFactor(m[2].length);
+    m = RE_FRACTION.exec(tok);
+    if(m){ const d = +m[2]; return d > 0 ? +m[1] / d : null; }
+    m = RE_NUMBER_DUR.exec(tok);
+    if(m) return +m[1] * dotFactor(m[2].length);
+    return null;
+  }
+
+  const isRest = tok => tok === "-" || tok === "r" || tok === "R" || tok === "_";
+
+  /* Parses score text into { tempo, meter, tracks, diags }.
+     Times are in beats; a track's events are absolute beats from its own start,
+     and all tracks start together at beat 0. Errors never abort the parse -- bad
+     lines are reported and skipped so a half-written score still plays. */
+  function parseScore(text){
+    const diags = [];
+    const err  = (line, msg) => diags.push({ line, msg, kind:"bad" });
+    const warn = (line, msg) => diags.push({ line, msg, kind:"warn" });
+
+    let tempo = 100, meter = 4;
+    const tracks = [];
+    let track = null, stack = null, sticky = 1;
+
+    const newFrame = reps => ({ events:[], cursor:0, reps });
+    const top = () => stack[stack.length - 1];
+
+    function openTrack(name, gain){
+      closeTrack();
+      track = { name, gain, events:[] };
+      tracks.push(track);
+      stack = [newFrame(1)];
+      sticky = 1;
+    }
+    /* Flatten any repeat frames left open, then hand the root frame over. The cursor
+       is kept separately from the events: trailing rests produce no event but still
+       belong to the track's length, which is what the loop point is measured from. */
+    function closeTrack(){
+      if(!track) return;
+      while(stack.length > 1) collapseFrame();
+      track.events = stack[0].events;
+      track.beats = stack[0].cursor;
+      track = null; stack = null;
+    }
+    function collapseFrame(){
+      const frame = stack.pop(), parent = top();
+      for(let r = 0; r < frame.reps; r++){
+        const shift = parent.cursor + r * frame.cursor;
+        for(const ev of frame.events) parent.events.push({ ...ev, beat: shift + ev.beat });
+      }
+      parent.cursor += frame.reps * frame.cursor;
+    }
+    function ensureTrack(){ if(!track) openTrack("main", 1); }
+
+    text.split(/\r?\n/).forEach((raw, i) => {
+      const lineNo = i + 1;
+      // A comment marker has to start a token, otherwise "#" would eat every sharp.
+      const line = raw
+        .replace(/(?:^|\s)\/\/.*$/, "")
+        .replace(/(?:^|\s)#.*$/, "")
+        .replace(/\|/g, " ")
+        .trim();
+      if(!line) return;
+
+      const tokens = line.split(/\s+/);
+      const head = tokens[0].toLowerCase();
+
+      if(head === "tempo"){
+        const v = parseFloat(tokens[1]);
+        if(isFinite(v) && v > 0) tempo = v; else err(lineNo, "tempo needs a positive number");
+        return;
+      }
+      if(head === "meter"){
+        const v = parseInt(tokens[1], 10);
+        if(isFinite(v) && v > 0) meter = v; else err(lineNo, "meter needs a positive integer");
+        return;
+      }
+      if(head === "track"){
+        const gainAt = tokens.findIndex((t, k) => k > 0 && t.toLowerCase() === "gain");
+        let gain = 1;
+        if(gainAt > 0){
+          const v = parseFloat(tokens[gainAt + 1]);
+          if(isFinite(v) && v >= 0) gain = v; else err(lineNo, "gain needs a number ≥ 0");
+        }
+        const nameTokens = tokens.slice(1, gainAt > 0 ? gainAt : undefined);
+        openTrack(nameTokens.join(" ") || ("track " + (tracks.length + 1)), gain);
+        return;
+      }
+      if(head === "repeat"){
+        ensureTrack();
+        const v = parseInt(tokens[1], 10);
+        if(!isFinite(v) || v < 1){ err(lineNo, "repeat needs a count ≥ 1"); return; }
+        stack.push(newFrame(v));
+        return;
+      }
+      if(head === "end"){
+        ensureTrack();
+        if(stack.length > 1) collapseFrame(); else err(lineNo, "'end' with no open 'repeat'");
+        return;
+      }
+
+      // Otherwise: a line of note/rest tokens.
+      ensureTrack();
+      for(const tok of tokens){
+        // C4+E4:q@0.8  ->  pitches "C4+E4", duration "q", gain 0.8
+        let body = tok, gain = 1;
+        const at = body.lastIndexOf("@");
+        if(at > 0){
+          const v = parseFloat(body.slice(at + 1));
+          if(isFinite(v) && v >= 0) gain = v; else err(lineNo, `bad gain in "${tok}"`);
+          body = body.slice(0, at);
+        }
+        let durText = null;
+        const colon = body.lastIndexOf(":");
+        if(colon > 0){ durText = body.slice(colon + 1); body = body.slice(0, colon); }
+
+        let beats = sticky;
+        if(durText !== null){
+          const d = parseDuration(durText);
+          if(d === null || !(d > 0)){ err(lineNo, `unknown duration ":${durText}" in "${tok}"`); continue; }
+          beats = d;
+        }
+        sticky = beats;
+
+        if(isRest(body)){ top().cursor += beats; continue; }
+
+        const keys = [];
+        let bad = false;
+        for(const part of body.split("+")){
+          const midi = parsePitch(part);
+          if(midi === null){ err(lineNo, `not a note name: "${part}"`); bad = true; break; }
+          keys.push(midiToKey(midi));
+        }
+        if(bad) continue;
+
+        top().events.push({ beat: top().cursor, beats, keys, gain });
+        top().cursor += beats;
+      }
+    });
+    closeTrack();
+
+    const kept = tracks.filter(t => t.events.length);
+    if(!kept.length && !diags.some(d => d.kind === "bad")) warn(0, "no notes in this score");
+    return { tempo, meter, tracks: kept, diags };
+  }
+
+  /* Turns beats into seconds and applies transpose, tempo scale and gate.
+     Notes transposed off the keyboard are dropped and counted. */
+  function compileScore(parsed){
+    const secPerBeat = 60 / (parsed.tempo * tempoScale);
+    const events = [];
+    const pitches = new Set();
+    let endSec = 0, maxNoteSec = 0, dropped = 0;
+
+    parsed.tracks.forEach((track, ti) => {
+      endSec = Math.max(endSec, track.beats * secPerBeat);
+      for(const ev of track.events){
+        const t = ev.beat * secPerBeat;
+        const slot = ev.beats * secPerBeat;
+        const dur = Math.min(slot * gate, MAX_VOICE_SEC);
+        endSec = Math.max(endSec, t + slot);
+        for(const baseKey of ev.keys){
+          const key = baseKey + transpose;
+          if(key < KEY_MIN || key > KEY_MAX){ dropped++; continue; }
+          events.push({ t, dur, key, gain: ev.gain * track.gain, track: ti });
+          pitches.add(key);
+          maxNoteSec = Math.max(maxNoteSec, dur);
+        }
+      }
+    });
+    events.sort((a, b) => a.t - b.t);
+    return { events, pitches, durationSec: endSec, maxNoteSec, dropped,
+             tempo: parsed.tempo * tempoScale, meter: parsed.meter, secPerBeat,
+             trackNames: parsed.tracks.map(t => t.name) };
+  }
+
+  // ---------- state ----------
+  let DATA = null, NOTES = null, byKey = {};
+  let songs = [];
+  let parsed = null, compiled = null;
+
+  let win = "1.0", mode = "abs", cut = { abs:20, topn:10, energy:60, hand:10 };
+  let voiceMode = "recon";
+  let tempoScale = 1, transpose = 0, gate = 0.92, masterVol = 0.60, looping = false;
+
+  const isBlack = n => n.includes("#");
+  const short = n => n.split("/")[0];
+
+  // The fit for a target key has 87 coefficients, one per other key in ascending order.
+  const activeKeysFor = key => NOTES.filter(n => n.key !== key).map(n => n.key);
+  const coeffsFor = key => DATA.fits[String(key)][win];
+
+  // ---------- contributor selection (same rules as the fit explorer) ----------
+  /* What one hand can physically do: reach a span of HAND_SPAN semitones and put a
+     finger on at most HAND_MAX of the keys inside it. Two hands, and they can't
+     occupy the same stretch of keyboard. */
+  const HAND_SPAN = 12, HAND_MAX = 5;
+
+  /* Best legal pair of hand positions, by retained energy. A hand position is named
+     by its lowest reachable key; for each one, only its top HAND_MAX coefficients are
+     ever worth taking, so precompute those and then it's a search over pairs. Greedy
+     by magnitude over the union is optimal for the two caps plus the finger budget. */
+  function handSelection(mags, keys, budget){
+    const n = keys.length;
+    /* One entry per hand position: the indices it would take, already in descending
+       magnitude, and their squares. Both lists are capped at HAND_MAX, so merging two
+       of them can never violate the per-hand limit and the finger budget is the only
+       thing left to enforce. */
+    const hands = [];
+    for(let lo = 0; lo < n; lo++){
+      let hi = lo;
+      while(hi + 1 < n && keys[hi + 1] - keys[lo] <= HAND_SPAN) hi++;
+      const cand = [];
+      for(let j = lo; j <= hi; j++) cand.push(j);
+      cand.sort((a, b) => mags[b] - mags[a]);
+      const pick = cand.slice(0, HAND_MAX);
+      hands.push({ lo, hi, pick, sq: pick.map(i => mags[i] * mags[i]) });
+    }
+
+    // Greedy over the merged lists is optimal, so scoring a pair is a two-pointer walk.
+    function walk(A, B, take){
+      let i = 0, j = 0, e = 0, t = 0;
+      const bn = B ? B.sq.length : 0;
+      while(t < take && (i < A.sq.length || j < bn)){
+        if(j >= bn || (i < A.sq.length && A.sq[i] >= B.sq[j])){ e += A.sq[i]; i++; }
+        else { e += B.sq[j]; j++; }
+        t++;
+      }
+      return { e, i, j };
+    }
+
+    let bestA = 0, bestB = null, bestEnergy = -1;
+    for(let a = 0; a < n; a++){
+      // b === null is the one-handed case; a hand can also just stay in its lap.
+      const one = walk(hands[a], null, budget);
+      if(one.e > bestEnergy){ bestEnergy = one.e; bestA = a; bestB = null; }
+      for(let b = a + 1; b < n; b++){
+        if(keys[b] <= keys[hands[a].hi]) continue;      // hands can't overlap
+        const two = walk(hands[a], hands[b], budget);
+        if(two.e > bestEnergy){ bestEnergy = two.e; bestA = a; bestB = b; }
+      }
+    }
+
+    const A = hands[bestA], B = bestB === null ? null : hands[bestB];
+    const w = walk(A, B, budget);
+    const idx = new Set();
+    for(let i = 0; i < w.i; i++) idx.add(A.pick[i]);
+    for(let j = 0; j < w.j; j++) idx.add(B.pick[j]);
+    const spans = [[A.lo, A.hi]];
+    if(B) spans.push([B.lo, B.hi]);
+    return { idx, spans };
+  }
+
+  let selCache = new Map();
+  function selectionFor(key){
+    if(selCache.has(key)) return selCache.get(key);
+    const c = coeffsFor(key);
+    const keys = activeKeysFor(key);
+    const mags = c.map(Math.abs);
+    const maxMag = Math.max(...mags);
+    const totalEnergy = mags.reduce((s, m) => s + m * m, 0);
+    const order = c.map((v, i) => i).sort((a, b) => mags[b] - mags[a]);
+    let idx = new Set(), spans = null;
+    if(mode === "abs"){
+      const frac = cut.abs / 100, t = frac * frac * maxMag;
+      c.forEach((v, i) => { if(mags[i] >= t) idx.add(i); });
+    } else if(mode === "topn"){
+      const n = Math.max(0, Math.min(c.length, Math.round(cut.topn)));
+      for(let i = 0; i < n; i++) idx.add(order[i]);
+    } else if(mode === "energy"){
+      const target = cut.energy / 100 * totalEnergy;
+      let acc = 0;
+      for(const i of order){ if(acc >= target) break; acc += mags[i] * mags[i]; idx.add(i); }
+    } else {
+      const h = handSelection(mags, keys, cut.hand);
+      idx = h.idx; spans = h.spans;
+    }
+    let kept = 0;
+    idx.forEach(i => { kept += mags[i] * mags[i]; });
+    const sel = { idx, mags, maxMag, keys, coeffs: c, spans,
+                  energyKept: totalEnergy > 0 ? kept / totalEnergy : 0 };
+    selCache.set(key, sel);
+    return sel;
+  }
+  function cutoffDescription(){
+    if(mode === "abs"){
+      const frac = cut.abs / 100;
+      return (frac * frac).toFixed(4) + " × max";
+    }
+    if(mode === "topn") return cut.topn + " / 87";
+    if(mode === "energy") return cut.energy + "%";
+    return cut.hand + " finger" + (cut.hand === 1 ? "" : "s");
+  }
+
+  // ---------- audio ----------
+  let actx = null, masterGain = null;
+  const bufferCache = new Map();     // key -> AudioBuffer
+  let renderSig = "";                // invalidates bufferCache + selCache
+
+  function ensureAudio(){
+    if(!actx){
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = actx.createGain();
+      masterGain.gain.value = masterVol;
+      masterGain.connect(actx.destination);
+    }
+    if(actx.state === "suspended") actx.resume();
+    return actx;
+  }
+
+  function currentSig(){
+    const bucket = compiled ? Math.ceil(compiled.maxNoteSec * 20) : 0;
+    return [voiceMode, win, mode, cut[mode], bucket].join("|");
+  }
+  function invalidateIfStale(){
+    const sig = currentSig();
+    if(sig !== renderSig){ renderSig = sig; bufferCache.clear(); selCache.clear(); }
+  }
+
+  /* Renders one pitch offline. True voice is a single sine; reconstructed is one
+     oscillator per surviving coefficient, with the signed coefficient fed straight
+     into its gain (negative = pi phase flip). Normalized to TARGET_RMS either way. */
+  function renderPitch(key, lengthSec){
+    const sr = actx.sampleRate;
+    const frames = Math.max(128, Math.ceil(lengthSec * sr));
+    const off = new OfflineAudioContext(1, frames, sr);
+
+    if(voiceMode === "true"){
+      const osc = off.createOscillator(); osc.type = "sine";
+      osc.frequency.value = byKey[key].freq;
+      const g = off.createGain(); g.gain.value = TARGET_RMS * Math.SQRT2;
+      osc.connect(g); g.connect(off.destination); osc.start(0);
+      return off.startRendering().then(buf => ({ buf, sines: 1 }));
+    }
+
+    const sel = selectionFor(key);
+    let energy = 0;
+    sel.idx.forEach(i => { energy += sel.coeffs[i] * sel.coeffs[i]; });
+    const rms = Math.sqrt(energy / 2);            // sum of incommensurate sines
+    const scale = rms > 0 ? TARGET_RMS / rms : 0;
+
+    sel.idx.forEach(i => {
+      const osc = off.createOscillator(); osc.type = "sine";
+      osc.frequency.value = byKey[sel.keys[i]].freq;
+      const g = off.createGain(); g.gain.value = scale * sel.coeffs[i];
+      osc.connect(g); g.connect(off.destination); osc.start(0);
+    });
+    return off.startRendering().then(buf => ({ buf, sines: sel.idx.size }));
+  }
+
+  async function renderNeededPitches(onProgress){
+    invalidateIfStale();
+    const lengthSec = Math.min(MAX_VOICE_SEC, compiled.maxNoteSec + RELEASE + 0.05);
+    const todo = [...compiled.pitches].filter(k => !bufferCache.has(k));
+    for(let i = 0; i < todo.length; i++){
+      const { buf, sines } = await renderPitch(todo[i], lengthSec);
+      bufferCache.set(todo[i], { buf, sines });
+      if(onProgress) onProgress(i + 1, todo.length);
+    }
+  }
+
+  // ---------- transport ----------
+  const transport = { playing:false, originCtxTime:0, nextIdx:0, live:[], timer:null, pausedAt:0 };
+  const transportTime = () => transport.playing ? actx.currentTime - transport.originCtxTime : transport.pausedAt;
+
+  function scheduleEvent(ev){
+    const entry = bufferCache.get(ev.key);
+    if(!entry) return;
+    const at = transport.originCtxTime + ev.t;
+    const src = actx.createBufferSource(); src.buffer = entry.buf;
+    const g = actx.createGain();
+    const amp = Math.max(0, Math.min(1, ev.gain));
+    g.gain.setValueAtTime(0, at);
+    g.gain.linearRampToValueAtTime(amp, at + Math.min(ATTACK, ev.dur * 0.5));
+    g.gain.setValueAtTime(amp, at + ev.dur);
+    g.gain.linearRampToValueAtTime(0, at + ev.dur + RELEASE);
+    src.connect(g); g.connect(masterGain);
+    src.start(at);
+    src.stop(at + ev.dur + RELEASE + 0.02);
+    const rec = { src, g };
+    transport.live.push(rec);
+    src.onended = () => {
+      try { g.disconnect(); } catch(e){}
+      const i = transport.live.indexOf(rec);
+      if(i >= 0) transport.live.splice(i, 1);
+    };
+  }
+
+  function tick(){
+    if(!transport.playing) return;
+    const horizon = transportTime() + LOOKAHEAD;
+    const evs = compiled.events;
+    while(transport.nextIdx < evs.length && evs[transport.nextIdx].t < horizon){
+      scheduleEvent(evs[transport.nextIdx++]);
+    }
+    if(transport.nextIdx >= evs.length && transportTime() >= compiled.durationSec){
+      if(looping){ transport.originCtxTime += compiled.durationSec; transport.nextIdx = 0; }
+      else if(transport.live.length === 0) stop();
+    }
+  }
+
+  function killLive(){
+    const now = actx ? actx.currentTime : 0;
+    for(const { src, g } of transport.live){
+      try {
+        g.gain.cancelScheduledValues(now);
+        g.gain.setTargetAtTime(0, now, 0.008);
+        src.stop(now + 0.06);
+      } catch(e){}
+    }
+    transport.live = [];
+  }
+
+  async function play(fromSec){
+    if(!compiled || !compiled.events.length) return;
+    ensureAudio();
+    stop(true);
+
+    const btn = $("#scp-playBtn");
+    btn.disabled = true;
+    // Announce the wait before the first render starts, not after it finishes.
+    invalidateIfStale();
+    const pending = [...compiled.pitches].filter(k => !bufferCache.has(k)).length;
+    if(pending) setStatus(`Rendering voices… 0/${pending}`);
+    try {
+      await renderNeededPitches((done, total) => {
+        setStatus(`Rendering voices… ${done}/${total}`);
+      });
+    } catch(e){
+      setStatus("Could not render the voices (" + e.message + ").", true);
+      btn.disabled = false;
+      return;
+    }
+    btn.disabled = false;
+    renderStats();
+
+    const start = Math.max(0, Math.min(fromSec || 0, Math.max(0, compiled.durationSec - 0.05)));
+    transport.originCtxTime = actx.currentTime + 0.08 - start;
+    transport.nextIdx = compiled.events.findIndex(e => e.t >= start);
+    if(transport.nextIdx < 0) transport.nextIdx = compiled.events.length;
+    transport.playing = true;
+    transport.pausedAt = start;
+    btn.textContent = "Pause";
+    setStatus(statusLine());
+    transport.timer = setInterval(tick, TICK_MS);
+    tick();
+  }
+
+  function stop(silent){
+    if(transport.timer){ clearInterval(transport.timer); transport.timer = null; }
+    if(transport.playing) transport.pausedAt = transportTime();
+    transport.playing = false;
+    killLive();
+    $("#scp-playBtn").textContent = "Play";
+    if(!silent){ transport.pausedAt = 0; setStatus(statusLine()); }
+  }
+  function pause(){
+    if(transport.timer){ clearInterval(transport.timer); transport.timer = null; }
+    transport.pausedAt = transportTime();
+    transport.playing = false;
+    killLive();
+    $("#scp-playBtn").textContent = "Play";
+  }
+
+  // Re-render and resume from the same spot -- makes the voice toggle a real A/B.
+  function refreshAudio(){
+    if(transport.playing){ const at = transportTime(); pause(); play(at); }
+    else { invalidateIfStale(); renderStats(); }
+    rollDirty = true;
+  }
+
+  /* The tempo/transpose/gate sliders recompile the score on every input event, which
+     would leave transport.nextIdx indexing a replaced event array. Pause for the
+     duration of the drag, then pick up again from where we left off. */
+  let resumePending = false;
+  function beginLiveEdit(){ if(transport.playing){ pause(); resumePending = true; } }
+  function endLiveEdit(){
+    if(resumePending){ resumePending = false; play(transport.pausedAt); }
+    else invalidateIfStale();
+  }
+
+  // ---------- keyboard ----------
+  const pianoEl = $("#scp-piano");
+  const keyEls = {};
+
+  function buildKeyboard(){
+    const whites = NOTES.filter(n => !isBlack(n.name));
+    const whiteIndex = {};
+    whites.forEach((n, i) => whiteIndex[n.key] = i);
+    whites.forEach(n => {
+      const el = document.createElement("div");
+      el.className = "wkey";
+      el.dataset.key = n.key;
+      const lab = document.createElement("span");
+      lab.className = "klabel"; lab.textContent = short(n.name);
+      el.appendChild(lab); pianoEl.appendChild(el); keyEls[n.key] = el;
+    });
+    NOTES.filter(n => isBlack(n.name)).forEach(n => {
+      let left = n.key - 1;
+      while(left >= 1 && isBlack(byKey[left].name)) left--;
+      const el = document.createElement("div");
+      el.className = "bkey";
+      el.dataset.key = n.key;
+      el.style.left = ((whiteIndex[left] + 1) / whites.length * 100) + "%";
+      pianoEl.appendChild(el); keyEls[n.key] = el;
+    });
+  }
+
+  /* getComputedStyle is far too slow to call per note per frame, so the palette is
+     read once and rebuilt only when the theme changes. */
+  const PALETTE_VARS = ["--scp-h0","--scp-h1","--scp-h2","--scp-h3","--scp-h4",
+                        "--scp-t1","--scp-t2","--scp-t3","--scp-t4",
+                        "--scp-grid","--scp-grid-bar","--scp-roll-bg",
+                        "--scp-ink","--scp-ink-faint","--scp-err","--scp-mono"];
+  let palette = null, heatRamp = null;
+  function readPalette(){
+    const cs = getComputedStyle(root);
+    palette = {};
+    for(const v of PALETTE_VARS) palette[v] = cs.getPropertyValue(v).trim();
+    heatRamp = ["--scp-h0","--scp-h1","--scp-h2","--scp-h3","--scp-h4"].map(v => hexToRgb(palette[v]));
+  }
+  function invalidatePalette(){ palette = null; heatRamp = null; rollDirty = true; }
+  const cssVar = name => (palette || (readPalette(), palette))[name];
+
+  function hexToRgb(h){
+    h = h.replace("#", "");
+    if(h.length === 3) h = h.split("").map(c => c + c).join("");
+    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+  }
+  function heatColor(t){
+    if(!heatRamp) readPalette();
+    t = Math.max(0, Math.min(1, t));
+    const seg = t * 4, i = Math.min(3, Math.floor(seg)), f = seg - i;
+    const a = heatRamp[i], b = heatRamp[i + 1];
+    return `rgb(${Math.round(a[0]+(b[0]-a[0])*f)},${Math.round(a[1]+(b[1]-a[1])*f)},${Math.round(a[2]+(b[2]-a[2])*f)})`;
+  }
+
+  let litKeys = new Set(), litScore = new Set();
+  function paintKeyboard(scoreKeys, heat){
+    const nextLit = new Set(heat.keys());
+    for(const k of litKeys) if(!nextLit.has(k)){ keyEls[k].classList.remove("on"); }
+    for(const [k, t] of heat){
+      const el = keyEls[k];
+      el.style.setProperty("--scp-heat", heatColor(t));
+      el.classList.add("on");
+    }
+    litKeys = nextLit;
+    for(const k of litScore) if(!scoreKeys.has(k)) keyEls[k].classList.remove("score");
+    for(const k of scoreKeys) keyEls[k].classList.add("score");
+    litScore = scoreKeys;
+  }
+
+  // ---------- piano roll ----------
+  const canvas = $("#scp-roll");
+  const ctx2d = canvas.getContext("2d");
+  let rollRange = { lo:1, hi:88 };
+  let rollDirty = true;
+
+  function computeRollRange(){
+    if(!compiled || !compiled.events.length){ rollRange = { lo:36, hi:60 }; return; }
+    let lo = 88, hi = 1;
+    for(const e of compiled.events){ if(e.key < lo) lo = e.key; if(e.key > hi) hi = e.key; }
+    lo -= 2; hi += 2;
+    if(hi - lo < 12){ const pad = (12 - (hi - lo)) / 2; lo -= Math.ceil(pad); hi += Math.floor(pad); }
+    rollRange = { lo: Math.max(1, lo), hi: Math.min(88, hi) };
+  }
+
+  function drawRoll(){
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if(!w || !h) return;
+    if(canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)){
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    }
+    rollDirty = false;
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2d.clearRect(0, 0, w, h);
+    ctx2d.fillStyle = cssVar("--scp-roll-bg");
+    ctx2d.fillRect(0, 0, w, h);
+
+    if(!compiled || !compiled.events.length || compiled.durationSec <= 0){
+      ctx2d.fillStyle = cssVar("--scp-ink-faint");
+      ctx2d.font = "12px " + cssVar("--scp-mono");
+      ctx2d.fillText("nothing to draw", 12, 22);
+      return;
+    }
+
+    const total = compiled.durationSec;
+    const span = rollRange.hi - rollRange.lo + 1;
+    const rowH = h / span;
+    const xOf = t => t / total * w;
+    const yOf = key => (rollRange.hi - key) * rowH;
+
+    // pitch rows: shade the black keys
+    ctx2d.fillStyle = cssVar("--scp-grid");
+    for(let k = rollRange.lo; k <= rollRange.hi; k++){
+      if(isBlack(byKey[k].name)) ctx2d.fillRect(0, yOf(k), w, rowH);
+    }
+    // beat + bar lines
+    const beatW = compiled.secPerBeat;
+    const showBeats = (total / beatW) < 220;
+    for(let b = 0; b * beatW <= total + 1e-6; b++){
+      const x = xOf(b * beatW);
+      const bar = compiled.meter > 0 && b % compiled.meter === 0;
+      if(!bar && !showBeats) continue;
+      ctx2d.fillStyle = bar ? cssVar("--scp-grid-bar") : cssVar("--scp-grid");
+      ctx2d.fillRect(Math.round(x), 0, bar ? 1.5 : 1, h);
+    }
+
+    const trackColors = ["--scp-t1","--scp-t2","--scp-t3","--scp-t4"].map(cssVar);
+    const now = transportTime();
+    for(const e of compiled.events){
+      const x = xOf(e.t), y = yOf(e.key);
+      const barW = Math.max(2, xOf(e.t + e.dur) - x - 0.5);
+      const barH = Math.max(2, rowH - 1);
+      const active = now >= e.t && now < e.t + e.dur;
+      ctx2d.globalAlpha = active ? 1 : 0.72;
+      ctx2d.fillStyle = trackColors[e.track % trackColors.length];
+      ctx2d.fillRect(x, y + 0.5, barW, barH);
+      if(active){
+        ctx2d.globalAlpha = 1;
+        ctx2d.strokeStyle = cssVar("--scp-ink");
+        ctx2d.lineWidth = 1;
+        ctx2d.strokeRect(x + 0.5, y + 1, barW - 1, barH - 1);
+      }
+    }
+    ctx2d.globalAlpha = 1;
+
+    if(now > 0 || transport.playing){
+      const x = xOf(Math.max(0, Math.min(now, total)));
+      ctx2d.fillStyle = cssVar("--scp-err");
+      ctx2d.fillRect(Math.round(x), 0, 1.5, h);
+    }
+  }
+
+  // ---------- frame loop ----------
+  let lastPaintedTime = -1;
+  function frame(){
+    requestAnimationFrame(frame);
+    if(!compiled) return;
+
+    const now = transportTime();
+    // Idle and unchanged: nothing to repaint.
+    if(!transport.playing && !rollDirty && now === lastPaintedTime) return;
+    lastPaintedTime = now;
+    drawRoll();
+
+    const scoreKeys = new Set();
+    const heat = new Map();
+    if(transport.playing || now > 0){
+      for(const e of compiled.events){
+        if(e.t > now) break;
+        if(now >= e.t + e.dur) continue;
+        scoreKeys.add(e.key);
+        if(voiceMode === "true"){
+          heat.set(e.key, 1);
+        } else {
+          const sel = selectionFor(e.key);
+          sel.idx.forEach(i => {
+            const t = sel.maxMag > 0 ? sel.mags[i] / sel.maxMag : 0;
+            const k = sel.keys[i];
+            heat.set(k, Math.max(heat.get(k) || 0, t));
+          });
+        }
+      }
+    }
+    paintKeyboard(scoreKeys, heat);
+
+    const names = [...scoreKeys].sort((a, b) => a - b).map(k => short(byKey[k].name));
+    $("#scp-nowNotes").textContent = names.length ? names.join(" ") : "—";
+    $("#scp-nowKeys").textContent = heat.size;
+
+    const bar = compiled.secPerBeat > 0 && compiled.meter > 0
+      ? Math.floor(now / compiled.secPerBeat / compiled.meter) + 1 : 1;
+    $("#scp-clock").innerHTML =
+      `bar <b>${compiled.events.length ? bar : "—"}</b> · <b>${clock(now)}</b> / ${clock(compiled.durationSec)}`;
+  }
+  function clock(s){
+    s = Math.max(0, s);
+    const m = Math.floor(s / 60), r = Math.floor(s % 60);
+    return m + ":" + String(r).padStart(2, "0");
+  }
+
+  // ---------- rendering the UI ----------
+  function setStatus(text, isErr){
+    const el = $("#scp-status");
+    el.textContent = text;
+    el.classList.toggle("err", !!isErr);
+  }
+  function statusLine(){
+    if(!compiled) return "";
+    const n = compiled.events.length;
+    return `${n} note event${n === 1 ? "" : "s"} · ${compiled.trackNames.length} track${compiled.trackNames.length === 1 ? "" : "s"}`
+         + ` · ${compiled.tempo.toFixed(0)} bpm · ${clock(compiled.durationSec)}`
+         + (voiceMode === "recon" ? ` · window ×${win}, cutoff ${cutoffDescription()}` : " · true tones");
+  }
+
+  function renderDiagnostics(){
+    const box = $("#scp-diag");
+    box.innerHTML = "";
+    const rows = [];
+    for(const d of parsed.diags){
+      rows.push(`<div class="${d.kind}">${d.line ? `<span class="ln">line ${d.line}:</span> ` : ""}${escapeHtml(d.msg)}</div>`);
+    }
+    if(compiled && compiled.dropped){
+      rows.push(`<div class="warn">${compiled.dropped} note${compiled.dropped === 1 ? "" : "s"} fell off the keyboard at this transposition and were skipped.</div>`);
+    }
+    if(!rows.length && compiled){
+      rows.push(`<div class="ok">parsed cleanly · ${compiled.events.length} events across ${compiled.trackNames.length} track(s)</div>`);
+    }
+    box.innerHTML = rows.join("");
+  }
+  const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+
+  function renderTrackKeys(){
+    const box = $("#scp-trackKeys");
+    const colors = ["--scp-t1","--scp-t2","--scp-t3","--scp-t4"];
+    box.innerHTML = compiled.trackNames.map((n, i) =>
+      `<span><span class="sw" style="background:var(${colors[i % colors.length]})"></span>${escapeHtml(n)}</span>`
+    ).join("");
+  }
+
+  function renderStats(){
+    $("#scp-statPitches").textContent = compiled ? compiled.pitches.size : 0;
+    let n = 0, tot = 0;
+    for(const k of (compiled ? compiled.pitches : [])){
+      const entry = bufferCache.get(k);
+      if(entry){ tot += entry.sines; n++; }
+    }
+    $("#scp-statSines").textContent = n ? Math.round(tot / n) : (voiceMode === "true" ? 1 : "—");
+
+    /* Retained energy doesn't need the audio buffers, only the selection rules, so it
+       updates the moment a knob moves rather than waiting on a re-render. */
+    const el = $("#scp-statEnergy");
+    if(!NOTES || !compiled || !compiled.pitches.size){ el.textContent = "—"; return; }
+    if(voiceMode === "true"){ el.textContent = "n/a"; return; }
+    let sum = 0, m = 0;
+    for(const k of compiled.pitches){ sum += selectionFor(k).energyKept; m++; }
+    const pct = 100 * sum / m;
+    el.textContent = (pct >= 99.95 ? "100" : pct.toFixed(pct < 10 ? 1 : 0)) + "%";
+  }
+
+  // Reparse + recompile from the textarea. Cheap enough to run on every keystroke.
+  // Replaces compiled.events wholesale, so playback cannot survive it.
+  function refreshScore(opts){
+    if(transport.playing) pause();
+    parsed = parseScore($("#scp-scoreText").value);
+    compiled = compileScore(parsed);
+    computeRollRange();
+    rollDirty = true;
+    renderDiagnostics();
+    renderTrackKeys();
+    renderStats();
+    $("#scp-playBtn").disabled = compiled.events.length === 0;
+    if(!(opts && opts.keepAudio)) invalidateIfStale();
+    setStatus(statusLine());
+  }
+
+  const CUT_SPEC = {
+    abs: { name:"Threshold |coef| ≥", min:0, max:100, step:1, lo:"0 (all)", hi:"max",
+           suffix:"",
+           presets:[[0,"all 87"],[10,"0.01×"],[20,"0.04×"],[40,"0.16×"]],
+           hint:"Keep every coefficient at least this fraction of the biggest one. The scale is squared, so the low end of the slider is where all the action is." },
+    topn: { name:"Keep top", min:1, max:87, step:1, lo:"1", hi:"87", suffix:" notes",
+           presets:[[3,"top 3"],[5,"top 5"],[10,"top 10"],[20,"top 20"],[87,"all 87"]],
+           hint:"Strictly the N largest coefficients. Below about ten this usually sounds wrong rather than thin — the fit relies on big opposite-signed terms cancelling, and keeping only the biggest ones keeps the cancellers' partners and drops the cancellers." },
+    energy: { name:"Capture energy", min:0, max:100, step:1, lo:"0%", hi:"100%", suffix:"",
+           presets:[[10,"10%"],[50,"50%"],[90,"90%"],[100,"100%"]],
+           hint:"Add coefficients largest-first until this much of Σc² is accounted for. Note how few notes 90% takes, and how little of the sound it gets you." },
+    hand: { name:"Finger budget", min:2, max:10, step:1, lo:"2", hi:"10", suffix:"",
+           presets:[[4,"4 fingers"],[6,"6"],[8,"8"],[10,"two full hands"]],
+           hint:"Only what somebody could actually reach: two hands, each spanning at most an octave and pressing at most five keys, placed wherever they capture the most energy. This is the reconstruction as a piece of piano music rather than a spectrum." },
+  };
+
+  /* Rebuilt only when the mode changes -- otherwise a preset click would replace the
+     button under the pointer and throw away its focus. */
+  let presetsFor = null;
+  function buildCutPresets(){
+    const seg = $("#scp-cutPresets");
+    if(presetsFor !== mode){
+      presetsFor = mode;
+      seg.innerHTML = "";
+      for(const [v, label] of CUT_SPEC[mode].presets){
+        const b = document.createElement("button");
+        b.textContent = label;
+        b.dataset.cut = v;
+        b.addEventListener("click", () => {
+          cut[mode] = v;
+          updateCutLabels(); setStatus(statusLine()); refreshAudio();
+        });
+        seg.appendChild(b);
+      }
+    }
+    [...seg.children].forEach(b =>
+      b.setAttribute("aria-pressed", +b.dataset.cut === cut[mode] ? "true" : "false"));
+  }
+
+  function updateCutLabels(){
+    const spec = CUT_SPEC[mode];
+    $("#scp-cutName").textContent = spec.name;
+    $("#scp-cutVal").textContent = cutoffDescription() + spec.suffix;
+    $("#scp-cutLo").textContent = spec.lo;
+    $("#scp-cutHi").textContent = spec.hi;
+    $("#scp-cutHint").textContent = spec.hint;
+    const r = $("#scp-cutRange");
+    r.min = spec.min; r.max = spec.max; r.step = spec.step; r.value = cut[mode];
+    buildCutPresets();
+  }
+
+  function pressOnly(container, el){
+    [...container.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+    el.setAttribute("aria-pressed", "true");
+  }
+
+  // ---------- wiring ----------
+  function buildSongSeg(){
+    const seg = $("#scp-songSeg");
+    songs.forEach((s, i) => {
+      const b = document.createElement("button");
+      b.textContent = s.name;
+      b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+      b.addEventListener("click", () => {
+        pressOnly(seg, b);
+        $("#scp-scoreTag").textContent = s.name;
+        $("#scp-scoreText").value = s.text;
+        stop();
+        refreshScore();
+      });
+      seg.appendChild(b);
+    });
+  }
+  function buildWinSeg(){
+    const seg = $("#scp-winSeg");
+    DATA.multipliers.forEach(ms => {
+      const b = document.createElement("button");
+      b.textContent = "×" + ms;
+      b.setAttribute("aria-pressed", ms === win ? "true" : "false");
+      b.addEventListener("click", () => {
+        pressOnly(seg, b); win = ms;
+        $("#scp-winVal").textContent = "×" + win;
+        setStatus(statusLine()); refreshAudio();
+      });
+      seg.appendChild(b);
+    });
+    $("#scp-winVal").textContent = "×" + win;
+  }
+
+  $("#scp-scoreText").addEventListener("input", () => { resumePending = false; refreshScore(); });
+
+  $("#scp-playBtn").addEventListener("click", () => {
+    if(transport.playing) pause();
+    else play(transport.pausedAt >= compiled.durationSec ? 0 : transport.pausedAt);
+  });
+  $("#scp-stopBtn").addEventListener("click", () => stop());
+  $("#scp-loopBtn").addEventListener("click", e => {
+    looping = !looping;
+    e.currentTarget.setAttribute("aria-pressed", looping ? "true" : "false");
+  });
+
+  $("#scp-voiceSeg").addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    pressOnly($("#scp-voiceSeg"), b);
+    voiceMode = b.dataset.voice;
+    setStatus(statusLine());
+    refreshAudio();
+  });
+  $("#scp-modeSeg").addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    pressOnly($("#scp-modeSeg"), b);
+    mode = b.dataset.mode;
+    updateCutLabels(); setStatus(statusLine()); refreshAudio();
+  });
+  /* Dragging the cutoff doesn't re-render audio until release. While idle the selection
+     is cheap, so the keyboard heat and the retained-energy figure follow the drag; while
+     playing they're left alone, because they describe what you're currently hearing. */
+  $("#scp-cutRange").addEventListener("input", e => {
+    cut[mode] = +e.target.value;
+    updateCutLabels(); setStatus(statusLine());
+    if(!transport.playing){ selCache.clear(); rollDirty = true; renderStats(); }
+  });
+  $("#scp-cutRange").addEventListener("change", () => refreshAudio());
+
+  $("#scp-tempoRange").addEventListener("input", e => {
+    beginLiveEdit();
+    tempoScale = +e.target.value / 100;
+    $("#scp-tempoVal").textContent = "×" + tempoScale.toFixed(2);
+    refreshScore({ keepAudio: true });
+  });
+  $("#scp-tempoRange").addEventListener("change", () => endLiveEdit());
+  $("#scp-transRange").addEventListener("input", e => {
+    beginLiveEdit();
+    transpose = +e.target.value;
+    $("#scp-transVal").textContent = (transpose > 0 ? "+" : "") + transpose;
+    refreshScore({ keepAudio: true });
+  });
+  $("#scp-transRange").addEventListener("change", () => endLiveEdit());
+  $("#scp-gateRange").addEventListener("input", e => {
+    beginLiveEdit();
+    gate = +e.target.value / 100;
+    $("#scp-gateVal").textContent = e.target.value + "%";
+    refreshScore({ keepAudio: true });
+  });
+  $("#scp-gateRange").addEventListener("change", () => endLiveEdit());
+  $("#scp-volRange").addEventListener("input", e => {
+    masterVol = +e.target.value / 100;
+    $("#scp-volVal").textContent = e.target.value + "%";
+    if(masterGain) masterGain.gain.setTargetAtTime(masterVol, actx.currentTime, 0.01);
+  });
+
+  canvas.addEventListener("pointerdown", e => {
+    if(!compiled || compiled.durationSec <= 0) return;
+    const r = canvas.getBoundingClientRect();
+    const at = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * compiled.durationSec;
+    if(transport.playing){ pause(); play(at); }
+    else { transport.pausedAt = at; rollDirty = true; }
+  });
+
+  $("#scp-themeBtn").addEventListener("click", () => {
+    const cur = root.getAttribute("data-scp-theme");
+    const sysDark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const now = cur ? cur : (sysDark ? "dark" : "light");
+    root.setAttribute("data-scp-theme", now === "dark" ? "light" : "dark");
+    invalidatePalette();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", invalidatePalette);
+  window.addEventListener("resize", () => { rollDirty = true; });
+
+  // ---------- boot ----------
+  songs = [...root.querySelectorAll(".scp-src")].map(el => ({
+    id: el.dataset.id,
+    name: el.dataset.name,
+    text: el.textContent.replace(/^\n/, "").replace(/\s+$/, "") + "\n"
+  }));
+
+  fetch(DATA_URL)
+    .then(r => { if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(json => {
+      DATA = json;
+      NOTES = DATA.notes;
+      NOTES.forEach(n => byKey[n.key] = n);
+      if(DATA.multipliers.indexOf(win) < 0) win = DATA.multipliers[0];
+
+      buildKeyboard();
+      buildSongSeg();
+      buildWinSeg();
+      updateCutLabels();
+      $("#scp-tempoVal").textContent = "×1.00";
+
+      if(songs.length){
+        $("#scp-scoreTag").textContent = songs[0].name;
+        $("#scp-scoreText").value = songs[0].text;
+      }
+      refreshScore();
+      requestAnimationFrame(frame);
+    })
+    .catch(err => {
+      setStatus("Couldn't load the note fit data (" + err.message + ").", true);
+    });
+})();
+</script>

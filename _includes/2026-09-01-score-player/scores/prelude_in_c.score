@@ -1,0 +1,14 @@
+# J.S. Bach -- Prelude in C, BWV 846 (WTC I), bars 1-4. Public domain.
+#
+# Broken chords put every note of the harmony in a different instant, so the
+# reconstruction never gets to hide inside a sustained cluster. Each bar is
+# the same eight-note figure played twice.
+
+tempo 66
+meter 4
+
+track arpeggio
+  C3:s E3 G3 C4 E4 G3 C4 E4  | C3 E3 G3 C4 E4 G3 C4 E4
+  C3 D3 A3 D4 F4 A3 D4 F4    | C3 D3 A3 D4 F4 A3 D4 F4
+  B2 D3 G3 D4 F4 G3 D4 F4    | B2 D3 G3 D4 F4 G3 D4 F4
+  C3 E3 G3 C4 E4 G3 C4 E4    | C3 E3 G3 C4 E4 G3 C4 E4

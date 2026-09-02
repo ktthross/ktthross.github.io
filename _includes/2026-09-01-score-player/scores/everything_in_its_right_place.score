@@ -1,0 +1,29 @@
+# Radiohead -- "Everything In Its Right Place" (Kid A, 2000).
+# Short excerpt, transcribed by ear, here to demonstrate the synthesis.
+#
+# Ten beats to the bar, four major triads walking upward, and the C held twice
+# as long as anything else so the bar never sits where you expect it to. The
+# Rhodes voicings are wide and stacked, which suits the reconstruction: the
+# chords already contain most of a pentatonic collection, so the fits overlap
+# and the negative coefficients have plenty of room to cancel.
+
+tempo 116
+meter 10
+
+track rhodes
+  repeat 2
+    C3+G3+C4+E4:w  Db3+Ab3+Db4+F4:h  Eb3+Bb3+Eb4+G4:h  F3+C4+F4+A4:h
+    C3+G3+C4+E4:w  Db3+Ab3+Db4+F4:h  Eb3+Bb3+Eb4+G4:h  Eb3+Bb3+Eb4+G4:h
+  end
+
+track voice gain 0.8
+  -:w             F4:q Ab4 C5 Bb4   Ab4:h
+  -:w             Db5:q C5 Ab4 F4   Eb4:h
+  -:h             C5:q C5 Bb4 Ab4   F4:q Ab4        -:h
+  -:w             Ab4:q F4 Eb4 F4   Ab4:h
+
+track bass gain 0.55
+  C2:w  Db2:h  Eb2:h  F2:h
+  C2:w  Db2:h  Eb2:h  Eb2:h
+  C2:w  Db2:h  Eb2:h  F2:h
+  C2:w  Db2:h  Eb2:h  Eb2:h
