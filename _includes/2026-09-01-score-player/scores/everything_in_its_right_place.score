@@ -1,29 +1,39 @@
-# Radiohead -- "Everything In Its Right Place" (Kid A, 2000).
-# Short excerpt, transcribed by ear, here to demonstrate the synthesis.
+# Radiohead -- "Everything In Its Right Place" (Kid A, 2000). Short excerpt.
+# Converted from assets/midi_files/EverythingIsInItsRightPlace.mid, bars 8-11.
 #
-# Ten beats to the bar, four major triads walking upward, and the C held twice
-# as long as anything else so the bar never sits where you expect it to. The
-# Rhodes voicings are wide and stacked, which suits the reconstruction: the
-# chords already contain most of a pentatonic collection, so the fits overlap
-# and the negative coefficients have plenty of room to cancel.
+# Ten beats to the bar. The Rhodes voicings walk C - Db - Eb - F underneath a
+# held C4, which is close to ideal for the reconstruction: the chords already
+# contain most of a pentatonic collection, so the fits overlap heavily and the
+# negative coefficients have somewhere to cancel. The drum track is dropped --
+# a kick drum is one pitch repeated, which means nothing to a harmonic fit.
+#
+# Converted mechanically by score_from_midi.py -- not transcribed by ear.
 
-tempo 116
+tempo 120
 meter 10
 
-track rhodes
-  repeat 2
-    C3+G3+C4+E4:w  Db3+Ab3+Db4+F4:h  Eb3+Bb3+Eb4+G4:h  F3+C4+F4+A4:h
-    C3+G3+C4+E4:w  Db3+Ab3+Db4+F4:h  Eb3+Bb3+Eb4+G4:h  Eb3+Bb3+Eb4+G4:h
-  end
+track rhodes_1
+  C4:q  C4:e  C4  -:13/2  C4:q.
+  C4:q  C4:e  C4  -:13/2  C4:q.
+  C4:e  C4:q.  -:13/2  C4:q.
+  C4:q  C4  -:13/2  C4:q.
 
-track voice gain 0.8
-  -:w             F4:q Ab4 C5 Bb4   Ab4:h
-  -:w             Db5:q C5 Ab4 F4   Eb4:h
-  -:h             C5:q C5 Bb4 Ab4   F4:q Ab4        -:h
-  -:w             Ab4:q F4 Eb4 F4   Ab4:h
+track rhodes_2
+  -:e  A#3:q.  F3+A3+C4  C3+E3+C4:q  C3+E3+C4  C#3+F3+C4  C#3+F3+C4  D#3+G3+C4  G3  G3  A#3:q.  F3+A3+C4  -:w  D#3+G3+C4:q  G3  G3:h
+  -:e  F3+A3+C4:q.  C3+E3+C4:q  C3+E3+C4  C#3+F3+C4  C#3+F3+C4  D#3+G3+C4  G3  G3  A#3:q.  F3+A3+C4  -:w  D#3+G3+C4:q  G3  G3:e
 
-track bass gain 0.55
-  C2:w  Db2:h  Eb2:h  F2:h
-  C2:w  Db2:h  Eb2:h  Eb2:h
-  C2:w  Db2:h  Eb2:h  F2:h
-  C2:w  Db2:h  Eb2:h  Eb2:h
+track rhodes_3
+  -:17/2  D#3:h  -:h.  C3+E3+C4:q  C3+E3+C4  C#3+F3+C4  C#3+F3+C4  -:q  D#3:h  -:q  C3:e  -:13/2  D#3:h  -:h.  C3+E3+C4:q  C3+E3+C4
+  C#3+F3+C4  C#3+F3+C4  -:q  D#3:q.
+
+track vocal
+  C4:e  F4:17/2  -:e  F4
+  C4  F4:17/2  -:e  F4
+  C4  F4:17/2  -:e  F4
+  C4  F4:15/2  -:q  C4:e  C4
+
+track bass
+  F2:e  D#2  F2:q  F2:q.  C2:q  C2  C#2  C#2  D#2  D#2:q.
+  F2:e  D#2  F2:q  F2:q.  C2:q  C2  C#2  C#2  D#2  D#2:q.
+  F2:e  D#2  F2:q  F2:q.  C2:q  C2  C#2  C#2  D#2  D#2:q.
+  F2:e  D#2  F2:q  F2:q.  C2:q  C2  C#2  C#2  D#2  D#2:q.

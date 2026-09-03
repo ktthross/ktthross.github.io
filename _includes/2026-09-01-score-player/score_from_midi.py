@@ -253,6 +253,33 @@ def read_musicxml(path):
 # quantize, split into playable voices, emit
 # --------------------------------------------------------------------------
 
+def part_table(notes, names):
+    """One row per source part, in a stable order, so --parts can address them
+    by number and --list-parts can show what's in the file."""
+    rows = []
+    for key in sorted({n[3] for n in notes}, key=str):
+        group = [n for n in notes if n[3] == key]
+        pitches = sorted(n[2] for n in group)
+        label = ""
+        if isinstance(key, tuple) and len(key) == 2 and isinstance(key[0], int):
+            label = names.get(key[0], "")
+        elif isinstance(key, tuple):
+            label = names.get(key[0], "")
+        rows.append({
+            "key": key, "name": label, "count": len(group),
+            "lo": pitches[0], "hi": pitches[-1],
+            "start": min(n[0] for n in group),
+            "end": max(n[0] + n[1] for n in group),
+        })
+    return rows
+
+
+def is_drum_part(key):
+    """GM reserves channel 10 (index 9) for percussion. A kick drum arrives as a
+    stream of one pitch, which is meaningless to a harmonic reconstruction."""
+    return isinstance(key, tuple) and len(key) == 2 and key[1] == 9
+
+
 def quantize(notes, grid):
     """Snap to a grid of `grid` subdivisions per beat. 12 covers both
     sixteenths (3/12) and triplet eighths (4/12), which is why it's default."""
@@ -305,30 +332,36 @@ def split_voices(notes, max_voices):
         groups[(s, l)].append(m)
 
     chords = sorted(((s, l, sorted(ms)) for (s, l), ms in groups.items()))
-    voices = []                                     # each: list of (start, len, [midi])
-    ends = []
+    voices = []                 # each: {events: [(start, len, [midi])], end, last}
+    overflow = 0
     for s, l, ms in chords:
-        placed = False
-        for vi in range(len(voices)):
-            if ends[vi] <= s:
-                voices[vi].append((s, l, ms))
-                ends[vi] = s + l
-                placed = True
-                break
-        if not placed:
-            if len(voices) >= max_voices:
-                # no room: fold into the voice that frees up soonest, clipping
-                # the note that's in the way rather than dropping this one
-                vi = min(range(len(voices)), key=lambda i: ends[i])
-                ps, pl, pms = voices[vi][-1]
-                if s > ps:
-                    voices[vi][-1] = (ps, s - ps, pms)
-                    voices[vi].append((s, l, ms))
-                    ends[vi] = s + l
-                continue
-            voices.append([(s, l, ms)])
-            ends.append(s + l)
-    return voices
+        centre = sum(ms) / len(ms)
+        free = [i for i, v in enumerate(voices) if v["end"] <= s]
+        if free:
+            # Prefer the voice whose last note is nearest in pitch. Taking the
+            # lowest free index instead scatters one melodic line across several
+            # tracks and leaves voices holding a single stray note.
+            vi = min(free, key=lambda i: (abs(voices[i]["last"] - centre), i))
+        elif len(voices) < max_voices:
+            vi = None
+        else:
+            # At the cap: clip whichever voice frees up soonest so this note still
+            # fits. Only if even that is impossible do we exceed the cap -- losing
+            # a note is never the right answer.
+            vi = min(range(len(voices)), key=lambda i: voices[i]["end"])
+            ps, pl, pms = voices[vi]["events"][-1]
+            if ps < s:
+                voices[vi]["events"][-1] = (ps, s - ps, pms)
+            else:
+                vi = None
+                overflow += 1
+        if vi is None:
+            voices.append({"events": [], "end": Fraction(0), "last": centre})
+            vi = len(voices) - 1
+        voices[vi]["events"].append((s, l, ms))
+        voices[vi]["end"] = s + l
+        voices[vi]["last"] = centre
+    return [v["events"] for v in voices], overflow
 
 
 def fmt_dur(d):
@@ -395,7 +428,9 @@ def emit(voices, tempo, meter, header, track_names, bars=None):
             row.append(tok)
             last_dur = l
             cursor = s + l
-            if cursor % meter == 0:                 # bar boundary: break the line
+            # break at bar lines, but don't let a voice that never lands on one
+            # run off into a single enormous line
+            if cursor % meter == 0 or len(row) >= 16:
                 flush()
 
         # trailing rest out to the shared end; rests carry length without events
@@ -406,7 +441,10 @@ def emit(voices, tempo, meter, header, track_names, bars=None):
             if cursor % meter == 0:
                 flush()
         flush()
-    return "\n".join(lines) + "\n"
+
+    n_events = sum(len(ev) for ev in clipped)
+    n_notes = sum(len(ms) for ev in clipped for _, _, ms in ev)
+    return "\n".join(lines) + "\n", n_events, n_notes, song_end
 
 
 def main():
@@ -423,6 +461,12 @@ def main():
                          "--grid 4 for a recorded performance")
     ap.add_argument("--bars", type=int, help="keep only the first N bars")
     ap.add_argument("--skip-bars", type=int, default=0, help="drop the first N bars")
+    ap.add_argument("--list-parts", action="store_true",
+                    help="show the file's parts and exit, so you can pick with --parts")
+    ap.add_argument("--parts", help="keep only these part numbers from --list-parts, "
+                                    "e.g. 1,3,4")
+    ap.add_argument("--keep-drums", action="store_true",
+                    help="keep MIDI channel 10; by default percussion is dropped")
     ap.add_argument("--max-voices", type=int, default=4,
                     help="most .score tracks to split polyphony across (default 4)")
     ap.add_argument("--transpose", type=int, default=0, help="semitones")
@@ -445,6 +489,35 @@ def main():
     meter = Fraction(args.meter) if args.meter else Fraction(meter)
     tempo = args.tempo or tempo
 
+    rows = part_table(notes, part_names)
+    if args.list_parts:
+        print(f"{kind}  tempo {round(tempo)}  meter {meter}  "
+              f"{len(notes)} notes  ends at bar {float(max(r['end'] for r in rows) / meter):.1f}")
+        for i, r in enumerate(rows, 1):
+            drum = "  [drums]" if is_drum_part(r["key"]) else ""
+            print(f"  {i}: {str(r['key']):<10} {str(r['name'])[:34]:<34} "
+                  f"{r['count']:>5} notes  {note_name(r['lo'])}..{note_name(r['hi'])}"
+                  f"  bars {float(r['start']/meter) + 1:.1f}-{float(r['end']/meter) + 1:.1f}{drum}")
+        return
+
+    if not args.keep_drums:
+        drums = {r["key"] for r in rows if is_drum_part(r["key"])}
+        if drums:
+            before = len(notes)
+            notes = [n for n in notes if n[3] not in drums]
+            print(f"  dropped {before - len(notes)} percussion note(s) on channel 10 "
+                  f"(--keep-drums to keep them)", file=sys.stderr)
+    if args.parts:
+        want = {int(x) for x in args.parts.replace(" ", "").split(",") if x}
+        bad = want - set(range(1, len(rows) + 1))
+        if bad:
+            raise SystemExit(f"--parts: no part {sorted(bad)}; the file has "
+                             f"{len(rows)} (see --list-parts)")
+        keep = {rows[i - 1]["key"] for i in want}
+        notes = [n for n in notes if n[3] in keep]
+        if not notes:
+            raise SystemExit("--parts selected nothing")
+
     if args.transpose:
         notes = [(s, l, m + args.transpose, p) for s, l, m, p in notes]
     if args.skip_bars:
@@ -461,31 +534,63 @@ def main():
         origin -= origin % meter
         notes = [(s - origin, l, m, p) for s, l, m, p in notes]
 
-    voices = split_voices(notes, args.max_voices)
-    names = [n.strip() for n in args.names.split(",")] if args.names else []
-    while len(names) < len(voices):
-        names.append(f"voice{len(names) + 1}")
-    names = [re.sub(r"[^A-Za-z0-9_]", "", n) or f"voice{i+1}" for i, n in enumerate(names)]
+    # Voices are allocated within each source part, never across them. Pooling
+    # everything would let a bass note and a piano note that happen to share a
+    # start and length collapse into one chord -- it sounds the same, but it throws
+    # away the part structure the track names refer to.
+    # --names lines up with the file's parts, not with the tracks that come out of
+    # them: a part that needs two voices becomes "bass" and "bass_2". Naming by
+    # voice would silently shift every label as soon as one part split.
+    given = [n.strip() for n in args.names.split(",")] if args.names else []
+    rows = part_table(notes, part_names)
+    if len(given) > len(rows):
+        raise SystemExit(f"--names has {len(given)} entries but the selection has "
+                         f"{len(rows)} part(s)")
+
+    voices, names, overflow, mapping = [], [], 0, []
+    for pi, r in enumerate(rows):
+        part_notes = [n for n in notes if n[3] == r["key"]]
+        vs, ov = split_voices(part_notes, args.max_voices)
+        overflow += ov
+        base = given[pi] if pi < len(given) else (r["name"] or "")
+        base = re.sub(r"[^A-Za-z0-9_]", "", base.replace(" ", "_"))[:20] or f"part{pi + 1}"
+        for j, v in enumerate(vs):
+            voices.append(v)
+            names.append(base if len(vs) == 1 else f"{base}_{j + 1}")
+        mapping.append(f"{r['key']} {r['name'] or '(unnamed)'} -> "
+                       + ", ".join(names[-len(vs):]))
+
+    seen = {}
+    for i, n in enumerate(names):
+        seen[n] = seen.get(n, 0) + 1
+        names[i] = n if seen[n] == 1 else f"{n}{seen[n]}"
 
     header = [f"# {args.title}"] if args.title else []
     header.append(f"# Converted from {kind} by score_from_midi.py -- not transcribed by ear.")
-    text = emit(voices, tempo, meter, header, names, args.bars)
+    text, n_events, n_notes, song_end = emit(
+        voices, tempo, meter, header, names, args.bars)
 
     if args.out:
         open(args.out, "w").write(text)
     else:
         sys.stdout.write(text)
 
-    pitches = sorted({m for _, _, ms in
-                      (e for v in voices for e in v) for m in ms})
-    total = sum(len(v) for v in voices)
+    limit = meter * args.bars if args.bars else None
+    kept = [n for n in notes if limit is None or n[0] < limit]
+    pitches = sorted(n[2] for n in kept)
     print(f"[{kind}] {args.input}", file=sys.stderr)
     print(f"  tempo {round(tempo)}  meter {meter}  grid 1/{args.grid} beat", file=sys.stderr)
-    print(f"  {total} events across {len(voices)} track(s), "
+    print(f"  {float(song_end / meter):.0f} bars, {n_events} events / {n_notes} notes "
+          f"across {sum(1 for ev in voices if ev)} track(s), "
           f"range {note_name(pitches[0])}..{note_name(pitches[-1])}", file=sys.stderr)
-    if part_names:
-        print(f"  source parts: {', '.join(str(v) for v in part_names.values() if v)}",
+    for line in mapping:
+        print(f"  {line}", file=sys.stderr)
+    if n_notes != len(kept):
+        print(f"  WARNING: {len(kept)} notes went in but {n_notes} came out",
               file=sys.stderr)
+    if overflow:
+        print(f"  {overflow} chord(s) needed a track beyond --max-voices "
+              f"{args.max_voices} rather than be dropped", file=sys.stderr)
     if dropped:
         print(f"  {dropped} note(s) outside A0..C8 dropped", file=sys.stderr)
     if dangling:
