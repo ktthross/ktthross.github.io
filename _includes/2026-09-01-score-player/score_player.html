@@ -141,8 +141,17 @@
   .scp .ramp .bar { width:110px; height:10px; border-radius:3px; background:linear-gradient(90deg,var(--scp-h0),var(--scp-h1),var(--scp-h2),var(--scp-h3),var(--scp-h4)); border:1px solid var(--scp-panel-edge); }
   .scp .ramp .cap { font-family:var(--scp-mono); font-size:10px; color:var(--scp-ink-faint); }
   .scp .legend .swatch { display:inline-block; width:11px; height:11px; border-radius:50%; background:var(--scp-teal); vertical-align:-1px; margin-right:6px; box-shadow:0 0 0 3px var(--scp-teal-soft); }
-  .scp .trackkeys { display:flex; flex-wrap:wrap; gap:6px 16px; margin:12px 2px 0; font-family:var(--scp-mono); font-size:11px; color:var(--scp-ink-soft); }
-  .scp .trackkeys span.sw { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+  .scp .trackkeys { display:flex; flex-wrap:wrap; gap:6px 8px; margin:12px 2px 0; }
+  .scp .trackkeys button { display:inline-flex; align-items:center; gap:7px; line-height:1;
+    font-family:var(--scp-mono); font-size:11px; color:var(--scp-ink);
+    background:rgba(0,0,0,.03); border:1px solid var(--scp-panel-edge); border-radius:5px;
+    padding:6px 10px; cursor:pointer; transition:color .12s,border-color .12s,opacity .12s; }
+  .scp .trackkeys button:hover { border-color:var(--scp-ink-faint); }
+  .scp .trackkeys button:focus-visible { outline:2px solid var(--scp-teal); outline-offset:2px; }
+  .scp .trackkeys .sw { width:10px; height:10px; border-radius:2px; flex:none; }
+  /* aria-pressed is the audible state, so a muted track is the un-pressed one. */
+  .scp .trackkeys button[aria-pressed="false"] { color:var(--scp-ink-faint); text-decoration:line-through; }
+  .scp .trackkeys button[aria-pressed="false"] .sw { opacity:.25; }
 
   .scp details.ref { margin:18px 0 0; border:1px solid var(--scp-panel-edge); border-radius:var(--scp-radius); padding:0 14px; background:var(--scp-panel); }
   .scp details.ref > summary { cursor:pointer; padding:12px 4px; font-family:var(--scp-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--scp-brass); }
@@ -198,13 +207,8 @@
   </div>
 </details>
 
-<div class="section-title"><h3>Transport</h3></div>
-<div class="transport">
-  <button class="play" id="scp-playBtn" disabled>Play</button>
-  <button class="ghost" id="scp-stopBtn">Stop</button>
-  <button class="ghost" id="scp-loopBtn" aria-pressed="false">Loop</button>
-  <span class="clock" id="scp-clock">bar <b>—</b> · <b>0:00</b> / 0:00</span>
-</div>
+<div class="section-title"><h3>Performance</h3></div>
+<p class="section-sub">How the score is played back, independent of how each pitch is built.</p>
 
 <div class="panel grid4">
   <div class="ctrl">
@@ -276,9 +280,19 @@
   </div>
 </div>
 
-<div class="section-title"><h3>Piano roll</h3><span class="tag">click to seek</span></div>
+<div class="section-title"><h3>Play it</h3><span class="tag">click the roll to seek</span></div>
+<p class="section-sub">Everything above is set before you press play. Bars are the notes the score asked for, coloured by track; the red line is the playhead, and the keyboard underneath shows what the reconstruction is doing to produce them.</p>
+
+<div class="transport">
+  <button class="play" id="scp-playBtn" disabled>Play</button>
+  <button class="ghost" id="scp-stopBtn">Stop</button>
+  <button class="ghost" id="scp-loopBtn" aria-pressed="false">Loop</button>
+  <span class="clock" id="scp-clock">bar <b>—</b> · <b>0:00</b> / 0:00</span>
+</div>
+
 <div class="stage"><div class="rollwrap"><canvas id="scp-roll"></canvas></div></div>
 <div class="trackkeys" id="scp-trackKeys"></div>
+<p class="hint" style="margin-left:2px;">Click a track to mute it. Muted notes stay in the roll, faded, and still count toward the song's length — they just aren't synthesized, so the keyboard stops showing their contributors too.</p>
 
 <div class="section-title"><h3>What's actually sounding</h3></div>
 <p class="section-sub">Teal outlines are the notes the score asked for. Everything heat-coloured is a key the reconstruction is leaning on to produce them — in <em>True</em> voice, the two collapse onto each other. Under <em>Human hands</em> the heat gathers into two tight clumps, and you can watch them move around the keyboard from note to note; they are rarely anywhere near the note being played.</p>
@@ -494,7 +508,8 @@
   function compileScore(parsed){
     const secPerBeat = 60 / (parsed.tempo * tempoScale);
     const events = [];
-    const pitches = new Set();
+    // Kept per track so muting one can be answered without rescanning every event.
+    const trackPitches = parsed.tracks.map(() => new Set());
     let endSec = 0, maxNoteSec = 0, dropped = 0;
 
     parsed.tracks.forEach((track, ti) => {
@@ -508,13 +523,13 @@
           const key = baseKey + transpose;
           if(key < KEY_MIN || key > KEY_MAX){ dropped++; continue; }
           events.push({ t, dur, key, gain: ev.gain * track.gain, track: ti });
-          pitches.add(key);
+          trackPitches[ti].add(key);
           maxNoteSec = Math.max(maxNoteSec, dur);
         }
       }
     });
     events.sort((a, b) => a.t - b.t);
-    return { events, pitches, durationSec: endSec, maxNoteSec, dropped,
+    return { events, trackPitches, durationSec: endSec, maxNoteSec, dropped,
              tempo: parsed.tempo * tempoScale, meter: parsed.meter, secPerBeat,
              trackNames: parsed.tracks.map(t => t.name) };
   }
@@ -527,6 +542,25 @@
   let win = "1.0", mode = "abs", cut = { abs:20, topn:10, energy:60, hand:10 };
   let voiceMode = "recon";
   let tempoScale = 1, transpose = 0, gate = 0.92, masterVol = 0.60, looping = false;
+  const mutedTracks = new Set();    // track indices the user has silenced
+
+  /* A muted track keeps its bars in the roll and its length in the song, so the only
+     thing muting changes is which pitches have to exist. Cached on `compiled`, which
+     is replaced wholesale by refreshScore, so the only manual invalidation is a
+     mute toggle. */
+  function activePitches(){
+    if(!compiled) return new Set();
+    if(!compiled.activeCache){
+      const s = new Set();
+      compiled.trackPitches.forEach((set, i) => {
+        if(!mutedTracks.has(i)) for(const k of set) s.add(k);
+      });
+      compiled.activeCache = s;
+    }
+    return compiled.activeCache;
+  }
+  const audible = ev => !mutedTracks.has(ev.track);
+  const hasAudibleEvents = () => !!compiled && compiled.events.some(audible);
 
   const isBlack = n => n.includes("#");
   const short = n => n.split("/")[0];
@@ -696,7 +730,7 @@
   async function renderNeededPitches(onProgress){
     invalidateIfStale();
     const lengthSec = Math.min(MAX_VOICE_SEC, compiled.maxNoteSec + RELEASE + 0.05);
-    const todo = [...compiled.pitches].filter(k => !bufferCache.has(k));
+    const todo = [...activePitches()].filter(k => !bufferCache.has(k));
     for(let i = 0; i < todo.length; i++){
       const { buf, sines } = await renderPitch(todo[i], lengthSec);
       bufferCache.set(todo[i], { buf, sines });
@@ -736,7 +770,8 @@
     const horizon = transportTime() + LOOKAHEAD;
     const evs = compiled.events;
     while(transport.nextIdx < evs.length && evs[transport.nextIdx].t < horizon){
-      scheduleEvent(evs[transport.nextIdx++]);
+      const ev = evs[transport.nextIdx++];
+      if(audible(ev)) scheduleEvent(ev);
     }
     if(transport.nextIdx >= evs.length && transportTime() >= compiled.durationSec){
       if(looping){ transport.originCtxTime += compiled.durationSec; transport.nextIdx = 0; }
@@ -757,7 +792,7 @@
   }
 
   async function play(fromSec){
-    if(!compiled || !compiled.events.length) return;
+    if(!hasAudibleEvents()) return;
     ensureAudio();
     stop(true);
 
@@ -765,7 +800,7 @@
     btn.disabled = true;
     // Announce the wait before the first render starts, not after it finishes.
     invalidateIfStale();
-    const pending = [...compiled.pitches].filter(k => !bufferCache.has(k)).length;
+    const pending = [...activePitches()].filter(k => !bufferCache.has(k)).length;
     if(pending) setStatus(`Rendering voices… 0/${pending}`);
     try {
       await renderNeededPitches((done, total) => {
@@ -959,10 +994,13 @@
       const barW = Math.max(2, xOf(e.t + e.dur) - x - 0.5);
       const barH = Math.max(2, rowH - 1);
       const active = now >= e.t && now < e.t + e.dur;
-      ctx2d.globalAlpha = active ? 1 : 0.72;
+      // A muted track stays visible so you can see what you turned off, but it never
+      // gets the playhead outline -- nothing is sounding for it to mark.
+      const off = !audible(e);
+      ctx2d.globalAlpha = off ? 0.15 : (active ? 1 : 0.72);
       ctx2d.fillStyle = trackColors[e.track % trackColors.length];
       ctx2d.fillRect(x, y + 0.5, barW, barH);
-      if(active){
+      if(active && !off){
         ctx2d.globalAlpha = 1;
         ctx2d.strokeStyle = cssVar("--scp-ink");
         ctx2d.lineWidth = 1;
@@ -996,6 +1034,7 @@
       for(const e of compiled.events){
         if(e.t > now) break;
         if(now >= e.t + e.dur) continue;
+        if(!audible(e)) continue;
         scoreKeys.add(e.key);
         if(voiceMode === "true"){
           heat.set(e.key, 1);
@@ -1035,7 +1074,10 @@
   function statusLine(){
     if(!compiled) return "";
     const n = compiled.events.length;
-    return `${n} note event${n === 1 ? "" : "s"} · ${compiled.trackNames.length} track${compiled.trackNames.length === 1 ? "" : "s"}`
+    const nt = compiled.trackNames.length;
+    const muted = compiled.trackNames.reduce((s, _, i) => s + (mutedTracks.has(i) ? 1 : 0), 0);
+    return `${n} note event${n === 1 ? "" : "s"} · ${nt} track${nt === 1 ? "" : "s"}`
+         + (muted ? ` (${muted} muted)` : "")
          + ` · ${compiled.tempo.toFixed(0)} bpm · ${clock(compiled.durationSec)}`
          + (voiceMode === "recon" ? ` · window ×${win}, cutoff ${cutoffDescription()}` : " · true tones");
   }
@@ -1057,18 +1099,47 @@
   }
   const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
+  /* The colour legend under the roll doubles as the mute switches: it already names
+     every track and matches the bars, so there is nowhere better to put them. */
   function renderTrackKeys(){
     const box = $("#scp-trackKeys");
     const colors = ["--scp-t1","--scp-t2","--scp-t3","--scp-t4"];
-    box.innerHTML = compiled.trackNames.map((n, i) =>
-      `<span><span class="sw" style="background:var(${colors[i % colors.length]})"></span>${escapeHtml(n)}</span>`
-    ).join("");
+    box.innerHTML = "";
+    compiled.trackNames.forEach((name, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-pressed", mutedTracks.has(i) ? "false" : "true");
+      b.title = mutedTracks.has(i) ? "Unmute " + name : "Mute " + name;
+      const sw = document.createElement("span");
+      sw.className = "sw";
+      sw.style.background = `var(${colors[i % colors.length]})`;
+      b.appendChild(sw);
+      b.appendChild(document.createTextNode(name));
+      b.addEventListener("click", () => toggleTrack(i, b));
+      box.appendChild(b);
+    });
   }
 
+  function toggleTrack(i, btn){
+    if(mutedTracks.has(i)) mutedTracks.delete(i); else mutedTracks.add(i);
+    const on = !mutedTracks.has(i);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.title = (on ? "Mute " : "Unmute ") + compiled.trackNames[i];
+    compiled.activeCache = null;
+    updatePlayEnabled();
+    rollDirty = true;
+    setStatus(statusLine());
+    // Muting the last audible track leaves nothing to resume into, so just halt.
+    if(hasAudibleEvents()) refreshAudio();
+    else { stop(); renderStats(); }
+  }
+  function updatePlayEnabled(){ $("#scp-playBtn").disabled = !hasAudibleEvents(); }
+
   function renderStats(){
-    $("#scp-statPitches").textContent = compiled ? compiled.pitches.size : 0;
+    const active = activePitches();
+    $("#scp-statPitches").textContent = active.size;
     let n = 0, tot = 0;
-    for(const k of (compiled ? compiled.pitches : [])){
+    for(const k of active){
       const entry = bufferCache.get(k);
       if(entry){ tot += entry.sines; n++; }
     }
@@ -1077,10 +1148,10 @@
     /* Retained energy doesn't need the audio buffers, only the selection rules, so it
        updates the moment a knob moves rather than waiting on a re-render. */
     const el = $("#scp-statEnergy");
-    if(!NOTES || !compiled || !compiled.pitches.size){ el.textContent = "—"; return; }
+    if(!NOTES || !active.size){ el.textContent = "—"; return; }
     if(voiceMode === "true"){ el.textContent = "n/a"; return; }
     let sum = 0, m = 0;
-    for(const k of compiled.pitches){ sum += selectionFor(k).energyKept; m++; }
+    for(const k of active){ sum += selectionFor(k).energyKept; m++; }
     const pct = 100 * sum / m;
     el.textContent = (pct >= 99.95 ? "100" : pct.toFixed(pct < 10 ? 1 : 0)) + "%";
   }
@@ -1091,12 +1162,14 @@
     if(transport.playing) pause();
     parsed = parseScore($("#scp-scoreText").value);
     compiled = compileScore(parsed);
+    // An edit that removes a track can't keep a mute pointing past the last one.
+    for(const i of [...mutedTracks]) if(i >= compiled.trackNames.length) mutedTracks.delete(i);
     computeRollRange();
     rollDirty = true;
     renderDiagnostics();
     renderTrackKeys();
     renderStats();
-    $("#scp-playBtn").disabled = compiled.events.length === 0;
+    updatePlayEnabled();
     if(!(opts && opts.keepAudio)) invalidateIfStale();
     setStatus(statusLine());
   }
@@ -1168,6 +1241,8 @@
         pressOnly(seg, b);
         $("#scp-scoreTag").textContent = s.name;
         $("#scp-scoreText").value = s.text;
+        // Mutes are per track index, which means nothing across a change of song.
+        mutedTracks.clear();
         stop();
         refreshScore();
       });
