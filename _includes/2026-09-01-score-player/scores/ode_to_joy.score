@@ -1,0 +1,20 @@
+# Beethoven -- "Ode to Joy" (Symphony No. 9, 4th mvt). Public domain.
+#
+# The melody is deliberately plain, which makes it a good test: if the tune
+# still reads when every note is replaced by a chord of the other 87 keys,
+# the least-squares fit is carrying real pitch information.
+
+tempo 112
+meter 4
+
+track melody
+  E4:q E4 F4 G4  | G4 F4 E4 D4
+  C4 C4 D4 E4    | E4:q. D4:e D4:h
+  E4:q E4 F4 G4  | G4 F4 E4 D4
+  C4 C4 D4 E4    | D4:q. C4:e C4:h
+
+track bass gain 0.7
+  C2:h C2  | G2:h G2
+  C2:h G2  | G2:h C2
+  C2:h C2  | G2:h G2
+  C2:h G2  | G2:h C2
