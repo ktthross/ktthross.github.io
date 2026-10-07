@@ -1,5 +1,5 @@
 # Album ratings. Newest week first.
-# rating: 0 = didn't care for it, 1 = solid music, 1.5 = really liked it, 2 = loved it (rare).
+# rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
 # Leave rating empty (~) for albums not rated yet.
 
 - artist: "Greg Freeman"
@@ -32,7 +32,7 @@
   week: 2026-10-02
   sources: "AOTY, The Needle Drop interview"
   note: "Sweet hooks over bittersweet lyrics."
-  rating: 1.5
+  rating: 2
 
 - artist: "Fat Dog"
   title: "Cancel Me (I'm Tired)"

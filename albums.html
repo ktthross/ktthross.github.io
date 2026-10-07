@@ -1,77 +1,68 @@
 ---
-layout: page
+layout: default
 title: Albums
 permalink: /albums/
 ---
 
-<p>New albums I've listened to, and what I thought. Most of them come from a weekly roundup of Friday releases.</p>
-
 <div class="albums">
   <ul class="albums-scale">
-    <li class="r2"><b>2</b> Loved it. Rare, for things that are very special.</li>
-    <li class="r15"><b>1.5</b> Really liked it</li>
+    <li class="r3"><b>3</b> Loved it. Rare, for things that are very special.</li>
+    <li class="r2"><b>2</b> Really liked it</li>
     <li class="r1"><b>1</b> Solid music</li>
     <li class="r0"><b>0</b> Didn't care for it</li>
   </ul>
 
   <div class="albums-tabs" role="group" aria-label="Filter albums" hidden>
     <button type="button" data-filter="all" aria-pressed="true">All</button>
-    <button type="button" data-filter="2">Loved</button>
-    <button type="button" data-filter="1.5">Really liked</button>
+    <button type="button" data-filter="3">Loved</button>
+    <button type="button" data-filter="2">Really liked</button>
     <button type="button" data-filter="1">Solid</button>
     <button type="button" data-filter="0">Not for me</button>
     <button type="button" data-filter="none">Not rated yet</button>
   </div>
 
-  {% assign weeks = site.data.albums | group_by: "week" %}
-  {% for wk in weeks %}
-  <section class="albums-week">
-    <h2>Week of {{ wk.name | date: "%b %-d, %Y" }}</h2>
-    <ul class="albums-list">
-      {% for a in wk.items %}
-        {% if a.rating == nil %}
-          {% assign key = "none" %}{% assign cls = "rn" %}{% assign label = "Not rated yet" %}
-        {% elsif a.rating == 2 %}
-          {% assign key = "2" %}{% assign cls = "r2" %}{% assign label = "Loved it" %}
-        {% elsif a.rating == 1.5 %}
-          {% assign key = "1.5" %}{% assign cls = "r15" %}{% assign label = "Really liked it" %}
-        {% elsif a.rating == 1 %}
-          {% assign key = "1" %}{% assign cls = "r1" %}{% assign label = "Solid music" %}
-        {% else %}
-          {% assign key = "0" %}{% assign cls = "r0" %}{% assign label = "Didn't care for it" %}
-        {% endif %}
-      <li class="album" data-rating="{{ key }}">
-        <div class="album-info">
-          <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
-          {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
-        </div>
-        <div class="album-score {{ cls }}" title="{{ label }}">
-          {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
-          <small>{{ label }}</small>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endfor %}
+  <ul class="albums-list">
+    {% for a in site.data.albums %}
+      {% if a.rating == nil %}
+        {% assign key = "none" %}{% assign label = "Not rated yet" %}
+      {% elsif a.rating == 3 %}
+        {% assign key = "3" %}{% assign label = "Loved it" %}
+      {% elsif a.rating == 2 %}
+        {% assign key = "2" %}{% assign label = "Really liked it" %}
+      {% elsif a.rating == 1 %}
+        {% assign key = "1" %}{% assign label = "Solid music" %}
+      {% else %}
+        {% assign key = "0" %}{% assign label = "Didn't care for it" %}
+      {% endif %}
+    <li class="album" data-rating="{{ key }}">
+      <div class="album-info">
+        <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
+        {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
+      </div>
+      <div class="album-score r{% if key == "none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
+        {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
+        <small>{{ label }}</small>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
   <p class="albums-empty" hidden>Nothing here yet.</p>
 </div>
 
 <style>
 .albums [hidden] { display:none !important; }
-.albums { --r0:#6b7080; --r0-soft:#ecedf1; --r1:#1f6f8b; --r1-soft:#e1eff4; --r15:#2f7d4f; --r15-soft:#e0f1e6; --r2:#b5560f; --r2-soft:#fbe9da; --line:#e2e2e2; }
+.albums { --r0:#6b7080; --r0-soft:#ecedf1; --r1:#1f6f8b; --r1-soft:#e1eff4; --r2:#2f7d4f; --r2-soft:#e0f1e6; --r3:#b5560f; --r3-soft:#fbe9da; --line:#e2e2e2; }
 .albums-scale { list-style:none; margin:0 0 1.25rem; padding:0; display:flex; flex-wrap:wrap; gap:.4rem .9rem; font-size:.9rem; }
 .albums-scale li b { display:inline-block; min-width:2.2em; text-align:center; border-radius:999px; padding:0 .4em; margin-right:.3em; font-variant-numeric:tabular-nums; }
 .albums .r0 b, .album-score.r0 { background:var(--r0-soft); color:var(--r0); }
 .albums .r1 b, .album-score.r1 { background:var(--r1-soft); color:var(--r1); }
-.albums .r15 b, .album-score.r15 { background:var(--r15-soft); color:var(--r15); }
 .albums .r2 b, .album-score.r2 { background:var(--r2-soft); color:var(--r2); }
+.albums .r3 b, .album-score.r3 { background:var(--r3-soft); color:var(--r3); }
 .album-score.rn { background:transparent; color:#999; border:1px dashed var(--line); }
 .albums-tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.5rem; }
 .albums-tabs button { font:inherit; font-size:.85rem; border:1px solid var(--line); background:#fff; color:#333; padding:.25rem .75rem; border-radius:999px; cursor:pointer; }
 .albums-tabs button[aria-pressed="true"] { background:#333; border-color:#333; color:#fff; }
 .albums-tabs .n { opacity:.7; margin-left:.3em; font-variant-numeric:tabular-nums; }
-.albums-week h2 { font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:#777; margin:1.75rem 0 .5rem; }
 .albums-list { list-style:none; margin:0; padding:0; }
 .album { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.6rem 0; border-bottom:1px solid var(--line); }
 .album-info { min-width:0; }
@@ -89,7 +80,6 @@ permalink: /albums/
   if (!root) return;
   var tabs = root.querySelector('.albums-tabs');
   var items = Array.prototype.slice.call(root.querySelectorAll('.album'));
-  var weeks = Array.prototype.slice.call(root.querySelectorAll('.albums-week'));
   var empty = root.querySelector('.albums-empty');
   var buttons = Array.prototype.slice.call(tabs.querySelectorAll('button'));
   buttons.forEach(function (b) {
@@ -101,12 +91,7 @@ permalink: /albums/
   function apply(f) {
     buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === f)); });
     items.forEach(function (i) { i.hidden = f !== 'all' && i.getAttribute('data-rating') !== f; });
-    var shown = 0;
-    weeks.forEach(function (w) {
-      var any = w.querySelector('.album:not([hidden])');
-      w.hidden = !any; if (any) shown++;
-    });
-    empty.hidden = shown > 0;
+    empty.hidden = items.some(function (i) { return !i.hidden; });
   }
   tabs.hidden = false;
 })();
