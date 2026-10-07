@@ -1,0 +1,211 @@
+# Album ratings. Newest week first.
+# rating: 0 = didn't care for it, 1 = solid music, 1.5 = really liked it, 2 = loved it (rare).
+# Leave rating empty (~) for albums not rated yet.
+
+- artist: "Greg Freeman"
+  title: "All Set the Bone"
+  genre: "Americana-leaning indie rock"
+  week: 2026-10-02
+  sources: "Stereogum, AOTY"
+  note: "Top pick: his rowdiest, most unguarded record."
+  rating: 1
+
+- artist: "Meshell Ndegeocello"
+  title: "Synonym"
+  genre: "Soul / jazz covers"
+  week: 2026-10-02
+  sources: "The Needle Drop, AOTY"
+  note: "Top pick: classic songs reworked with guests, incl. a Dylan duet with Bill Callahan."
+  rating: ~
+
+- artist: "Quadeca"
+  title: "Life 1"
+  genre: "Art pop / folktronica"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "His most accessible record, with lush production."
+  rating: 1
+
+- artist: "Wishy"
+  title: "Nature's Pill"
+  genre: "Dream pop / indie rock"
+  week: 2026-10-02
+  sources: "AOTY, The Needle Drop interview"
+  note: "Sweet hooks over bittersweet lyrics."
+  rating: 1.5
+
+- artist: "Fat Dog"
+  title: "Cancel Me (I'm Tired)"
+  genre: "Dance-punk / rave rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Chaotic and big-hearted step up from the debut."
+  rating: ~
+
+- artist: "Dev Lemons"
+  title: "hunting what we already killed"
+  genre: "Shoegaze / bedroom pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "A strong user favorite."
+  rating: ~
+
+- artist: "Johnny Marr"
+  title: "The Age of Everything"
+  genre: "Guitar pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Billed as his most cathartic solo album."
+  rating: ~
+
+- artist: "The Fall"
+  title: "Post Script"
+  genre: "Post-punk"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Posthumous final release."
+  rating: ~
+
+- artist: "Vacations"
+  title: "Pursuit of Anything"
+  genre: "Indie pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Phoebe Green"
+  title: "PREMATURE NOSTALGIA"
+  genre: "Alt-pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Stef Chura"
+  title: "Dancing Alone on the Concrete"
+  genre: "Indie rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Susanne Sundfør & Kit Downes"
+  title: "Revelations of Divine Love"
+  genre: "Sacred chamber / organ"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Spike Fuck"
+  title: "evidence"
+  genre: "Dark indie pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Long-awaited debut; the users' darling this week."
+  rating: 1
+
+- artist: "Swans"
+  title: "Newly Sentient Being"
+  genre: "Live noise rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: 0
+
+- artist: "From First to Last"
+  title: "We Were Bleeding Anyway"
+  genre: "Post-hardcore"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Dead Poet Society"
+  title: "Monarch"
+  genre: "Alt-rock / hard rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Imminence"
+  title: "Axis Mundi"
+  genre: "Metalcore"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Xasthur"
+  title: "Open To Misinterpretation"
+  genre: "Black metal / dark folk"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Amon Amarth"
+  title: "The Allfather Awakens"
+  genre: "Melodic death metal"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Victoria Monét"
+  title: "Frequency of Love"
+  genre: "R&B"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Ceebo"
+  title: "Bloccstar"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Quavo"
+  title: "QRÖMELIFE"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Drake"
+  title: "HABIBTI (FOMO)"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Miranda Lambert"
+  title: "Crisco"
+  genre: "Country"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "The Beatles"
+  title: "Rubber Soul (Super Deluxe)"
+  genre: "Reissue · rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "New mixes plus unreleased outtakes."
+  rating: ~
+
+- artist: "Mac Miller"
+  title: "The Divine Feminine (10th Anniversary)"
+  genre: "Reissue · hip-hop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
