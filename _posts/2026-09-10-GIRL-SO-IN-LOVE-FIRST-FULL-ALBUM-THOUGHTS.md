@@ -80,4 +80,31 @@ I'm a thread on your shirt that is coming undone
 I feel right, I feel wrong, I feel totally insane
 ```
 
-Olivia also admits to the actual behavior she
+Olivia also reveals her actual behavior, not just how she feels about it
+
+```
+Seven nights alone and a skipped meal
+I'm sleeping in my dress and my high heels
+```
+
+Shes not eating, shes sleeping in her clothes.  I read this as she is not taking care of herself.
+
+"honeybee" is quite tempered. Its a nice love song. It establishes the pet name for William and is generally a sweet song. The tone of the music is quite sombre however and the assurances that Oliva loves William do hint at trouble brewing.
+
+"maggots for brains" throws us right back into it with some of the strongest imagery on the whole album. There is no point in quoting the song because nearly every line describes the depths of her despair. She describes herself as a zombie, dirty, rotten, a shell, and of course having maggots for brains.
+
+She even 
+
+```
+wish[es] for a tragedy 'Cause I know he'd come over and take real good care of me
+```
+
+Previously the emotions, while out of control, were neutral or trending on having positive connotations. It is hear that the emotions are almost strictly negative all because William is not there. The sickness, the dark side is making an appearance.
+
+"u + me = <3" is overall a fun love song. There is a small, almost hidden detail that when considering that it is adjacent to "my way" points at a moment we are not shown. Olivia says
+
+```
+I got a feeling that wounds are healing, talking on the phone
+```
+
+This alludes to some sort of fight or argument they had. Considering that the next song is immediately about Olivia setting boundaries with Ava we can fill in some details.  William pushed some boundary with Ava, he and Olvia fought and in this song they are reconciling. There is a fight that we don't get a song about and we learn that Olivia is actively hiding or censoring, from us and from herself, that there are deeper problems.
