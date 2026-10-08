@@ -209,3 +209,27 @@
   sources: "AOTY"
   note: ""
   rating: ~
+
+- artist: "Armand Hammer and the Alchemist"
+  title: "Mercy"
+  genre: "Hip-hop"
+  week: 2025-11-07
+  sources: "Wikipedia"
+  note: ""
+  rating: 1
+
+- artist: "End It"
+  title: "Wrong Side of Heaven"
+  genre: "Hardcore"
+  week: 2025-08-29
+  sources: "Flatspot Records"
+  note: "Debut full-length."
+  rating: 0
+
+- artist: "Great Grandpa"
+  title: "Patience, Moonbeam"
+  genre: "Indie rock"
+  week: 2025-03-28
+  sources: "Wikipedia"
+  note: ""
+  rating: 2
