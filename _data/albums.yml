@@ -48,7 +48,7 @@
   week: 2026-10-02
   sources: "AOTY"
   note: "A strong user favorite."
-  rating: ~
+  rating: 2
 
 - artist: "Johnny Marr"
   title: "The Age of Everything"
@@ -152,7 +152,7 @@
   week: 2026-10-02
   sources: "AOTY"
   note: ""
-  rating: ~
+  rating: 1
 
 - artist: "Victoria Monét"
   title: "Frequency of Love"
@@ -209,3 +209,83 @@
   sources: "AOTY"
   note: ""
   rating: ~
+
+- artist: "Sylvan Esso"
+  title: "Ow ∞"
+  genre: "Electronic / indie pop"
+  week: 2026-09-11
+  sources: "Psychic Hotline"
+  note: ""
+  rating: 3
+
+- artist: "Olivia Rodrigo"
+  title: "you seem pretty sad for a girl so in love"
+  genre: "Pop / alt-pop"
+  week: 2026-06-12
+  sources: "Rolling Stone"
+  note: ""
+  rating: 3
+
+- artist: "Bob Dylan, The Band"
+  title: "The Basement Tapes"
+  genre: "Folk rock / Americana"
+  week: 2026-05-09
+  sources: "Mobile Fidelity reissue"
+  note: ""
+  rating: 1
+
+- artist: "Bassvictim"
+  title: "Forever"
+  genre: "Electronic / witch house"
+  week: 2025-10-10
+  sources: "Ones to Watch"
+  note: "Debut album."
+  rating: 3
+
+- artist: "Margo Price"
+  title: "Hard Headed Woman"
+  genre: "Country"
+  week: 2025-08-29
+  sources: "Americana UK"
+  note: ""
+  rating: 1
+
+- artist: "Greet Death"
+  title: "Die In Love"
+  genre: "Shoegaze / doomgaze"
+  week: 2025-06-27
+  sources: "Deathwish Inc."
+  note: ""
+  rating: 1
+
+- artist: "UNIVERSITY"
+  title: "McCartney, It'll Be Ok"
+  genre: "Punk / hardcore"
+  week: 2025-06-20
+  sources: "Transgressive Records"
+  note: ""
+  rating: 3
+
+- artist: "Ovrkast."
+  title: "While The Iron Is Hot"
+  genre: "Hip-hop / jazz rap"
+  week: 2025-05-30
+  sources: "Clash"
+  note: ""
+  rating: 1
+
+- artist: "Esther Rose"
+  title: "Want"
+  genre: "Alt-country / indie rock"
+  week: 2025-05-02
+  sources: "New West Records"
+  note: ""
+  rating: 2
+
+- artist: "Sharp Pins"
+  title: "Radio DDR"
+  genre: "Lo-fi power pop"
+  week: 2025-04-11
+  sources: "Post-Trash, Treble"
+  note: ""
+  rating: 1
