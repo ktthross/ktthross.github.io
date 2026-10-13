@@ -107,4 +107,70 @@ Previously the emotions, while out of control, were neutral or trending on havin
 I got a feeling that wounds are healing, talking on the phone
 ```
 
-This alludes to some sort of fight or argument they had. Considering that the next song is immediately about Olivia setting boundaries with Ava we can fill in some details.  William pushed some boundary with Ava, he and Olvia fought and in this song they are reconciling. There is a fight that we don't get a song about and we learn that Olivia is actively hiding or censoring, from us and from herself, that there are deeper problems.
+This alludes to some sort of fight or argument they had. Considering that the next song is immediately about Olivia setting boundaries with Ava we can fill in some details.  William pushed some boundary with Ava, he and Olivia fought and in this song they are reconciling. There is a fight that we don't get a song about and we learn that Olivia is actively hiding or censoring, from us and from herself, that there are deeper problems.
+
+"my way" shows us a real life consequence of Olivia's intense emotions. She goes gloves off telling Ava to leave her and William alone. She abrasive, mean, and fighting back against the relationship that William has with Ava. Its a case where Olivia's inner state is manifested real as a vicious message to protect her relationship. This is an escalation of her mania and she is barreling towards a crisis. Is interesting to note that there is some more subtext between "my way" and "u + me = <3".  If the album truly is linear than whatever she and William spoke about on the phone seems to have reassured her that it was Ava who is the problem and not William. She does not get mad at him, she gets mad at the other woman. She does not say that he is betraying her trust, she sets the boundary with Ava.  It makes me think that: 1 William is lying to her, whether intentionally, because he lacks awareness or he honestly thinks there is not a problem but can't properly confront or break up with Olivia because "its a virtue to not let good love get away". I read this as Olivia's anger getting redirected towards Ava rather than at the person it really should be, William.
+
+"purple" is the turning point in this arc. Olivia lashing out at Ava must have brought on some sort of self-awareness about how she is acting. Purple is the opposite of "my way". Its quiet and reflective. Olivia is taking stock of the world she has created and realizing that perhaps this is not going how she wanted it to.
+
+```
+t's a small world (It's a small world)
+When it only can revolve around us two
+It's crazy (It's crazy)
+I had big dreams 'til I tied myself to you
+Now I'm all-consumed
+```
+
+she ends the song with questions which come across as rhetorical and seem mostly to be posed as questions rather than statements because Olivia is saying out loud what she is feeling in her heart.
+
+```
+Melt with you 'til it all turns black
+Are we so in love? Are we too attached?
+Melt with you 'til it all turns black
+When you smooth it out, but it feels too flat
+Melt with you 'til it all turns black
+When you get so close and you can't go back
+```
+
+"the cure" is the beginning of the descending arc. Olivia has come to the realization that there is a deeper issue and that she is using the relationship to try and ameliorate those feelings. After the manic highs, depressive downs, and aggressive rage towards the other woman Olivia realizes that everything that connects these events is poison and doubt inside of her. Critically she acknowledges that the relationship is not what she needs to be happy. This kicks off he diagnosing the problem.
+
+"begged" is another turn to self-evaluation but this time its a critical look at the relationship. Its perhaps telling that it sits exactly opposite of "my way" as the critical eye on the relationship between William and Ava is now turned to William rather than being directed at Ava. Olivia is realizing that the relationship is not what she romanticized. She in fact begged to get what she needed from William and recognizes that having to force someone to do what you ask is not love and its hollow.
+
+"whats wrong with me" is the final diagnosis.  Olivia is not convincing herself otherwise that there is something substantial, she recognizes that William is not giving her what she needs and his coldness, his static is what is making her sick.
+
+The final three tracks of the album catalogue the fallout of the revelations.  
+
+"less" is the breakup -- but not the end! This song is so god damn interesting. The message is that Olivia would prefer to stay together. Based on the lyrics we can infer that William said something to the effect of "I love you too much to see you in pain. I can't be with you any more" and left. Olivia is heartbroken wishing that William did not love her so much because then they could still be together. Under the surface though, there is a strange undercurrent. Olivia is the one who has realized William is what is wrong with her but William is the one breaking up. It makes me wonder if the song is from her perspective at all and this is in fact from William's perspective.
+
+The album concludes with "cigarette smoke" which outlines Olvia's feelings towards William and their relationship.
+
+
+I partition the album into 5 distinct sections.
+
+#### The opener
+- dope dead
+
+#### So in love
+- stupid song
+- honeybee
+- maggots for brains
+
+### The fall
+- u + me = <3
+- my way
+- purple
+
+#### Diagnosis
+- THe cure
+- begged
+- whats wrong with me
+
+#### Fallout
+- less
+- expectations
+- cigarette smoke
+
+
+Throughout the album there seems to be an inability or unwillingness by William to let Olivia go. From the narrative it seems clear that he does not want to respect her boundaries for the relationship but also does not want to end it. its very clever because things which on the surface appear to be Olivia talking about herself in fact are written ambiguously and could apply to both William and Olivia. 
+
+"its a virtue to not let good love get away"
