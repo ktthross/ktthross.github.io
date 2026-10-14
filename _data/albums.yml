@@ -2,6 +2,46 @@
 # rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
 # Leave rating empty (~) for albums not rated yet.
 
+- artist: "Cameron Winter"
+  title: "Live at Carnegie Hall"
+  genre: "Live solo piano / indie"
+  week: 2026-10-09
+  sources: "Partisan Records"
+  note: "Solo piano set from his Dec. 2025 Carnegie Hall show, with 3 unreleased songs."
+  rating: 2
+
+- artist: "Remi Wolf"
+  title: "Mud"
+  genre: "Alt-pop"
+  week: 2026-10-09
+  sources: "Flood Magazine, NME"
+  note: "Third album; more live-band, less synth-heavy."
+  rating: 2
+
+- artist: "Wage War"
+  title: "Landfall"
+  genre: "Metalcore"
+  week: 2026-10-09
+  sources: "Blabbermouth, The Metallist"
+  note: "Sixth album, built on Florida hurricane imagery."
+  rating: 1
+
+- artist: "BODEGA"
+  title: "All Inside Aquarium"
+  genre: "Rock / post-punk"
+  week: 2026-10-09
+  sources: "NME, Clash"
+  note: "Fourth album; a turn toward anthemic rock."
+  rating: 1
+
+- artist: "Amaseffer"
+  title: "When The Lions Leave Their Den"
+  genre: "Progressive metal / folk metal"
+  week: 2026-10-08
+  sources: "The Metallist, Blabbermouth"
+  note: "Part two of the Exodus trilogy, comeback after 18 years."
+  rating: 0
+
 - artist: "Greg Freeman"
   title: "All Set the Bone"
   genre: "Americana-leaning indie rock"
@@ -48,7 +88,7 @@
   week: 2026-10-02
   sources: "AOTY"
   note: "A strong user favorite."
-  rating: ~
+  rating: 2
 
 - artist: "Johnny Marr"
   title: "The Age of Everything"
@@ -152,7 +192,7 @@
   week: 2026-10-02
   sources: "AOTY"
   note: ""
-  rating: ~
+  rating: 1
 
 - artist: "Victoria Monét"
   title: "Frequency of Love"
@@ -209,3 +249,83 @@
   sources: "AOTY"
   note: ""
   rating: ~
+
+- artist: "Sylvan Esso"
+  title: "Ow ∞"
+  genre: "Electronic / indie pop"
+  week: 2026-09-11
+  sources: "Psychic Hotline"
+  note: ""
+  rating: 3
+
+- artist: "Olivia Rodrigo"
+  title: "you seem pretty sad for a girl so in love"
+  genre: "Pop / alt-pop"
+  week: 2026-06-12
+  sources: "Rolling Stone"
+  note: ""
+  rating: 3
+
+- artist: "Bob Dylan, The Band"
+  title: "The Basement Tapes"
+  genre: "Folk rock / Americana"
+  week: 2026-05-09
+  sources: "Mobile Fidelity reissue"
+  note: ""
+  rating: 1
+
+- artist: "Bassvictim"
+  title: "Forever"
+  genre: "Electronic / witch house"
+  week: 2025-10-10
+  sources: "Ones to Watch"
+  note: "Debut album."
+  rating: 3
+
+- artist: "Margo Price"
+  title: "Hard Headed Woman"
+  genre: "Country"
+  week: 2025-08-29
+  sources: "Americana UK"
+  note: ""
+  rating: 1
+
+- artist: "Greet Death"
+  title: "Die In Love"
+  genre: "Shoegaze / doomgaze"
+  week: 2025-06-27
+  sources: "Deathwish Inc."
+  note: ""
+  rating: 1
+
+- artist: "UNIVERSITY"
+  title: "McCartney, It'll Be Ok"
+  genre: "Punk / hardcore"
+  week: 2025-06-20
+  sources: "Transgressive Records"
+  note: ""
+  rating: 3
+
+- artist: "Ovrkast."
+  title: "While The Iron Is Hot"
+  genre: "Hip-hop / jazz rap"
+  week: 2025-05-30
+  sources: "Clash"
+  note: ""
+  rating: 1
+
+- artist: "Esther Rose"
+  title: "Want"
+  genre: "Alt-country / indie rock"
+  week: 2025-05-02
+  sources: "New West Records"
+  note: ""
+  rating: 2
+
+- artist: "Sharp Pins"
+  title: "Radio DDR"
+  genre: "Lo-fi power pop"
+  week: 2025-04-11
+  sources: "Post-Trash, Treble"
+  note: ""
+  rating: 1
