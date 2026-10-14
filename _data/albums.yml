@@ -2,6 +2,22 @@
 # rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
 # Leave rating empty (~) for albums not rated yet.
 
+- artist: "Cameron Winter"
+  title: "Live at Carnegie Hall"
+  genre: "Live solo piano / indie"
+  week: 2026-10-09
+  sources: "Partisan Records"
+  note: "Solo piano set from his Dec. 2025 Carnegie Hall show, with 3 unreleased songs."
+  rating: 2
+
+- artist: "Remi Wolf"
+  title: "Mud"
+  genre: "Alt-pop"
+  week: 2026-10-09
+  sources: "Flood Magazine, NME"
+  note: "Third album; more live-band, less synth-heavy."
+  rating: 2
+
 - artist: "Greg Freeman"
   title: "All Set the Bone"
   genre: "Americana-leaning indie rock"
