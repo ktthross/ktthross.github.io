@@ -2,6 +2,14 @@
 # rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
 # Leave rating empty (~) for albums not rated yet.
 
+- artist: "Dummy"
+  title: "do you love the color of the sky?"
+  rating: 1
+
+- artist: "June McDoom"
+  title: "Follow The Light"
+  rating: 1
+
 - artist: "Fontaines D.C."
   title: "Dopamine Chamber"
   genre: "Alt-rock / synth-pop"
