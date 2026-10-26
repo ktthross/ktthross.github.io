@@ -12,7 +12,7 @@ If we have our Gaussian distribution for points $X$ and observed values $f$ we w
 $$
 \begin{pmatrix}
 f \\ f^{*}
-\end{pmatrix} ~ N \begin{pmatrix}
+\end{pmatrix} \sim N \begin{pmatrix}
 0, &
 \begin{bmatrix}
 K(X, X) & K(X, x) \\
