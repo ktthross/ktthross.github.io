@@ -7,4 +7,5 @@ vendor
 Gemfile.lock
 
 __pycache__/
-*.pyc
+*.py[cod]
+.mypy_cache/

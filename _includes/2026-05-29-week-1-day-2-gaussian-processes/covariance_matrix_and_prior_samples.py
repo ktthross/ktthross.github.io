@@ -1,6 +1,4 @@
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../_includes/shared"))
 
 import numpy as np
 import matplotlib.pyplot as plt

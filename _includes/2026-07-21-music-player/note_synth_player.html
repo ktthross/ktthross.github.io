@@ -220,8 +220,7 @@
   let expanded = false;
   const COLLAPSED_ROWS = 8;
 
-  const isBlack = n => n.includes("#");
-  const short = n => n.split("/")[0];
+{% include shared/note_widgets.js %}
 
   let activeKeys = [], keyToCoeffIdx = {};
   function rebuildMapping(){
@@ -290,48 +289,19 @@
   }
   function stopTrue(){ if(trueVoice){ releaseVoices([trueVoice], RELEASE); trueVoice = null; } trueSoundingKey = null; }
 
-  // ---------- selection (same logic as the fit explorer) ----------
-  function computeSelectionFor(key, c){
-    const mags = c.map(Math.abs), maxMag = Math.max(...mags);
-    const totalEnergy = mags.reduce((s,m)=>s+m*m,0);
-    const order = c.map((v,i)=>i).sort((a,b)=>mags[b]-mags[a]);
-    let selectedIdx = new Set(), threshDesc = "";
-    if(mode==="abs"){ const frac=cut.abs/100, t=frac*frac*maxMag; c.forEach((v,i)=>{ if(Math.abs(v)>=t) selectedIdx.add(i); }); threshDesc=t.toFixed(4); }
-    else if(mode==="topn"){ const n=Math.max(0,Math.round(cut.topn/100*c.length)); for(let i=0;i<n;i++) selectedIdx.add(order[i]); threshDesc=n+" / "+c.length; }
-    else { const target=cut.energy/100*totalEnergy; let acc=0; for(const i of order){ if(acc>=target) break; acc+=mags[i]*mags[i]; selectedIdx.add(i); } threshDesc=cut.energy+"%"; }
-    let capE=0; selectedIdx.forEach(i=>capE+=mags[i]*mags[i]);
-    return { selectedIdx, maxMag, order, capPct: totalEnergy>0?(capE/totalEnergy*100):0, threshDesc };
-  }
+  // ---------- selection (shared with the fit explorer) ----------
+  const computeSelectionFor = (key, c) => computeCoeffSelection(c, mode, cut);
   const computeSelection = () => computeSelectionFor(targetKey, coeffs());
 
-  function heatColor(t){
-    const S = ["--msp-h0","--msp-h1","--msp-h2","--msp-h3","--msp-h4"].map(v => getComputedStyle(root).getPropertyValue(v).trim());
-    t = Math.max(0,Math.min(1,t)); const seg=t*4, i=Math.min(3,Math.floor(seg)), f=seg-i;
-    return lerpHex(S[i],S[i+1],f);
-  }
-  function lerpHex(a,b,f){ const pa=hx(a),pb=hx(b); return `rgb(${Math.round(pa[0]+(pb[0]-pa[0])*f)},${Math.round(pa[1]+(pb[1]-pa[1])*f)},${Math.round(pa[2]+(pb[2]-pa[2])*f)})`; }
-  function hx(h){ h=h.replace("#",""); if(h.length===3)h=h.split("").map(c=>c+c).join(""); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+  const heatColor = makeHeatColor(root, "msp");
 
   // ---------- keyboard building ----------
   const reconEl = $("#msp-piano-recon"), trueEl = $("#msp-piano-true"), tip = $("#msp-tip");
   let reconKeyEls = {}, trueKeyEls = {};
 
   function buildKeyboard(container, keyEls, onDown, onUp, withTooltip){
-    const whiteKeys = NOTES.filter(n => !isBlack(n.name)), nWhite = whiteKeys.length;
-    const whiteIndexOfKey = {}; whiteKeys.forEach((n,i)=>whiteIndexOfKey[n.key]=i);
-    whiteKeys.forEach(n => {
-      const el = document.createElement("div"); el.className="wkey"; el.dataset.key=n.key;
-      const lab = document.createElement("span"); lab.className="klabel"; lab.textContent=short(n.name);
-      el.appendChild(lab); container.appendChild(el); keyEls[n.key]=el;
-      wireKey(el, n, onDown, onUp, withTooltip);
-    });
-    NOTES.filter(n => isBlack(n.name)).forEach(n => {
-      let bw = n.key-1; while(bw>=1 && isBlack(byKey[bw].name)) bw--;
-      const el = document.createElement("div"); el.className="bkey"; el.dataset.key=n.key;
-      el.style.left = ((whiteIndexOfKey[bw]+1)/nWhite*100)+"%";
-      container.appendChild(el); keyEls[n.key]=el;
-      wireKey(el, n, onDown, onUp, withTooltip);
-    });
+    buildPianoKeys(container, keyEls, NOTES, byKey,
+                   (el, n) => wireKey(el, n, onDown, onUp, withTooltip));
   }
   function wireKey(el, n, onDown, onUp, withTooltip){
     const down = e => { e.preventDefault(); el.setPointerCapture && el.setPointerCapture(e.pointerId||0); onDown(n); };

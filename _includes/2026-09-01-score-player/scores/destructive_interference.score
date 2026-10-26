@@ -1,0 +1,29 @@
+# Original. Written *for* the reconstruction rather than against it.
+#
+# Wide, slow chords whose fits overlap heavily, so the negative coefficients
+# have somewhere to cancel and the beating between mismatched partials becomes
+# the point. On "True" this is an unremarkable pad; the interesting version is
+# the one assembled out of notes that aren't being played.
+
+tempo 46
+meter 4
+
+track pad
+  A2+E3+A3:w
+  A2+E3+C4:w
+  F2+C3+A3:w
+  F2+C3+G3:w
+  G2+D3+B3:w
+  G2+D3+D4:w
+  E2+B2+G3:w
+  A2+E3+A3:w
+
+track bell gain 0.55
+  -:h A4:h
+  -:q C5:q -:h
+  -:h E4:h
+  -:q A4:h -:q
+  -:h B4:h
+  -:q D5:q -:h
+  -:h G4:h
+  A4:w

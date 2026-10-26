@@ -1,0 +1,443 @@
+# Album ratings. Newest week first.
+# rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
+# Leave rating empty (~) for albums not rated yet.
+
+- artist: "Fontaines D.C."
+  title: "Dopamine Chamber"
+  genre: "Alt-rock / synth-pop"
+  week: 2026-10-16
+  sources: "NME, Sound Knowledge"
+  note: "Fifth album; colder, synth-heavy turn away from their guitar-punk roots."
+  rating: 1
+
+- artist: "@"
+  title: "Autosmile"
+  genre: "Art-folk / psych-folk"
+  week: 2026-10-16
+  sources: "Clash, The Line of Best Fit"
+  note: "Second album, first on 4AD."
+  rating: 1
+
+- artist: "Sophia Stel"
+  title: "the greatest album of all time"
+  genre: "Electro-pop"
+  week: 2026-10-16
+  sources: "Stereogum, The Line of Best Fit"
+  note: "Debut album; rave anthems and ambient sounds beyond her earlier pop."
+  rating: 1
+
+- artist: "The Avalanches"
+  title: "No Bad Memories"
+  genre: "Electronic / sample collage"
+  week: 2026-10-16
+  sources: "DIY, The Quietus"
+  note: "Fourth album, first in six years; built from sampled ads and jingles."
+  rating: 1
+
+- artist: "Cameron Winter"
+  title: "Live at Carnegie Hall"
+  genre: "Live solo piano / indie"
+  week: 2026-10-09
+  sources: "Partisan Records"
+  note: "Solo piano set from his Dec. 2025 Carnegie Hall show, with 3 unreleased songs."
+  rating: 2
+
+- artist: "Remi Wolf"
+  title: "Mud"
+  genre: "Alt-pop"
+  week: 2026-10-09
+  sources: "Flood Magazine, NME"
+  note: "Third album; more live-band, less synth-heavy."
+  rating: 2
+
+- artist: "Wage War"
+  title: "Landfall"
+  genre: "Metalcore"
+  week: 2026-10-09
+  sources: "Blabbermouth, The Metallist"
+  note: "Sixth album, built on Florida hurricane imagery."
+  rating: 1
+
+- artist: "BODEGA"
+  title: "All Inside Aquarium"
+  genre: "Rock / post-punk"
+  week: 2026-10-09
+  sources: "NME, Clash"
+  note: "Fourth album; a turn toward anthemic rock."
+  rating: 1
+
+- artist: "Amaseffer"
+  title: "When The Lions Leave Their Den"
+  genre: "Progressive metal / folk metal"
+  week: 2026-10-08
+  sources: "The Metallist, Blabbermouth"
+  note: "Part two of the Exodus trilogy, comeback after 18 years."
+  rating: 0
+
+- artist: "Greg Freeman"
+  title: "All Set the Bone"
+  genre: "Americana-leaning indie rock"
+  week: 2026-10-02
+  sources: "Stereogum, AOTY"
+  note: "Top pick: his rowdiest, most unguarded record."
+  rating: 1
+
+- artist: "Meshell Ndegeocello"
+  title: "Synonym"
+  genre: "Soul / jazz covers"
+  week: 2026-10-02
+  sources: "The Needle Drop, AOTY"
+  note: "Top pick: classic songs reworked with guests, incl. a Dylan duet with Bill Callahan."
+  rating: ~
+
+- artist: "Quadeca"
+  title: "Life 1"
+  genre: "Art pop / folktronica"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "His most accessible record, with lush production."
+  rating: 1
+
+- artist: "Wishy"
+  title: "Nature's Pill"
+  genre: "Dream pop / indie rock"
+  week: 2026-10-02
+  sources: "AOTY, The Needle Drop interview"
+  note: "Sweet hooks over bittersweet lyrics."
+  rating: 2
+
+- artist: "Fat Dog"
+  title: "Cancel Me (I'm Tired)"
+  genre: "Dance-punk / rave rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Chaotic and big-hearted step up from the debut."
+  rating: 1
+
+- artist: "Dev Lemons"
+  title: "hunting what we already killed"
+  genre: "Shoegaze / bedroom pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "A strong user favorite."
+  rating: 2
+
+- artist: "Johnny Marr"
+  title: "The Age of Everything"
+  genre: "Guitar pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Billed as his most cathartic solo album."
+  rating: ~
+
+- artist: "The Fall"
+  title: "Post Script"
+  genre: "Post-punk"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Posthumous final release."
+  rating: ~
+
+- artist: "Vacations"
+  title: "Pursuit of Anything"
+  genre: "Indie pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Phoebe Green"
+  title: "PREMATURE NOSTALGIA"
+  genre: "Alt-pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Stef Chura"
+  title: "Dancing Alone on the Concrete"
+  genre: "Indie rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Susanne Sundfør & Kit Downes"
+  title: "Revelations of Divine Love"
+  genre: "Sacred chamber / organ"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Spike Fuck"
+  title: "evidence"
+  genre: "Dark indie pop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "Long-awaited debut; the users' darling this week."
+  rating: 1
+
+- artist: "Swans"
+  title: "Newly Sentient Being"
+  genre: "Live noise rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: 0
+
+- artist: "From First to Last"
+  title: "We Were Bleeding Anyway"
+  genre: "Post-hardcore"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Dead Poet Society"
+  title: "Monarch"
+  genre: "Alt-rock / hard rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Imminence"
+  title: "Axis Mundi"
+  genre: "Metalcore"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Xasthur"
+  title: "Open To Misinterpretation"
+  genre: "Black metal / dark folk"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Amon Amarth"
+  title: "The Allfather Awakens"
+  genre: "Melodic death metal"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: 1
+
+- artist: "Victoria Monét"
+  title: "Frequency of Love"
+  genre: "R&B"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Ceebo"
+  title: "Bloccstar"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Quavo"
+  title: "QRÖMELIFE"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Drake"
+  title: "HABIBTI (FOMO)"
+  genre: "Rap"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Miranda Lambert"
+  title: "Crisco"
+  genre: "Country"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "The Beatles"
+  title: "Rubber Soul (Super Deluxe)"
+  genre: "Reissue · rock"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: "New mixes plus unreleased outtakes."
+  rating: ~
+
+- artist: "Mac Miller"
+  title: "The Divine Feminine (10th Anniversary)"
+  genre: "Reissue · hip-hop"
+  week: 2026-10-02
+  sources: "AOTY"
+  note: ""
+  rating: ~
+
+- artist: "Sylvan Esso"
+  title: "Ow ∞"
+  genre: "Electronic / indie pop"
+  week: 2026-09-11
+  sources: "Psychic Hotline"
+  note: ""
+  rating: 3
+
+- artist: "Olivia Rodrigo"
+  title: "you seem pretty sad for a girl so in love"
+  genre: "Pop / alt-pop"
+  week: 2026-06-12
+  sources: "Rolling Stone"
+  note: ""
+  rating: 3
+
+- artist: "Bob Dylan, The Band"
+  title: "The Basement Tapes"
+  genre: "Folk rock / Americana"
+  week: 2026-05-09
+  sources: "Mobile Fidelity reissue"
+  note: ""
+  rating: 1
+
+- artist: "Alabaster DePlume"
+  title: "To Cy & Lee: Instrumentals, Vol. 1"
+  genre: "Jazz"
+  week: 2025-12-05
+  sources: "International Anthem (IA11 reissue)"
+  note: "IA11 anniversary reissue of the 2020 original."
+  rating: 1
+
+- artist: "keiyaA"
+  title: "hooke's law"
+  genre: "R&B / soul"
+  week: 2025-10-31
+  sources: "Wikipedia"
+  note: "Second album, on XL Recordings."
+  rating: 1
+
+- artist: "Bassvictim"
+  title: "Forever"
+  genre: "Electronic / witch house"
+  week: 2025-10-10
+  sources: "Ones to Watch"
+  note: "Debut album."
+  rating: 3
+
+- artist: "KP Skywalka"
+  title: "I Tried To Tell You"
+  genre: "Rap / hip-hop"
+  week: 2025-09-12
+  sources: "Spotify"
+  note: "Beat The Odds LLC c/o NEWWRLD Distribution."
+  rating: 1
+
+- artist: "James K"
+  title: "Friend"
+  genre: "Dream pop / trip-hop"
+  week: 2025-09-05
+  sources: "DJ Mag, The Quietus"
+  note: ""
+  rating: 0
+
+- artist: "Margo Price"
+  title: "Hard Headed Woman"
+  genre: "Country"
+  week: 2025-08-29
+  sources: "Americana UK"
+  note: ""
+  rating: 1
+
+- artist: "Preservation & Gabe 'Nandez"
+  title: "Sortilège"
+  genre: "Hip-hop"
+  week: 2025-08-15
+  sources: "Tobira Records, Bandcamp"
+  note: ""
+  rating: 1
+
+- artist: "Cleo Reed"
+  title: "CUNTRY"
+  genre: "Folk rap / R&B"
+  week: 2025-07-17
+  sources: "Atwood Magazine, Stereogum"
+  note: "Double LP on American labor; features billy woods and Nick Hakim."
+  rating: 1
+
+- artist: "Greet Death"
+  title: "Die In Love"
+  genre: "Shoegaze / doomgaze"
+  week: 2025-06-27
+  sources: "Deathwish Inc."
+  note: ""
+  rating: 1
+
+- artist: "UNIVERSITY"
+  title: "McCartney, It'll Be Ok"
+  genre: "Punk / hardcore"
+  week: 2025-06-20
+  sources: "Transgressive Records"
+  note: ""
+  rating: 3
+
+- artist: "Ovrkast."
+  title: "While The Iron Is Hot"
+  genre: "Hip-hop / jazz rap"
+  week: 2025-05-30
+  sources: "Clash"
+  note: ""
+  rating: 1
+
+- artist: "Esther Rose"
+  title: "Want"
+  genre: "Alt-country / indie rock"
+  week: 2025-05-02
+  sources: "New West Records"
+  note: ""
+  rating: 2
+
+- artist: "Sharp Pins"
+  title: "Radio DDR"
+  genre: "Lo-fi power pop"
+  week: 2025-04-11
+  sources: "Post-Trash, Treble"
+  note: ""
+  rating: 1
+
+- artist: "Perfume Genius"
+  title: "Glory"
+  genre: "Indie-folk / chamber pop"
+  week: 2025-03-28
+  sources: "The Skinny"
+  note: "Seventh album; Americana and chamber pop, focused on songwriting."
+  rating: 1
+
+- artist: "Men I Trust"
+  title: "Equus Caballus"
+  genre: "Indie pop / dream pop"
+  week: 2025-05-06
+  sources: "Wikipedia, Stereogum"
+  note: "Sixth album; brighter companion to Equus Asinus."
+  rating: 1
+
+- artist: "Panda Bear"
+  title: "Sinister Grift"
+  genre: "Rock / psychedelic pop"
+  week: 2025-02-28
+  sources: "Rolling Stone AU, Domino"
+  note: "First solo LP in ~5 years; recorded in Lisbon with Josh Dibb."
+  rating: 1
+
+- artist: "MIKE"
+  title: "Showbiz!"
+  genre: "Hip-hop"
+  week: 2025-01-31
+  sources: "Wikipedia, At the Barrier"
+  note: "Sample-heavy, hazy hip-hop; a return from the trap-leaning Pinball."
+  rating: 2

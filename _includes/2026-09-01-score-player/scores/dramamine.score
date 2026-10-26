@@ -1,0 +1,37 @@
+# Modest Mouse -- "Dramamine" (This Is a Long Drive for Someone with Nothing
+# to Think About, 1996). Short excerpt.
+# Converted from assets/midi_files/Dramamine.mid, bars 10-17.
+#
+# 12/8, so twelve eighths to the bar and nothing sustains. Guitar and bass are
+# both relentless eighth-note patterns, which makes this the opposite stress
+# case from the Debussy: every note is gone before a wide integration window
+# has closed, so at x4.0 you hear the fit guessing at notes that already ended.
+#
+# Converted mechanically by score_from_midi.py -- not transcribed by ear.
+
+tempo 92
+meter 6
+
+track guitar
+  E4:e  D4  -:e  G4  E4  D4  B3  A3  -:e  A3  B3  G3
+  E4  D4  -:e  G4  E4  D4  E4  D4  G3  D4  C4  G3
+  E4  D4  -:e  G4  E4  D4  B3  A3  -:e  A3  B3  G3
+  E4  D4  -:e  G4  E4  D4  E4  D4  G3  D4  C4  G3
+  B3  A3  D3  A3  G3  -:h..  E4:e  D4  -:e  G4  E4  D4  B3  A3  -:e  A3
+  B3  G3
+  E4  D4  -:e  G4  E4  D4  E4  D4  G3  D4  C4  G3
+  E4  D4  -:e  G4  E4  D4  B3  A3  -:e  A3  B3  G3
+
+track lead
+  -:q  E4:e  -:5/2  G3:e  -:5/2  E4:e  -:11/2  E4:e  -:5/2  G3:e  -:5/2  E4:e  -:w..  G3:1/6  B3  G3:19/6
+  -:q  E4:e  -:5/2  G3:e  -:5/2  E4:e  -:11/2  E4:e  -:5/2  G3:e  -:q.
+
+track bass
+  E3:e  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3
+  E3  G3  E3  D3  F#3  D3  C3  E3  C3  G2  F#3  D3

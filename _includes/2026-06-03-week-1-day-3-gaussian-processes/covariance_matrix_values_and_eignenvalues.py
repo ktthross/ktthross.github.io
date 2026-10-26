@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../_includes/shared"))
-
 import numpy as np
 from kernels import radial_basis_function_kernel, generate_covariance_matrix_from_points
 

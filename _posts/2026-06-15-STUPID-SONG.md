@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Stupid Song"
+title: "stupid song"
 date: 2026-06-15
 categories: music pop-culture criticism
 tags: [olivia-rodrigo, stupid-song, lyrics, song-analysis, ylpsfagsil, berry-paradox]
 ---
 
-Thoughts on `Stupid Song` from Olivia Rodrigo's *You Look Pretty Sad For A Girl So In Love*.
+Thoughts on *stupid song* from Olivia Rodrigo's *you seem pretty sad for a girl so in love*.
 
 ## Verse 1
 
@@ -42,7 +42,7 @@ We also get a sense for Olivia feeling out of control and falling apart. Car spe
 
 Finally she ditches the metaphors and just says she "feel[s] totally insane" and then closes with the romantic contextualization of the chorus: "And I want you more than any stupid song could ever say." Within the broader context of the album, we can certainly view this as Olivia assigning a meaning to this mania which is love and desire, but we and she will discover that this mania is about Olivia and she is interpreting it as infatuation.
 
-There is a clever 4th wall lyric. The song is called "Stupid Song" and she says "I want you more than any stupid song could ever say." This creates a Berry Paradox situation — the lyric claims the song *cannot* fully express her desire, yet the very act of singing it defines and conveys exactly that desire. The claim "more than any stupid song can say" is itself being said by a stupid song, which makes it self-defeating. She describes the inadequacy of the medium through the medium itself.
+There is a clever 4th wall lyric. The song is called "*stupid song*" and she says "I want you more than any stupid song could ever say." This creates a Berry Paradox situation — the lyric claims the song *cannot* fully express her desire, yet the very act of singing it defines and conveys exactly that desire. The claim "more than any stupid song can say" is itself being said by a stupid song, which makes it self-defeating. She describes the inadequacy of the medium through the medium itself.
 
 ## Bridge
 
