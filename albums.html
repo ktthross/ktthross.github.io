@@ -24,31 +24,53 @@ permalink: /albums/
     <button type="button" data-filter="none">Not rated yet</button>
   </div>
 
-  <ul class="albums-list">
-    {% for a in site.data.albums %}
-    {% if a.rating == nil %}
-    {% assign key = "none" %}{% assign label = "Not rated yet" %}
-    {% elsif a.rating == 3 %}
-    {% assign key = "3" %}{% assign label = "Loved it" %}
-    {% elsif a.rating == 2 %}
-    {% assign key = "2" %}{% assign label = "Really liked it" %}
-    {% elsif a.rating == 1 %}
-    {% assign key = "1" %}{% assign label = "Solid music" %}
-    {% else %}
-    {% assign key = "0" %}{% assign label = "Didn't care for it" %}
+  {% assign periods = site.data.albums | group_by: "period" | sort: "name" | reverse %}
+
+  <details class="albums-top-section">
+    <summary>Top albums by period</summary>
+    {% for p in periods %}
+    {% assign top = p.items | where_exp: "a", "a.rating >= 2" | sort: "rating" | reverse %}
+    {% if top.size > 0 %}
+    <div class="albums-top">
+      <h3>{{ p.name }}</h3>
+      <ul>
+        {% for a in top %}<li>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
+      </ul>
+    </div>
     {% endif %}
-    <li class="album" data-rating="{{ key }}">
-      <div class="album-info">
-        <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
-        {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
-      </div>
-      <div class="album-score r{% if key == " none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
-        {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
-        <small>{{ label }}</small>
-      </div>
-    </li>
     {% endfor %}
-  </ul>
+  </details>
+
+  {% for p in periods %}
+  <section class="albums-period">
+    <h2 class="albums-period-heading">{{ p.name }}</h2>
+    <ul class="albums-list">
+      {% for a in p.items %}
+      {% if a.rating == nil %}
+      {% assign key = "none" %}{% assign label = "Not rated yet" %}
+      {% elsif a.rating == 3 %}
+      {% assign key = "3" %}{% assign label = "Loved it" %}
+      {% elsif a.rating == 2 %}
+      {% assign key = "2" %}{% assign label = "Really liked it" %}
+      {% elsif a.rating == 1 %}
+      {% assign key = "1" %}{% assign label = "Solid music" %}
+      {% else %}
+      {% assign key = "0" %}{% assign label = "Didn't care for it" %}
+      {% endif %}
+      <li class="album" data-rating="{{ key }}">
+        <div class="album-info">
+          <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
+          {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
+        </div>
+        <div class="album-score r{% if key == " none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
+          {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
+          <small>{{ label }}</small>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
   <p class="albums-empty" hidden>Nothing here yet.</p>
 </div>
 
@@ -194,6 +216,57 @@ permalink: /albums/
     opacity: .7;
     margin-left: .3em;
     font-variant-numeric: tabular-nums;
+  }
+
+  .albums-period-heading {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 .5rem;
+  }
+
+  .albums-top-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .albums-top-section > summary {
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .albums-top-section[open] > summary {
+    margin-bottom: .75rem;
+  }
+
+  .albums-top {
+    margin: 0 0 .75rem;
+    padding: .6rem .9rem;
+    background: #f7f7f7;
+    border-radius: 8px;
+  }
+
+  .albums-top h3 {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: #777;
+    margin: 0 0 .4rem;
+  }
+
+  .albums-top ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: .92rem;
+  }
+
+  .albums-top li {
+    padding: .15rem 0;
+  }
+
+  .albums-top b {
+    font-variant-numeric: tabular-nums;
+    color: #555;
   }
 
   .albums-list {
