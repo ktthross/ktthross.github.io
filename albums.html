@@ -6,6 +6,8 @@ permalink: /albums/
 
 <div class="albums">
 
+  <p class="albums-note">No attempt at objectivity:</p>
+
   <ul class="albums-scale">
     <li class="r3"><b>3</b> Stuck in my brain</li>
     <li class="r2"><b>2</b> Really liked it</li>
@@ -15,6 +17,8 @@ permalink: /albums/
 
   <div class="albums-dist" hidden></div>
 
+  <input type="search" class="albums-search" placeholder="Search by artist or title…" aria-label="Search albums">
+
   <div class="albums-tabs" role="group" aria-label="Filter albums" hidden>
     <button type="button" data-filter="all" aria-pressed="true">All</button>
     <button type="button" data-filter="3">Loved</button>
@@ -22,6 +26,11 @@ permalink: /albums/
     <button type="button" data-filter="1">Solid</button>
     <button type="button" data-filter="0">Not for me</button>
     <button type="button" data-filter="none">Not rated yet</button>
+  </div>
+
+  <div class="albums-tabs albums-mode" role="group" aria-label="Group albums by" hidden>
+    <button type="button" data-mode="listened" aria-pressed="true">Listened that year</button>
+    <button type="button" data-mode="released">Released that year</button>
   </div>
 
   {% assign periods = site.data.albums | group_by: "period" | sort: "name" | reverse %}
@@ -34,7 +43,7 @@ permalink: /albums/
     <div class="albums-top">
       <h3>{{ p.name }}</h3>
       <ul>
-        {% for a in top %}<li>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
+        {% for a in top %}<li{% if a.released and a.released != a.period %} data-older{% endif %}>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
       </ul>
     </div>
     {% endif %}
@@ -57,7 +66,7 @@ permalink: /albums/
       {% else %}
       {% assign key = "0" %}{% assign label = "Didn't care for it" %}
       {% endif %}
-      <li class="album" data-rating="{{ key }}">
+      <li class="album" data-rating="{{ key }}"{% if a.released and a.released != a.period %} data-older{% endif %}>
         <div class="album-info">
           <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
           {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
@@ -186,6 +195,18 @@ permalink: /albums/
   .albums-dist-row .n {
     font-variant-numeric: tabular-nums;
     color: #777;
+  }
+
+  .albums-search {
+    display: block;
+    font: inherit;
+    font-size: .95rem;
+    width: 100%;
+    max-width: 22rem;
+    padding: .4rem .7rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
   }
 
   .albums-tabs {
@@ -355,11 +376,44 @@ permalink: /albums/
       }).join('');
       dist.hidden = false;
     }
+    var search = root.querySelector('.albums-search');
+    var sections = Array.prototype.slice.call(root.querySelectorAll('.albums-period'));
+    var modeTabs = root.querySelector('.albums-mode');
+    var modeButtons = Array.prototype.slice.call(modeTabs.querySelectorAll('button'));
+    var topBlocks = Array.prototype.slice.call(root.querySelectorAll('.albums-top'));
+    var topItems = Array.prototype.slice.call(root.querySelectorAll('.albums-top li'));
+    var currentFilter = 'all';
+    var currentQuery = '';
+    var currentMode = 'listened';
+    modeButtons.forEach(function (b) {
+      b.addEventListener('click', function () { currentMode = b.getAttribute('data-mode'); apply(); });
+    });
+    function hideEmpty(els, sel) {
+      els.forEach(function (e) { e.hidden = !e.querySelector(sel + ':not([hidden])'); });
+    }
     function apply(f) {
-      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === f)); });
-      items.forEach(function (i) { i.hidden = f !== 'all' && i.getAttribute('data-rating') !== f; });
+      if (f !== undefined) currentFilter = f;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === currentFilter)); });
+      modeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === currentMode)); });
+      items.forEach(function (i) {
+        var modeOk = currentMode === 'listened' || !i.hasAttribute('data-older');
+        var ratingOk = currentFilter === 'all' || i.getAttribute('data-rating') === currentFilter;
+        var textOk = !currentQuery || i.querySelector('.album-name').textContent.toLowerCase().indexOf(currentQuery) !== -1;
+        i.hidden = !(modeOk && ratingOk && textOk);
+      });
+      topItems.forEach(function (i) { i.hidden = currentMode === 'released' && i.hasAttribute('data-older'); });
+      hideEmpty(sections, '.album');
+      hideEmpty(topBlocks, 'li');
       empty.hidden = items.some(function (i) { return !i.hidden; });
     }
+    if (search) {
+      search.addEventListener('input', function () {
+        currentQuery = search.value.trim().toLowerCase();
+        apply();
+      });
+    }
+    apply();
     tabs.hidden = false;
+    modeTabs.hidden = false;
   })();
 </script>
