@@ -4,6 +4,114 @@
 # period: listening year, Dec through Nov, labeled "Dec <year> - Nov <year+1>".
 # released: the period the album came out in (same label format). Defaults to period if omitted.
 
+- artist: "Smerz"
+  title: "Big city life"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Quadeca"
+  title: "Vanisher, Horizon Scraper"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Addison Rae"
+  title: "Addison"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Anderson .Paak & Cordae"
+  title: "Heavy Is The Crown"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Twin Temple"
+  title: "Doomed Lovers"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Dis Fig"
+  title: "What To Make Of These Mortal Hands"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 0
+
+- artist: "BIG|BRAVE"
+  title: "in grief or in hope"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Frontierer"
+  title: "Ultraviolet Parasite"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "HMLTD"
+  title: "FANGS"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Barker"
+  title: "Stochastic Drift"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Earl Sweatshirt"
+  title: "Live Laugh Love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Water From Your Eyes"
+  title: "It's a Beautiful Place"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "PinkPantheress"
+  title: "Fancy That"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Titanic"
+  title: "HAGEN"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Cameron Winter"
+  title: "Heavy Metal"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 3
+
+- artist: "Magdalena Bay"
+  title: "Human Happens/Paint Me A Picture"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Nick Leon"
+  title: "A Tropical Entropy"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "aya"
+  title: "hexed!"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
 - artist: "Alex G"
   title: "Headlights"
   period: "Dec 2025 - Nov 2026"

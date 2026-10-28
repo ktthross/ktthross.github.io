@@ -30,7 +30,7 @@ permalink: /albums/
 
   <div class="albums-tabs albums-mode" role="group" aria-label="Group albums by" hidden>
     <button type="button" data-mode="listened" aria-pressed="true">Listened that year</button>
-    <button type="button" data-mode="released">Released that year</button>
+    <button type="button" data-mode="released">Released and listened that year</button>
   </div>
 
   {% assign periods = site.data.albums | group_by: "period" | sort: "name" | reverse %}
@@ -159,42 +159,113 @@ permalink: /albums/
   }
 
   .albums-dist {
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-    margin-bottom: 1rem;
-    max-width: 22rem;
+    margin-bottom: 1.25rem;
+    max-width: 26rem;
   }
 
-  .albums-dist-row {
-    display: grid;
-    grid-template-columns: 1.2rem 1fr 2ch;
-    align-items: center;
-    gap: .5rem;
-    font-size: .85rem;
-  }
-
-  .albums-dist-row b {
-    font-variant-numeric: tabular-nums;
-    text-align: center;
-  }
-
-  .albums-dist-bar {
-    height: .9rem;
-    border-radius: 3px;
-    background: var(--line);
-    overflow: hidden;
-  }
-
-  .albums-dist-bar span {
+  .albums-dist > svg {
     display: block;
-    height: 100%;
-    border-radius: 3px;
+    width: 100%;
+    height: auto;
+    font-size: 10px;
   }
 
-  .albums-dist-row .n {
+  .albums-dist svg text {
+    fill: #777;
+  }
+
+  .albums-dist .grid {
+    stroke: #eee;
+  }
+
+  .albums-dist .axis {
+    stroke: #bbb;
+  }
+
+  .albums-dist .fit-line {
+    fill: none;
+    stroke: #222;
+    stroke-width: 2;
+  }
+
+  .albums-dist .fit-line.binom {
+    stroke-dasharray: 4 3;
+  }
+
+  /* let hover fall through to each column's tooltip */
+  .albums-dist > svg .fit-line,
+  .albums-dist > svg .m-best,
+  .albums-dist > svg .m-binom {
+    pointer-events: none;
+  }
+
+  .albums-dist .m-best {
+    fill: #222;
+    stroke: #fff;
+    stroke-width: 2;
+  }
+
+  .albums-dist .m-binom {
+    fill: #fff;
+    stroke: #222;
+    stroke-width: 2;
+  }
+
+  .albums-fit-legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem .9rem;
+    margin: .3rem 0 .5rem;
+    padding: 0;
+    font-size: .8rem;
+    color: #555;
+  }
+
+  .albums-fit-legend li {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+  }
+
+  .albums-fit-legend .sw-bar {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--r0) 25%, var(--r1) 25% 50%, var(--r2) 50% 75%, var(--r3) 75%);
+  }
+
+  .albums-dist table {
+    width: auto;
+    border: 0;
+    border-collapse: collapse;
+    margin: 0 0 .6rem;
+    font-size: .8rem;
     font-variant-numeric: tabular-nums;
+  }
+
+  .albums-dist th,
+  .albums-dist td {
+    border: 0;
+    background: none;
+    padding: .1rem .6rem;
+    text-align: right;
+  }
+
+  .albums-dist tbody th {
+    text-align: left;
+    font-weight: normal;
     color: #777;
+  }
+
+  .albums-dist tr:nth-child(even) {
+    background: none;
+  }
+
+  .albums-fit-notes p {
+    font-size: .85rem;
+    color: #555;
+    margin: 0 0 .3rem;
   }
 
   .albums-search {
@@ -366,14 +437,10 @@ permalink: /albums/
       var s = document.createElement('span'); s.className = 'n'; s.textContent = n; b.appendChild(s);
       b.addEventListener('click', function () { apply(f); });
     });
-    var rated = ['3', '2', '1', '0'];
-    var max = Math.max.apply(null, rated.map(function (r) { return counts[r] || 0; }));
-    if (max > 0) {
-      dist.innerHTML = rated.map(function (r) {
-        var n = counts[r] || 0;
-        var pct = Math.round((n / max) * 100);
-        return '<div class="albums-dist-row"><b>' + r + '</b><div class="albums-dist-bar"><span style="width:' + pct + '%;background:var(--r' + r + ')"></span></div><span class="n">' + n + '</span></div>';
-      }).join('');
+    var obs = ['0', '1', '2', '3'].map(function (r) { return counts[r] || 0; });
+    var total = obs[0] + obs[1] + obs[2] + obs[3];
+    if (total > 0) {
+      dist.innerHTML = renderDist(obs, total);
       dist.hidden = false;
     }
     var search = root.querySelector('.albums-search');
@@ -415,5 +482,90 @@ permalink: /albums/
     apply();
     tabs.hidden = false;
     modeTabs.hidden = false;
+
+    function binom(p) {
+      var q = 1 - p;
+      return [q * q * q, 3 * p * q * q, 3 * p * p * q, p * p * p];
+    }
+
+    // Two fits to the 0-3 counts:
+    //   binomial(3, p): MLE p = mean / 3.
+    //   1-inflated binomial: share pi of albums go straight to 1, the rest follow binomial(3, p).
+    //     Its MLE puts P(1) at the observed share of 1s, and p fits the 0/2/3 counts alone.
+    function fitRatings(obs, n) {
+      var binP = (obs[1] + 2 * obs[2] + 3 * obs[3]) / (3 * n);
+      var best = { ll: -Infinity, p: binP };
+      for (var i = 1; i < 1000; i++) {
+        var b = binom(i / 1000), ll = 0;
+        [0, 2, 3].forEach(function (k) { if (obs[k]) ll += obs[k] * Math.log(b[k] / (1 - b[1])); });
+        if (ll > best.ll) best = { ll: ll, p: i / 1000 };
+      }
+      var b1 = binom(best.p)[1];
+      var pi = (obs[1] / n - b1) / (1 - b1);
+      // fewer 1s than a binomial expects: the boundary pi = 0, i.e. the plain binomial, is the MLE
+      if (pi < 0) { pi = 0; best.p = binP; }
+      return {
+        pi: pi,
+        p: best.p,
+        binP: binP,
+        best: binom(best.p).map(function (v, k) { return n * (pi * (k === 1) + (1 - pi) * v); }),
+        binom: binom(binP).map(function (v) { return n * v; })
+      };
+    }
+
+    function renderDist(obs, n) {
+      var f = fitRatings(obs, n);
+      var W = 320, H = 190, ml = 28, mr = 6, mt = 20, mb = 32, ph = H - mt - mb, slot = (W - ml - mr) / 4;
+      var top = Math.max.apply(null, obs.concat(f.best, f.binom));
+      var step = top <= 10 ? 2 : top <= 25 ? 5 : 10;
+      var yMax = Math.ceil(top / step) * step;
+      function y(v) { return mt + ph - v / yMax * ph; }
+      var y0 = y(0);
+      var svg = '<text x="0" y="10">Albums</text>';
+      for (var t = 0; t <= yMax; t += step) {
+        svg += '<line class="grid" x1="' + ml + '" x2="' + (W - mr) + '" y1="' + y(t) + '" y2="' + y(t) + '"/>'
+          + '<text x="' + (ml - 5) + '" y="' + (y(t) + 3) + '" text-anchor="end">' + t + '</text>';
+      }
+      var marks = '', binomPts = [], bestPts = [];
+      obs.forEach(function (o, k) {
+        var cx = ml + slot * (k + .5), w = 40, x = cx - w / 2, yt = y(o), r = Math.min(4, y0 - yt), yb = y(f.best[k]);
+        binomPts.push((cx - 10) + ',' + y(f.binom[k]));
+        bestPts.push((cx + 10) + ',' + yb);
+        marks += '<circle class="m-binom" cx="' + (cx - 10) + '" cy="' + y(f.binom[k]) + '" r="4.5"/>'
+          + '<path class="m-best" d="M' + (cx + 10) + ',' + (yb - 6) + 'l6,6l-6,6l-6,-6z"/>';
+        svg += '<g><title>Rating ' + k + ': ' + o + ' albums. Best fit ' + f.best[k].toFixed(1) + ', binomial ' + f.binom[k].toFixed(1) + '</title>'
+          + '<rect x="' + (cx - slot / 2) + '" y="' + mt + '" width="' + slot + '" height="' + ph + '" fill="transparent"/>'
+          + (o ? '<path style="fill:var(--r' + k + ')" d="M' + x + ',' + y0 + 'V' + (yt + r) + 'Q' + x + ',' + yt + ' ' + (x + r) + ',' + yt
+            + 'H' + (x + w - r) + 'Q' + (x + w) + ',' + yt + ' ' + (x + w) + ',' + (yt + r) + 'V' + y0 + 'Z"/>' : '')
+          + '<text x="' + cx + '" y="' + (y0 + 14) + '" text-anchor="middle">' + k + '</text></g>';
+      });
+      svg += '<polyline class="fit-line binom" points="' + binomPts.join(' ') + '"/>'
+        + '<polyline class="fit-line" points="' + bestPts.join(' ') + '"/>'
+        + marks;
+      svg += '<line class="axis" x1="' + ml + '" x2="' + (W - mr) + '" y1="' + y0 + '" y2="' + y0 + '"/>'
+        + '<text x="' + (ml + (W - ml - mr) / 2) + '" y="' + (H - 2) + '" text-anchor="middle">Rating</text>';
+
+      function row(label, vals, dp) {
+        return '<tr><th scope="row">' + label + '</th>' + vals.map(function (v) { return '<td>' + v.toFixed(dp) + '</td>'; }).join('') + '</tr>';
+      }
+      function pct(v) { return Math.round(v * 100) + '%'; }
+      var notes = f.pi > 0
+        ? '<p><b>Best fit: 1-inflated binomial</b>, π = ' + f.pi.toFixed(2) + ', p = ' + f.p.toFixed(2) + '.</p>'
+          + '<p><b>π = ' + f.pi.toFixed(2) + '</b>: about ' + pct(f.pi) + ' of albums get an automatic “solid music, 1”, the default verdict for a record that doesn’t push me either way.</p>'
+          + '<p><b>p = ' + f.p.toFixed(2) + '</b>: the other ' + pct(1 - f.pi) + ' are rated as if each gets three shots at a point and lands each one ' + pct(f.p) + ' of the time, so they average ' + (3 * f.p).toFixed(1) + '.</p>'
+          + '<p><b>Plain binomial</b>, p = ' + f.binP.toFixed(2) + ', treats every album that way. It expects ' + Math.round(f.binom[1]) + ' ones; there are ' + obs[1] + '.</p>'
+        : '<p><b>Best fit: binomial</b>, p = ' + f.binP.toFixed(2) + ': every album is rated as if it gets three shots at a point and lands each one ' + pct(f.binP) + ' of the time. There are no more 1s than that predicts, so no extra weight on 1 is needed.</p>';
+
+      return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Albums per rating, with fitted distributions">' + svg + '</svg>'
+        + '<ul class="albums-fit-legend">'
+        + '<li><span class="sw-bar"></span>Actual</li>'
+        + '<li><svg width="40" height="14"><line class="fit-line" x1="0" x2="40" y1="7" y2="7"/><path class="m-best" d="M20,1l6,6l-6,6l-6,-6z"/></svg>Best fit (1-inflated binomial)</li>'
+        + '<li><svg width="40" height="14"><line class="fit-line binom" x1="0" x2="40" y1="7" y2="7"/><circle class="m-binom" cx="20" cy="7" r="4.5"/></svg>Binomial</li>'
+        + '</ul>'
+        + '<table><thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody>'
+        + row('Actual', obs, 0) + row('Best fit', f.best, 1) + row('Binomial', f.binom, 1)
+        + '</tbody></table>'
+        + '<div class="albums-fit-notes">' + notes + '</div>';
+    }
   })();
 </script>
