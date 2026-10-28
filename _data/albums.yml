@@ -1,9 +1,267 @@
 # Album ratings. Newest week first.
 # rating: 0 = didn't care for it, 1 = solid music, 2 = really liked it, 3 = loved it (rare).
 # Leave rating empty (~) for albums not rated yet.
+# period: listening year, Dec through Nov, labeled "Dec <year> - Nov <year+1>".
+# released: the period the album came out in (same label format). Defaults to period if omitted.
+
+- artist: "Smerz"
+  title: "Big city life"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Quadeca"
+  title: "Vanisher, Horizon Scraper"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Addison Rae"
+  title: "Addison"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Anderson .Paak & Cordae"
+  title: "Heavy Is The Crown"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Twin Temple"
+  title: "Doomed Lovers"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Dis Fig"
+  title: "What To Make Of These Mortal Hands"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 0
+
+- artist: "BIG|BRAVE"
+  title: "in grief or in hope"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Frontierer"
+  title: "Ultraviolet Parasite"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "HMLTD"
+  title: "FANGS"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Barker"
+  title: "Stochastic Drift"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Earl Sweatshirt"
+  title: "Live Laugh Love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Water From Your Eyes"
+  title: "It's a Beautiful Place"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "PinkPantheress"
+  title: "Fancy That"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Titanic"
+  title: "HAGEN"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Cameron Winter"
+  title: "Heavy Metal"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 3
+
+- artist: "Magdalena Bay"
+  title: "Human Happens/Paint Me A Picture"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Nick Leon"
+  title: "A Tropical Entropy"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "aya"
+  title: "hexed!"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Alex G"
+  title: "Headlights"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Blood Orange"
+  title: "Essex Honey"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Rochelle Jordan"
+  title: "Through The Wall"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "DjRUM"
+  title: "Under Tangled Silence"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  note: "Relisten to confirm."
+  rating: 2
+
+- artist: "Erika de Casier"
+  title: "Lifetime"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "caroline"
+  title: "caroline 2"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  note: "Relisten to confirm."
+  rating: 3
+
+- artist: "YHWH Nailgun"
+  title: "45 Pounds"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Le Tigre"
+  title: "From the Desk of Mr. Lady"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2000 - Nov 2001"
+  rating: 2
+
+- artist: "Oneohtrix Point Never"
+  title: "Tranquilizer"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Alanis Morissette"
+  title: "Jagged Little Pill"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1994 - Nov 1995"
+  rating: 2
+
+- artist: "Ryan Davis & the Roadhouse Band"
+  title: "New Threats From The Soul"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Wnc Whopbezzy and 70th Street Carlos"
+  title: "Out The Blue"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 0
+
+- artist: "Ichiko Aoba"
+  title: "Luminescent Creatures"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Lucrecia Dalt"
+  title: "A Danger to Ourselves"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Playboi Carti"
+  title: "MUSIC"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Blawan"
+  title: "SickElixir"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Truckfighters"
+  title: "Gravity X"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2004 - Nov 2005"
+  rating: 3
+
+- artist: "Che"
+  title: "REST IN BASS"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Phoebe Bridgers"
+  title: "Lost Weekend"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Charli XCX"
+  title: "Music Fashion Film"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Carloine Rose"
+  title: "Gentling the Horse at the Walt Whiteman Mall"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Michael Kiwanuka"
+  title: "FUDGE"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Dummy"
+  title: "do you love the color of the sky?"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "June McDoom"
+  title: "Follow The Light"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
 
 - artist: "Fontaines D.C."
   title: "Dopamine Chamber"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Alt-rock / synth-pop"
   week: 2026-10-16
   sources: "NME, Sound Knowledge"
@@ -12,6 +270,8 @@
 
 - artist: "@"
   title: "Autosmile"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Art-folk / psych-folk"
   week: 2026-10-16
   sources: "Clash, The Line of Best Fit"
@@ -20,6 +280,8 @@
 
 - artist: "Sophia Stel"
   title: "the greatest album of all time"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Electro-pop"
   week: 2026-10-16
   sources: "Stereogum, The Line of Best Fit"
@@ -28,6 +290,8 @@
 
 - artist: "The Avalanches"
   title: "No Bad Memories"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Electronic / sample collage"
   week: 2026-10-16
   sources: "DIY, The Quietus"
@@ -36,6 +300,8 @@
 
 - artist: "Cameron Winter"
   title: "Live at Carnegie Hall"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Live solo piano / indie"
   week: 2026-10-09
   sources: "Partisan Records"
@@ -44,6 +310,8 @@
 
 - artist: "Remi Wolf"
   title: "Mud"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Alt-pop"
   week: 2026-10-09
   sources: "Flood Magazine, NME"
@@ -52,6 +320,8 @@
 
 - artist: "Wage War"
   title: "Landfall"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Metalcore"
   week: 2026-10-09
   sources: "Blabbermouth, The Metallist"
@@ -60,6 +330,8 @@
 
 - artist: "BODEGA"
   title: "All Inside Aquarium"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Rock / post-punk"
   week: 2026-10-09
   sources: "NME, Clash"
@@ -68,6 +340,8 @@
 
 - artist: "Amaseffer"
   title: "When The Lions Leave Their Den"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Progressive metal / folk metal"
   week: 2026-10-08
   sources: "The Metallist, Blabbermouth"
@@ -76,6 +350,8 @@
 
 - artist: "Greg Freeman"
   title: "All Set the Bone"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Americana-leaning indie rock"
   week: 2026-10-02
   sources: "Stereogum, AOTY"
@@ -84,6 +360,8 @@
 
 - artist: "Meshell Ndegeocello"
   title: "Synonym"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Soul / jazz covers"
   week: 2026-10-02
   sources: "The Needle Drop, AOTY"
@@ -92,6 +370,8 @@
 
 - artist: "Quadeca"
   title: "Life 1"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Art pop / folktronica"
   week: 2026-10-02
   sources: "AOTY"
@@ -100,6 +380,8 @@
 
 - artist: "Wishy"
   title: "Nature's Pill"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Dream pop / indie rock"
   week: 2026-10-02
   sources: "AOTY, The Needle Drop interview"
@@ -108,6 +390,8 @@
 
 - artist: "Fat Dog"
   title: "Cancel Me (I'm Tired)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Dance-punk / rave rock"
   week: 2026-10-02
   sources: "AOTY"
@@ -116,6 +400,8 @@
 
 - artist: "Dev Lemons"
   title: "hunting what we already killed"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Shoegaze / bedroom pop"
   week: 2026-10-02
   sources: "AOTY"
@@ -124,6 +410,8 @@
 
 - artist: "Johnny Marr"
   title: "The Age of Everything"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Guitar pop"
   week: 2026-10-02
   sources: "AOTY"
@@ -132,6 +420,8 @@
 
 - artist: "The Fall"
   title: "Post Script"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Post-punk"
   week: 2026-10-02
   sources: "AOTY"
@@ -140,6 +430,8 @@
 
 - artist: "Vacations"
   title: "Pursuit of Anything"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Indie pop"
   week: 2026-10-02
   sources: "AOTY"
@@ -148,6 +440,8 @@
 
 - artist: "Phoebe Green"
   title: "PREMATURE NOSTALGIA"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Alt-pop"
   week: 2026-10-02
   sources: "AOTY"
@@ -156,6 +450,8 @@
 
 - artist: "Stef Chura"
   title: "Dancing Alone on the Concrete"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Indie rock"
   week: 2026-10-02
   sources: "AOTY"
@@ -164,6 +460,8 @@
 
 - artist: "Susanne Sundfør & Kit Downes"
   title: "Revelations of Divine Love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Sacred chamber / organ"
   week: 2026-10-02
   sources: "AOTY"
@@ -172,6 +470,8 @@
 
 - artist: "Spike Fuck"
   title: "evidence"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Dark indie pop"
   week: 2026-10-02
   sources: "AOTY"
@@ -180,6 +480,8 @@
 
 - artist: "Swans"
   title: "Newly Sentient Being"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Live noise rock"
   week: 2026-10-02
   sources: "AOTY"
@@ -188,6 +490,8 @@
 
 - artist: "From First to Last"
   title: "We Were Bleeding Anyway"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Post-hardcore"
   week: 2026-10-02
   sources: "AOTY"
@@ -196,6 +500,8 @@
 
 - artist: "Dead Poet Society"
   title: "Monarch"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Alt-rock / hard rock"
   week: 2026-10-02
   sources: "AOTY"
@@ -204,6 +510,8 @@
 
 - artist: "Imminence"
   title: "Axis Mundi"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Metalcore"
   week: 2026-10-02
   sources: "AOTY"
@@ -212,6 +520,8 @@
 
 - artist: "Xasthur"
   title: "Open To Misinterpretation"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Black metal / dark folk"
   week: 2026-10-02
   sources: "AOTY"
@@ -220,6 +530,8 @@
 
 - artist: "Amon Amarth"
   title: "The Allfather Awakens"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Melodic death metal"
   week: 2026-10-02
   sources: "AOTY"
@@ -228,6 +540,8 @@
 
 - artist: "Victoria Monét"
   title: "Frequency of Love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "R&B"
   week: 2026-10-02
   sources: "AOTY"
@@ -236,6 +550,8 @@
 
 - artist: "Ceebo"
   title: "Bloccstar"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Rap"
   week: 2026-10-02
   sources: "AOTY"
@@ -244,6 +560,8 @@
 
 - artist: "Quavo"
   title: "QRÖMELIFE"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Rap"
   week: 2026-10-02
   sources: "AOTY"
@@ -252,6 +570,8 @@
 
 - artist: "Drake"
   title: "HABIBTI (FOMO)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Rap"
   week: 2026-10-02
   sources: "AOTY"
@@ -260,6 +580,8 @@
 
 - artist: "Miranda Lambert"
   title: "Crisco"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Country"
   week: 2026-10-02
   sources: "AOTY"
@@ -268,6 +590,8 @@
 
 - artist: "The Beatles"
   title: "Rubber Soul (Super Deluxe)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1965 - Nov 1966"
   genre: "Reissue · rock"
   week: 2026-10-02
   sources: "AOTY"
@@ -276,6 +600,8 @@
 
 - artist: "Mac Miller"
   title: "The Divine Feminine (10th Anniversary)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2015 - Nov 2016"
   genre: "Reissue · hip-hop"
   week: 2026-10-02
   sources: "AOTY"
@@ -284,6 +610,8 @@
 
 - artist: "Sylvan Esso"
   title: "Ow ∞"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Electronic / indie pop"
   week: 2026-09-11
   sources: "Psychic Hotline"
@@ -292,6 +620,8 @@
 
 - artist: "Olivia Rodrigo"
   title: "you seem pretty sad for a girl so in love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
   genre: "Pop / alt-pop"
   week: 2026-06-12
   sources: "Rolling Stone"
@@ -300,6 +630,8 @@
 
 - artist: "Bob Dylan, The Band"
   title: "The Basement Tapes"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1974 - Nov 1975"
   genre: "Folk rock / Americana"
   week: 2026-05-09
   sources: "Mobile Fidelity reissue"
@@ -308,6 +640,8 @@
 
 - artist: "Alabaster DePlume"
   title: "To Cy & Lee: Instrumentals, Vol. 1"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2019 - Nov 2020"
   genre: "Jazz"
   week: 2025-12-05
   sources: "International Anthem (IA11 reissue)"
@@ -316,6 +650,8 @@
 
 - artist: "keiyaA"
   title: "hooke's law"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "R&B / soul"
   week: 2025-10-31
   sources: "Wikipedia"
@@ -324,6 +660,8 @@
 
 - artist: "Bassvictim"
   title: "Forever"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Electronic / witch house"
   week: 2025-10-10
   sources: "Ones to Watch"
@@ -332,6 +670,8 @@
 
 - artist: "KP Skywalka"
   title: "I Tried To Tell You"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Rap / hip-hop"
   week: 2025-09-12
   sources: "Spotify"
@@ -340,6 +680,8 @@
 
 - artist: "James K"
   title: "Friend"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Dream pop / trip-hop"
   week: 2025-09-05
   sources: "DJ Mag, The Quietus"
@@ -348,6 +690,8 @@
 
 - artist: "Margo Price"
   title: "Hard Headed Woman"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Country"
   week: 2025-08-29
   sources: "Americana UK"
@@ -356,6 +700,8 @@
 
 - artist: "Preservation & Gabe 'Nandez"
   title: "Sortilège"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Hip-hop"
   week: 2025-08-15
   sources: "Tobira Records, Bandcamp"
@@ -364,6 +710,8 @@
 
 - artist: "Cleo Reed"
   title: "CUNTRY"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Folk rap / R&B"
   week: 2025-07-17
   sources: "Atwood Magazine, Stereogum"
@@ -372,6 +720,8 @@
 
 - artist: "Greet Death"
   title: "Die In Love"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Shoegaze / doomgaze"
   week: 2025-06-27
   sources: "Deathwish Inc."
@@ -380,6 +730,8 @@
 
 - artist: "UNIVERSITY"
   title: "McCartney, It'll Be Ok"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Punk / hardcore"
   week: 2025-06-20
   sources: "Transgressive Records"
@@ -388,6 +740,8 @@
 
 - artist: "Ovrkast."
   title: "While The Iron Is Hot"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Hip-hop / jazz rap"
   week: 2025-05-30
   sources: "Clash"
@@ -396,6 +750,8 @@
 
 - artist: "Esther Rose"
   title: "Want"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Alt-country / indie rock"
   week: 2025-05-02
   sources: "New West Records"
@@ -404,6 +760,8 @@
 
 - artist: "Sharp Pins"
   title: "Radio DDR"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Lo-fi power pop"
   week: 2025-04-11
   sources: "Post-Trash, Treble"
@@ -412,6 +770,8 @@
 
 - artist: "Perfume Genius"
   title: "Glory"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Indie-folk / chamber pop"
   week: 2025-03-28
   sources: "The Skinny"
@@ -420,6 +780,8 @@
 
 - artist: "Men I Trust"
   title: "Equus Caballus"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Indie pop / dream pop"
   week: 2025-05-06
   sources: "Wikipedia, Stereogum"
@@ -428,6 +790,8 @@
 
 - artist: "Panda Bear"
   title: "Sinister Grift"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Rock / psychedelic pop"
   week: 2025-02-28
   sources: "Rolling Stone AU, Domino"
@@ -436,6 +800,8 @@
 
 - artist: "MIKE"
   title: "Showbiz!"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
   genre: "Hip-hop"
   week: 2025-01-31
   sources: "Wikipedia, At the Barrier"
