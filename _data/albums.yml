@@ -4,6 +4,169 @@
 # period: listening year, Dec through Nov, labeled "Dec <year> - Nov <year+1>".
 # released: the period the album came out in (same label format). Defaults to period if omitted.
 
+- artist: "Lord Jah-Monte Ogbon"
+  title: "As of Now"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Ye Vagabonds"
+  title: "All Tied Together"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "PalKid"
+  title: "Four Short Stories from Hyrule"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2022 - Nov 2023"
+  rating: 1
+
+- artist: "Bassvictim"
+  title: "Basspunk"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 3
+
+- artist: "Poppy"
+  title: "Empty Hands"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Gilbert Louie Ray Band"
+  title: "Only Dogs Can Judge Me"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Bad Bunny"
+  title: "DeBÍ TiRAR MáS FOToS"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Jeff Tweedy"
+  title: "Twilight Override"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Patrick Watson"
+  title: "Uh Oh"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Sasha Keable"
+  title: "act right"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Kaicrewsade"
+  title: "Joint4u!"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  note: "Relisten to confirm."
+  rating: 1
+
+- artist: "Kal Banx"
+  title: "RHODA"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Mary Halvorson"
+  title: "About Ghosts"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Remember Sports"
+  title: "Nevermind"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Hans Zimmer, Benjamin Wallfisch"
+  title: "Blade Runner 2049 (Original Motion Picture Soundtrack)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2016 - Nov 2017"
+  rating: 2
+
+- artist: "Father John Misty"
+  title: "Mahashmashana"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 1
+
+- artist: "Alice Phoebe Lou"
+  title: "Oblivion"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Tamino"
+  title: "Every Dawn's a Mountain"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Annahstasia"
+  title: "Tether"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Gordi"
+  title: "Like Plasticine"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Ólafur Arnalds & Talos"
+  title: "A Dawning"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "The Beaches"
+  title: "No Hard Feelings"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Annie DiRusso"
+  title: "Super Pedestrian"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Dijon"
+  title: "Baby"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Oklou"
+  title: "choke enough"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Nourished by Time"
+  title: "The Passionate Ones"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Joanne Robertson"
+  title: "Blurrr"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
 - artist: "Smerz"
   title: "Big city life"
   period: "Dec 2025 - Nov 2026"
@@ -807,3 +970,15 @@
   sources: "Wikipedia, At the Barrier"
   note: "Sample-heavy, hazy hip-hop; a return from the trap-leaning Pinball."
   rating: 2
+
+- artist: "Paul Baribeau"
+  title: "Grand Ledge"
+  period: "Dec 2015 - Nov 2016"
+  released: "Dec 2006 - Nov 2007"
+  rating: 3
+
+- artist: "Paul Baribeau"
+  title: "Paul Baribeau"
+  period: "Dec 2015 - Nov 2016"
+  released: "Dec 2003 - Nov 2004"
+  rating: 3
