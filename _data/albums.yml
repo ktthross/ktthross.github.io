@@ -4,6 +4,277 @@
 # period: listening year, Dec through Nov, labeled "Dec <year> - Nov <year+1>".
 # released: the period the album came out in (same label format). Defaults to period if omitted.
 
+- artist: "Cece Coakley"
+  title: "Pleasant Attack"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Marianas Trench"
+  title: "Haven"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 1
+
+- artist: "War Child Records and various artists"
+  title: "HELP(2)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Geese"
+  title: "Projector"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2021 - Nov 2022"
+  note: "Relisten to confirm."
+  rating: 2
+
+- artist: "Flying Lotus"
+  title: "BIG MAMA"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Bassvictim"
+  title: "?"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Lingua Ignota"
+  title: "CALIGULA"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2018 - Nov 2019"
+  rating: 3
+
+- artist: "Converge"
+  title: "Love Is Not Enough"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "hemlocke springs"
+  title: "the apple tree under the sea"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Sideshow"
+  title: "TIGRAY FUNK"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "cootie catcher"
+  title: "Something We All Got"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Nothing"
+  title: "a short history of decay"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Voxtrot"
+  title: "Dreamers in Exile"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Gorillaz"
+  title: "The Mountain"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Mitski"
+  title: "Nothing's About to Happen to Me"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Hen Ogledd"
+  title: "DISCOMBOBULATED"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Lou Reed"
+  title: "Metal Machine Music, Pt. 1"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1974 - Nov 1975"
+  rating: 1
+
+- artist: "Merzbow"
+  title: "Pulse Demon"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1995 - Nov 1996"
+  rating: 0
+
+- artist: "Madi Diaz"
+  title: "Enema of the Garden State"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Remember Sports"
+  title: "The Refrigerator"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Charli XCX"
+  title: "Wuthering Heights"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Ratboys"
+  title: "Singin' to an Empty Chair"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "IDK"
+  title: "e.t.d.s."
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Feels Like Heaven"
+  title: "Within Dreams"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Daniel Lopatin"
+  title: "Marty Supreme (Original Soundtrack)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Julianna Barwick & Mary Lattimore"
+  title: "Tragic Magic"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "A$AP Rocky"
+  title: "Don't Be Dumb"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Roc Marciano"
+  title: "656"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Ulver"
+  title: "Neverland"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "The Ophelias"
+  title: "Spring Grove"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Jay Som"
+  title: "Belong"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Greg Freeman"
+  title: "Burnover"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "fakemink"
+  title: "The Boy Who Cried Terrified"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Descendents"
+  title: "Everything Sucks"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1995 - Nov 1996"
+  rating: 1
+
+- artist: "Totorro"
+  title: "Home Alone"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2013 - Nov 2014"
+  rating: 2
+
+- artist: "Clarice Jensen"
+  title: "in holiday clothing out of the great darkness"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "Totorro"
+  title: "Sofa So Good"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "St. Vincent"
+  title: "All Born Screaming"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 2
+
+- artist: "Bassvictim"
+  title: "Basspunk 2"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Charli XCX"
+  title: "Charli"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2018 - Nov 2019"
+  rating: 2
+
+- artist: "Sunday Mourners"
+  title: "A-Rhythm Absolute"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "By Storm"
+  title: "My Ghosts Go Ghost"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Kali Malone"
+  title: "Burning Song"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "DIIV"
+  title: "ZIRP!"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Queens of the Stone Age"
+  title: "Perfecth"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
 - artist: "Lord Jah-Monte Ogbon"
   title: "As of Now"
   period: "Dec 2025 - Nov 2026"
@@ -82,12 +353,6 @@
   period: "Dec 2025 - Nov 2026"
   released: "Dec 2024 - Nov 2025"
   rating: 1
-
-- artist: "Remember Sports"
-  title: "Nevermind"
-  period: "Dec 2025 - Nov 2026"
-  released: "Dec 2025 - Nov 2026"
-  rating: 2
 
 - artist: "Hans Zimmer, Benjamin Wallfisch"
   title: "Blade Runner 2049 (Original Motion Picture Soundtrack)"
@@ -960,6 +1225,115 @@
   sources: "Rolling Stone AU, Domino"
   note: "First solo LP in ~5 years; recorded in Lisbon with Josh Dibb."
   rating: 1
+
+- artist: "Rip Magic"
+  title: "1,2,3"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "PISS"
+  title: "you made me / skin on linen"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Big Red"
+  title: "Big Sur"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Basscivitm"
+  title: "PEACE + WAR"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 3
+
+- artist: "Hudson Freeman"
+  title: "Doom Country"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Kendrick Lamar"
+  title: "To Pimp A Butterfly"
+  period: "Dec 2014 - Nov 2015"
+  released: "Dec 2014 - Nov 2015"
+  rating: 3
+
+- artist: "untitled (halo)"
+  title: "untitled (halo)"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Saya Gray"
+  title: "QWERT III"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Twisted Teens"
+  title: "The Holy Cross Tigers"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "James Blake"
+  title: "Trying Times"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Anjimile"
+  title: "You're Free to Go"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Kim Gordon"
+  title: "PLAY ME"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Blessing Jolie"
+  title: "20nothing"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Weather Report"
+  title: "Heavy Weather"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1976 - Nov 1977"
+  rating: 1
+
+- artist: "Bill Callahan"
+  title: "My Days of 58"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "E L U C I D and Sebb Bash"
+  title: "I Guess U Had To Be There"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Lamb of God"
+  title: "into Oblivion"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Sweet Pill"
+  title: "Still There's a Glow"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  note: "super my type of music"
+  rating: 2
 
 - artist: "MIKE"
   title: "Showbiz!"

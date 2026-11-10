@@ -4,83 +4,100 @@ title: Albums
 permalink: /albums/
 ---
 
+{% assign periods = site.data.albums | group_by: "period" | sort: "name" | reverse %}
+
 <div class="albums">
 
-  <p class="albums-note">No attempt at objectivity:</p>
+  <nav class="albums-nav" aria-label="Listening periods" hidden>
+    <a href="#">Overview</a>
+    {% for p in periods %}<a href="#{{ p.name | slugify }}">{{ p.name }}<span class="n">{{ p.items.size }}</span></a>{% endfor %}
+  </nav>
 
-  <ul class="albums-scale">
-    <li class="r3"><b>3</b> Stuck in my brain</li>
-    <li class="r2"><b>2</b> Really liked it</li>
-    <li class="r1"><b>1</b> Solid music</li>
-    <li class="r0"><b>0</b> Didn't care for it</li>
-  </ul>
+  <div class="albums-main">
 
-  <div class="albums-dist" hidden></div>
+    <div class="albums-overview">
+      <p class="albums-note">No attempt at objectivity:</p>
 
-  <input type="search" class="albums-search" placeholder="Search by artist or title…" aria-label="Search albums">
-
-  <div class="albums-tabs" role="group" aria-label="Filter albums" hidden>
-    <button type="button" data-filter="all" aria-pressed="true">All</button>
-    <button type="button" data-filter="3">Loved</button>
-    <button type="button" data-filter="2">Really liked</button>
-    <button type="button" data-filter="1">Solid</button>
-    <button type="button" data-filter="0">Not for me</button>
-    <button type="button" data-filter="none">Not rated yet</button>
-  </div>
-
-  <div class="albums-tabs albums-mode" role="group" aria-label="Group albums by" hidden>
-    <button type="button" data-mode="listened" aria-pressed="true">Listened that year</button>
-    <button type="button" data-mode="released">Released and listened that year</button>
-  </div>
-
-  {% assign periods = site.data.albums | group_by: "period" | sort: "name" | reverse %}
-
-  <details class="albums-top-section">
-    <summary>Top albums by period</summary>
-    {% for p in periods %}
-    {% assign top = p.items | where_exp: "a", "a.rating >= 2" | sort: "rating" | reverse %}
-    {% if top.size > 0 %}
-    <div class="albums-top">
-      <h3>{{ p.name }}</h3>
-      <ul>
-        {% for a in top %}<li{% if a.released and a.released != a.period %} data-older{% endif %}>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
+      <ul class="albums-scale">
+        <li class="r3"><b>3</b> Stuck in my brain</li>
+        <li class="r2"><b>2</b> Really liked it</li>
+        <li class="r1"><b>1</b> Solid music. Better than anything I could ever make.</li>
+        <li class="r0"><b>0</b> Didn't care for it</li>
       </ul>
-    </div>
-    {% endif %}
-    {% endfor %}
-  </details>
 
-  {% for p in periods %}
-  <section class="albums-period">
-    <h2 class="albums-period-heading">{{ p.name }}</h2>
-    <ul class="albums-list">
-      {% for a in p.items %}
-      {% if a.rating == nil %}
-      {% assign key = "none" %}{% assign label = "Not rated yet" %}
-      {% elsif a.rating == 3 %}
-      {% assign key = "3" %}{% assign label = "Loved it" %}
-      {% elsif a.rating == 2 %}
-      {% assign key = "2" %}{% assign label = "Really liked it" %}
-      {% elsif a.rating == 1 %}
-      {% assign key = "1" %}{% assign label = "Solid music" %}
-      {% else %}
-      {% assign key = "0" %}{% assign label = "Didn't care for it" %}
-      {% endif %}
-      <li class="album" data-rating="{{ key }}"{% if a.released and a.released != a.period %} data-older{% endif %}>
-        <div class="album-info">
-          <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
-          {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
+      <h2 class="albums-heading">Ratings</h2>
+      <div class="albums-dist" hidden></div>
+
+      <h2 class="albums-heading">By period</h2>
+      <table class="albums-stats"></table>
+      <p class="albums-oldest"></p>
+
+      <details class="albums-top-section">
+        <summary>Top albums by period</summary>
+        {% for p in periods %}
+        {% assign top = p.items | where_exp: "a", "a.rating >= 2" | sort: "rating" | reverse %}
+        {% if top.size > 0 %}
+        <div class="albums-top">
+          <h3>{{ p.name }}</h3>
+          <ul>
+            {% for a in top %}<li>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
+          </ul>
         </div>
-        <div class="album-score r{% if key == " none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
-          {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
-          <small>{{ label }}</small>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endfor %}
-  <p class="albums-empty" hidden>Nothing here yet.</p>
+        {% endif %}
+        {% endfor %}
+      </details>
+    </div>
+
+    <div class="albums-controls" hidden>
+      <input type="search" class="albums-search" placeholder="Search by artist or title…" aria-label="Search albums">
+
+      <div class="albums-tabs" role="group" aria-label="Filter by rating">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="3">Loved</button>
+        <button type="button" data-filter="2">Really liked</button>
+        <button type="button" data-filter="1">Solid</button>
+        <button type="button" data-filter="0">Not for me</button>
+        <button type="button" data-filter="none">Not rated yet</button>
+      </div>
+
+      <div class="albums-tabs" role="group" aria-label="Filter by release">
+        <button type="button" data-mode="listened" aria-pressed="true">Listened that year</button>
+        <button type="button" data-mode="released">Released and listened that year</button>
+      </div>
+    </div>
+
+    {% for p in periods %}
+    <section class="albums-period" data-period="{{ p.name | slugify }}">
+      <h2 class="albums-heading">{{ p.name }}</h2>
+      <ul class="albums-list">
+        {% for a in p.items %}
+        {% if a.rating == nil %}
+        {% assign key = "none" %}{% assign label = "Not rated yet" %}
+        {% elsif a.rating == 3 %}
+        {% assign key = "3" %}{% assign label = "Loved it" %}
+        {% elsif a.rating == 2 %}
+        {% assign key = "2" %}{% assign label = "Really liked it" %}
+        {% elsif a.rating == 1 %}
+        {% assign key = "1" %}{% assign label = "Solid music. Better than anything I could ever make." %}
+        {% else %}
+        {% assign key = "0" %}{% assign label = "Didn't care for it" %}
+        {% endif %}
+        <li class="album" data-rating="{{ key }}" data-released="{{ a.released | default: a.period }}"{% if a.released and a.released != a.period %} data-older{% endif %}>
+          <div class="album-info">
+            <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
+            {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
+          </div>
+          <div class="album-score r{% if key == "none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
+            {% if key == "none" %}<span>–</span>{% else %}<span>{{ a.rating }}</span>{% endif %}
+            <small>{{ label }}</small>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+    <p class="albums-empty" hidden>Nothing here yet.</p>
+  </div>
 </div>
 
 <style>
@@ -98,6 +115,76 @@ permalink: /albums/
     --r3: #b5560f;
     --r3-soft: #fbe9da;
     --line: #e2e2e2;
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .albums-nav {
+    position: sticky;
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--line);
+    font-size: .9rem;
+  }
+
+  .albums-nav a {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .35rem .75rem;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    white-space: nowrap;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .albums-nav a:hover {
+    color: #111;
+  }
+
+  .albums-nav a[aria-current="page"] {
+    border-left-color: #333;
+    color: #111;
+    font-weight: 600;
+  }
+
+  .albums-nav .n,
+  .albums-tabs .n {
+    opacity: .7;
+    font-variant-numeric: tabular-nums;
+    font-weight: normal;
+  }
+
+  @media (max-width: 700px) {
+    .albums {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+    }
+
+    .albums-nav {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: .4rem;
+      border-left: 0;
+    }
+
+    .albums-nav a {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .25rem .75rem;
+    }
+
+    .albums-nav a[aria-current="page"] {
+      background: #333;
+      border-color: #333;
+      color: #fff;
+    }
   }
 
   .albums-note {
@@ -156,6 +243,15 @@ permalink: /albums/
     background: transparent;
     color: #999;
     border: 1px dashed var(--line);
+  }
+
+  .albums-heading {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 .5rem;
+  }
+
+  .albums-period .albums-heading {
+    margin-top: 0;
   }
 
   .albums-dist {
@@ -235,7 +331,7 @@ permalink: /albums/
     background: linear-gradient(90deg, var(--r0) 25%, var(--r1) 25% 50%, var(--r2) 50% 75%, var(--r3) 75%);
   }
 
-  .albums-dist table {
+  .albums table {
     width: auto;
     border: 0;
     border-collapse: collapse;
@@ -244,28 +340,46 @@ permalink: /albums/
     font-variant-numeric: tabular-nums;
   }
 
-  .albums-dist th,
-  .albums-dist td {
+  .albums th,
+  .albums td {
     border: 0;
     background: none;
     padding: .1rem .6rem;
     text-align: right;
   }
 
-  .albums-dist tbody th {
+  .albums tbody th {
     text-align: left;
     font-weight: normal;
     color: #777;
   }
 
-  .albums-dist tr:nth-child(even) {
+  .albums thead th {
+    font-weight: 600;
+    color: #555;
+  }
+
+  .albums tr:nth-child(even) {
     background: none;
   }
 
+  .albums-stats {
+    font-size: .85rem !important;
+  }
+
+  .albums-stats tbody th {
+    padding-left: 0;
+  }
+
+  .albums-oldest,
   .albums-fit-notes p {
     font-size: .85rem;
     color: #555;
     margin: 0 0 .3rem;
+  }
+
+  .albums-oldest {
+    margin-bottom: 1.5rem;
   }
 
   .albums-search {
@@ -275,9 +389,13 @@ permalink: /albums/
     width: 100%;
     max-width: 22rem;
     padding: .4rem .7rem;
-    margin-bottom: 1rem;
+    margin-bottom: .75rem;
     border: 1px solid var(--line);
     border-radius: 999px;
+  }
+
+  .albums-controls {
+    margin-bottom: 1rem;
   }
 
   .albums-tabs {
@@ -305,20 +423,12 @@ permalink: /albums/
   }
 
   .albums-tabs .n {
-    opacity: .7;
     margin-left: .3em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .albums-period-heading {
-    font-size: 1.1rem;
-    margin: 1.5rem 0 .5rem;
   }
 
   .albums-top-section {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--line);
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
   }
 
   .albums-top-section > summary {
@@ -424,64 +534,101 @@ permalink: /albums/
   (function () {
     var root = document.querySelector('.albums');
     if (!root) return;
-    var tabs = root.querySelector('.albums-tabs');
-    var dist = root.querySelector('.albums-dist');
-    var items = Array.prototype.slice.call(root.querySelectorAll('.album'));
+    function all(sel, el) { return Array.prototype.slice.call((el || root).querySelectorAll(sel)); }
+    function rating(i) { return i.getAttribute('data-rating'); }
+    var nav = root.querySelector('.albums-nav');
+    var navLinks = all('a', nav);
+    var overview = root.querySelector('.albums-overview');
+    var sections = all('.albums-period');
+    var controls = root.querySelector('.albums-controls');
+    var buttons = all('[data-filter]', controls);
+    var modeButtons = all('[data-mode]', controls);
+    var search = controls.querySelector('.albums-search');
     var empty = root.querySelector('.albums-empty');
-    var buttons = Array.prototype.slice.call(tabs.querySelectorAll('button'));
-    var counts = {};
-    buttons.forEach(function (b) {
-      var f = b.getAttribute('data-filter');
-      var n = f === 'all' ? items.length : items.filter(function (i) { return i.getAttribute('data-rating') === f; }).length;
-      counts[f] = n;
-      var s = document.createElement('span'); s.className = 'n'; s.textContent = n; b.appendChild(s);
-      b.addEventListener('click', function () { apply(f); });
-    });
-    var obs = ['0', '1', '2', '3'].map(function (r) { return counts[r] || 0; });
+    var items = all('.album');
+    var current = null;
+    var currentFilter = 'all';
+    var currentMode = 'listened';
+    var currentQuery = '';
+
+    // Overview: rating distribution and fit over every rated album.
+    var obs = ['0', '1', '2', '3'].map(function (r) { return items.filter(function (i) { return rating(i) === r; }).length; });
     var total = obs[0] + obs[1] + obs[2] + obs[3];
+    var dist = root.querySelector('.albums-dist');
     if (total > 0) {
       dist.innerHTML = renderDist(obs, total);
       dist.hidden = false;
     }
-    var search = root.querySelector('.albums-search');
-    var sections = Array.prototype.slice.call(root.querySelectorAll('.albums-period'));
-    var modeTabs = root.querySelector('.albums-mode');
-    var modeButtons = Array.prototype.slice.call(modeTabs.querySelectorAll('button'));
-    var topBlocks = Array.prototype.slice.call(root.querySelectorAll('.albums-top'));
-    var topItems = Array.prototype.slice.call(root.querySelectorAll('.albums-top li'));
-    var currentFilter = 'all';
-    var currentQuery = '';
-    var currentMode = 'listened';
+
+    // Overview: one row per listening period.
+    root.querySelector('.albums-stats').innerHTML = '<thead><tr><th></th><th>Albums</th><th>Avg</th><th>Released that year</th><th>3s</th></tr></thead><tbody>'
+      + sections.map(function (s) {
+        var its = all('.album', s);
+        var rated = its.filter(function (i) { return rating(i) !== 'none'; });
+        var sum = rated.reduce(function (t, i) { return t + Number(rating(i)); }, 0);
+        var fresh = its.filter(function (i) { return !i.hasAttribute('data-older'); }).length;
+        return '<tr><th scope="row"><a href="#' + s.getAttribute('data-period') + '">' + s.querySelector('h2').textContent + '</a></th>'
+          + '<td>' + its.length + '</td>'
+          + '<td>' + (rated.length ? (sum / rated.length).toFixed(2) : '–') + '</td>'
+          + '<td>' + Math.round(fresh / its.length * 100) + '%</td>'
+          + '<td>' + its.filter(function (i) { return rating(i) === '3'; }).length + '</td></tr>';
+      }).join('') + '</tbody>';
+
+    var oldest = items.reduce(function (o, i) { return !o || i.getAttribute('data-released') < o.getAttribute('data-released') ? i : o; }, null);
+    if (oldest) {
+      root.querySelector('.albums-oldest').innerHTML = 'Oldest record: ' + oldest.querySelector('.album-name').innerHTML
+        + ', released ' + oldest.getAttribute('data-released') + '.';
+    }
+
+    // Period tabs: the hash picks the period, empty hash is the overview.
+    buttons.forEach(function (b) {
+      var s = document.createElement('span'); s.className = 'n'; b.appendChild(s);
+      b.addEventListener('click', function () { currentFilter = b.getAttribute('data-filter'); apply(); });
+    });
     modeButtons.forEach(function (b) {
       b.addEventListener('click', function () { currentMode = b.getAttribute('data-mode'); apply(); });
     });
-    function hideEmpty(els, sel) {
-      els.forEach(function (e) { e.hidden = !e.querySelector(sel + ':not([hidden])'); });
+    search.addEventListener('input', function () {
+      currentQuery = search.value.trim().toLowerCase();
+      apply();
+    });
+
+    function show() {
+      var id = location.hash.slice(1);
+      current = sections.filter(function (s) { return s.getAttribute('data-period') === id; })[0] || null;
+      overview.hidden = !!current;
+      controls.hidden = !current;
+      sections.forEach(function (s) { s.hidden = s !== current; });
+      navLinks.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + (current ? id : '')) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+      if (!current) { empty.hidden = true; return; }
+      var its = all('.album', current);
+      buttons.forEach(function (b) {
+        var f = b.getAttribute('data-filter');
+        b.querySelector('.n').textContent = f === 'all' ? its.length : its.filter(function (i) { return rating(i) === f; }).length;
+      });
+      current.insertBefore(controls, current.querySelector('.albums-list'));
+      current.appendChild(empty);
+      apply();
     }
-    function apply(f) {
-      if (f !== undefined) currentFilter = f;
+
+    function apply() {
       buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === currentFilter)); });
       modeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === currentMode)); });
       items.forEach(function (i) {
         var modeOk = currentMode === 'listened' || !i.hasAttribute('data-older');
-        var ratingOk = currentFilter === 'all' || i.getAttribute('data-rating') === currentFilter;
+        var ratingOk = currentFilter === 'all' || rating(i) === currentFilter;
         var textOk = !currentQuery || i.querySelector('.album-name').textContent.toLowerCase().indexOf(currentQuery) !== -1;
         i.hidden = !(modeOk && ratingOk && textOk);
       });
-      topItems.forEach(function (i) { i.hidden = currentMode === 'released' && i.hasAttribute('data-older'); });
-      hideEmpty(sections, '.album');
-      hideEmpty(topBlocks, 'li');
-      empty.hidden = items.some(function (i) { return !i.hidden; });
+      empty.hidden = !current || all('.album', current).some(function (i) { return !i.hidden; });
     }
-    if (search) {
-      search.addEventListener('input', function () {
-        currentQuery = search.value.trim().toLowerCase();
-        apply();
-      });
-    }
-    apply();
-    tabs.hidden = false;
-    modeTabs.hidden = false;
+
+    window.addEventListener('hashchange', show);
+    show();
+    nav.hidden = false;
 
     function binom(p) {
       var q = 1 - p;
