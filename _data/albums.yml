@@ -4,6 +4,180 @@
 # period: listening year, Dec through Nov, labeled "Dec <year> - Nov <year+1>".
 # released: the period the album came out in (same label format). Defaults to period if omitted.
 
+- artist: "Miles Davis"
+  title: "On The Corner"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1971 - Nov 1972"
+  rating: 3
+
+- artist: "Miles Davis"
+  title: "Agharta"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1974 - Nov 1975"
+  rating: 2
+
+- artist: "Denzel Curry et. al"
+  title: "Strictly 4 The Scythe"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Suitor"
+  title: "Saw You Out with the Weeds"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Poison the Well"
+  title: "Peace In Place"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Fcukers"
+  title: "O"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Misfits"
+  title: "Collection"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 1985 - Nov 1986"
+  rating: 1
+
+- artist: "Robyn"
+  title: "Sexistential"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Courtney Barnett"
+  title: "Creature of Habit"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "ear"
+  title: "The Most Dear and The Future"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Quiet Light"
+  title: "Going Nowhere"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 1
+
+- artist: "Rage Against The Machine"
+  title: "Rage Against The Machine"
+  period: "Dec 1997 - Nov 1998"
+  released: "Dec 1991 - Nov 1992"
+  rating: 3
+
+- artist: "underscores"
+  title: "U"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Worldpeace DMT"
+  title: "The Velvet Underground & Rowan"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 1
+
+- artist: "akiaura,LONOWN"
+  title: "Destruction Age"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 1
+
+- artist: "Angine de Poitrine"
+  title: "Vol. II"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "Angine de Poitrine"
+  title: "Vol. I"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2023 - Nov 2024"
+  rating: 2
+
+- artist: "Bomb the Music Industry!"
+  title: "Split"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2006 - Nov 2007"
+  rating: 2
+
+- artist: "Animal Collective"
+  title: "Ark"
+  period: "Dec 2007 - Nov 2008"
+  released: "Dec 2002 - Nov 2003"
+  rating: 3
+
+- artist: "Animal Collective"
+  title: "Sung Tongs"
+  period: "Dec 2006 - Nov 2007"
+  released: "Dec 2003 - Nov 2004"
+  rating: 3
+
+- artist: "Ninajirachi"
+  title: "I Love My Computer"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Arlo Parks"
+  title: "Ambiguous Desire"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Thundercat"
+  title: "Distracted"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Frost Children"
+  title: "SISTER"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2024 - Nov 2025"
+  rating: 2
+
+- artist: "Joe Pernice,Pernice Brothers"
+  title: "Sunny, I Was Wrong"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Mei Semones"
+  title: "Kurage"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 2
+
+- artist: "My New Band Believe"
+  title: "My New Band Believe"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Brown Horse"
+  title: "Total Dive"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
+- artist: "Prism Shores"
+  title: "Softest Attack"
+  period: "Dec 2025 - Nov 2026"
+  released: "Dec 2025 - Nov 2026"
+  rating: 1
+
 - artist: "Cece Coakley"
   title: "Pleasant Attack"
   period: "Dec 2025 - Nov 2026"
