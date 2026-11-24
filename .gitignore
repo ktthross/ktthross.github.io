@@ -9,3 +9,6 @@ Gemfile.lock
 __pycache__/
 *.py[cod]
 .mypy_cache/
+
+# Spotify playlist export used to populate _data/albums.yml
+/2025Dec-2026Nov.csv

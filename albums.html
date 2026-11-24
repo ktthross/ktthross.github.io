@@ -40,7 +40,7 @@ permalink: /albums/
         <div class="albums-top">
           <h3>{{ p.name }}</h3>
           <ul>
-            {% for a in top %}<li>{{ a.artist }} — <i>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
+            {% for a in top %}<li>{{ a.artist }} — <i{% if a.full_title %} class="has-full-title" title="{{ a.full_title | escape }}"{% endif %}>{{ a.title }}</i> <b>{{ a.rating }}</b></li>{% endfor %}
           </ul>
         </div>
         {% endif %}
@@ -84,7 +84,7 @@ permalink: /albums/
         {% endif %}
         <li class="album" data-rating="{{ key }}" data-released="{{ a.released | default: a.period }}"{% if a.released and a.released != a.period %} data-older{% endif %}>
           <div class="album-info">
-            <div class="album-name">{{ a.artist }} — <i>{{ a.title }}</i></div>
+            <div class="album-name">{{ a.artist }} — <i{% if a.full_title %} class="has-full-title" title="{{ a.full_title | escape }}"{% endif %}>{{ a.title }}</i></div>
             {% if a.genre != "" %}<div class="album-meta">{{ a.genre }}</div>{% endif %}
           </div>
           <div class="album-score r{% if key == "none" %}n{% else %}{{ key }}{% endif %}" title="{{ label }}">
@@ -493,6 +493,11 @@ permalink: /albums/
   .album-name {
     font-size: 1.02rem;
     line-height: 1.3;
+  }
+
+  .has-full-title {
+    text-decoration: underline dotted;
+    cursor: help;
   }
 
   .album-meta {
